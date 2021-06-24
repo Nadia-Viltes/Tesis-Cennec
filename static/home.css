@@ -1,0 +1,31 @@
+*{
+	box-sizing: border-box;
+}
+ 
+header{
+    padding: 15px;
+    background-color:#dcdcdc;
+    text-align: start;
+}
+
+.image_logo{
+    height: 55px;
+    display: flex;
+}
+
+
+body{
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+
+.flex-container{
+    display: flex;
+    height: 400px;
+    flex-wrap: wrap;
+    align-content: stretch;
+    }
+
+
