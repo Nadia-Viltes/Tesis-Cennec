@@ -7,9 +7,9 @@ app = Flask(__name__)
 def home():
     return render_template('pacientes.html')
 
-@app.route('/agregar_paciente')
+@app.route('/HCD')
 def agregar_paciente():
-    return render_template('agregar_paciente.html')
+    return render_template('HCD.html')
 
 
 if __name__ == '__main__':
