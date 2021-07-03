@@ -1,16 +1,66 @@
+from flask import Flask, render_template, redirect, url_for
 from logging import debug
-from flask import Flask, render_template
+
 
 app = Flask(__name__)
 
-@app.route('/pacientes')
-def home():
-    return render_template('pacientes.html')
+#conexion mysql
 
-@app.route('/HCD')
-def agregar_paciente():
+@app.route('/')
+def index():
+    
+    data={
+        'titulo': 'Home',
+    }
+    return render_template('index.html', data=data)
+
+
+@app.route('/pacientes/')
+def paciente():
+    data={
+        'titulo': 'Pacientes',
+    }
+    return render_template('pacientes.html', data=data)
+
+@app.route('/HCD/')
+def HCD():
+    data={
+        'titulo': 'Historia Clínica dígital',
+    }
     return render_template('HCD.html')
 
+@app.route('/reportes/')
+def reportes():
+    data={
+        'titulo': 'Reportes',
+    }
+    return render_template('reportes.html', data=data)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@app.route('/agenda/')
+def agenda():
+    data={
+        'titulo': 'Mi Agenda',
+    }
+    return render_template('agenda.html', data=data)
+
+@app.route('/turnos/')
+def turnos():
+    data={
+        'titulo': 'Turnos',
+    }
+    return render_template('turnos.html', data=data)
+
+@app.route('/configuracion/')
+def configuracion():
+    data={
+        'titulo': 'Configuración',
+    }
+    return render_template('configuracion.html', data=data)
+
+def pagina_no_encontrada(error):
+    #return render_template('error.html'),404 
+    return redirect (url_for('index'))
+
+if  __name__=='__main__':
+    app.register_error_handler(404,pagina_no_encontrada)
+    app.run(debug=True, port=5000)
