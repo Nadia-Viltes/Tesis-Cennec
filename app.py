@@ -43,7 +43,7 @@ def agenda():
     }
     return render_template('agenda.html', data=data)
 
-@app.route('/turnos/')
+@app.route('/turno/')
 def turnos():
     data={
         'titulo': 'Turnos',
