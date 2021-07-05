@@ -1,33 +1,23 @@
 from flask import Flask, render_template, redirect, url_for
 from logging import debug
-
+from flask import request
 
 app = Flask(__name__)
 
 #conexion mysql
 
-@app.route('/')
-def index():
-    
-    data={
-        'titulo': 'Home',
-    }
-    return render_template('index.html', data=data)
+@app.route('/home/')
+def index(name='Home'):
+    return render_template('index.html', titulo=name)
 
 
 @app.route('/pacientes/')
-def paciente():
-    data={
-        'titulo': 'Pacientes',
-    }
-    return render_template('pacientes.html', data=data)
+def paciente(name='Pacientes'):
+    return render_template('pacientes.html', titulo=name)
 
 @app.route('/HCD/')
-def HCD():
-    data={
-        'titulo': 'Historia Clínica dígital',
-    }
-    return render_template('HCD.html')
+def HCD(name = 'Historia clínica dígital'):
+    return render_template('HCD.html', titulo=name)
 
 @app.route('/reportes/')
 def reportes():
