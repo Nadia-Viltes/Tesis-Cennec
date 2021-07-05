@@ -14,7 +14,6 @@ def index():
     }
     return render_template('index.html', data=data)
 
-
 @app.route('/pacientes/')
 def paciente():
     pacientes = controller.obtener_pacientes()
@@ -24,12 +23,13 @@ def paciente():
     }
     return render_template('pacientes.html', data=data)
 
+@app.route('/home/')
+def index(name='Home'):
+    return render_template('index.html', titulo=name)
+
 @app.route('/HCD/')
-def HCD():
-    data={
-        'titulo': 'Historia Clínica dígital',
-    }
-    return render_template('HCD.html')
+def HCD(name = 'Historia clínica dígital'):
+    return render_template('HCD.html', titulo=name)
 
 @app.route('/reportes/')
 def reportes():
