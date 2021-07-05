@@ -1,18 +1,11 @@
 from flask import Flask, render_template, redirect, url_for
 from logging import debug
 import controller
+from flask import request
 
 
 app = Flask(__name__)
 
-#conexion mysql
-
-@app.route('/')
-def index():
-    data={
-        'titulo': 'Home',
-    }
-    return render_template('index.html', data=data)
 
 @app.route('/pacientes/')
 def paciente():
