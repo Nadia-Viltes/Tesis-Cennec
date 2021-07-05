@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 from logging import debug
+import controller
 
 
 app = Flask(__name__)
@@ -8,7 +9,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    
     data={
         'titulo': 'Home',
     }
@@ -17,8 +17,10 @@ def index():
 
 @app.route('/pacientes/')
 def paciente():
+    pacientes = controller.obtener_pacientes()
     data={
         'titulo': 'Pacientes',
+        'pacientes':pacientes
     }
     return render_template('pacientes.html', data=data)
 
