@@ -18,7 +18,7 @@ USE `mydb` ;
 -- Table `mydb`.`TipoDocumento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`TipoDocumento` (
-  `IdTipoDocumento` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTipoDocumento` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Descripcion` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -36,7 +36,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Tutoria`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Tutoria` (
-  `IdTutoria` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTutoria` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Apellido` VARCHAR(50) NOT NULL,
   `IdTipoDocumento` INT(10) NOT NULL,
@@ -66,7 +66,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Pais`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Pais` (
-  `IdPais` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdPais` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Detalle` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -84,7 +84,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Provincia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Provincia` (
-  `IdProvincia` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdProvincia` INT(10) NOT NULL,
   `IdPais` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Detalle` VARCHAR(100) NULL,
@@ -109,7 +109,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Localidad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Localidad` (
-  `IdLocalidad` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdLocalidad` INT(10) NOT NULL,
   `IdProvincia` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Detalle` VARCHAR(100) NULL,
@@ -134,7 +134,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Barrio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Barrio` (
-  `IdBarrio` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdBarrio` INT(10) NOT NULL,
   `IdLocalidad` INT(10) NULL,
   `Nombre` VARCHAR(50) NULL,
   `Detalle` VARCHAR(100) NULL,
@@ -158,7 +158,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Domicilio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Domicilio` (
-  `IdDomicilio` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdDomicilio` INT(10) NOT NULL,
   `IdPais` INT(10) NULL,
   `IdProvincia` INT(10) NULL,
   `IdLocalidad` INT(10) NULL,
@@ -207,7 +207,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Paciente`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Paciente` (
-  `IdPaciente` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdPaciente` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Apellido` VARCHAR(50) NOT NULL,
   `IdTipoDocumento` INT(10) NOT NULL,
@@ -251,7 +251,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`HistoriaClinica`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`HistoriaClinica` (
-  `IdHistoriaClinica` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdHistoriaClinica` INT(10) NOT NULL,
   `IdPaciente` INT(10) NOT NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -274,7 +274,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`TipoRecurso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`TipoRecurso` (
-  `IdTipoRecurso` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTipoRecurso` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Descripcion` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -292,7 +292,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Recurso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Recurso` (
-  `IdRecursos` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdRecursos` INT(10) NOT NULL,
   `IdTipoRecurso` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NULL,
   `Apellido` VARCHAR(50) NULL,
@@ -339,7 +339,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Especialidad`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Especialidad` (
-  `IdEspecialidad` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdEspecialidad` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Codigo` VARCHAR(10) NULL,
   `Descripcion` VARCHAR(100) NULL,
@@ -358,7 +358,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Profesional`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Profesional` (
-  `IdProfesional` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdProfesional` INT(10) NOT NULL,
   `IdRecurso` INT(10) NOT NULL,
   `IdEspecialidad` INT(10) NOT NULL,
   `Matricula` VARCHAR(15) NOT NULL,
@@ -390,7 +390,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Evolucion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Evolucion` (
-  `IdEvolucion` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdEvolucion` INT(10) NOT NULL,
   `IdHistoriaClinica` INT(10) NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -412,7 +412,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`EstadoTurno`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`EstadoTurno` (
-  `IdEstadoTurno` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdEstadoTurno` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NULL,
   `Detalle` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -430,7 +430,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`TipoTurno`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`TipoTurno` (
-  `IdTipoTurno` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTipoTurno` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Detalle` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -448,7 +448,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Motivo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Motivo` (
-  `IdMotivo` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdMotivo` INT(10) NOT NULL,
   `NombreMotivo` VARCHAR(45) NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -464,7 +464,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Turno`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Turno` (
-  `IdTurno` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTurno` INT(10) NOT NULL,
   `IdTipoTurno` INT(10) NOT NULL,
   `IdEspecialidad` INT(10) NOT NULL,
   `IdPaciente` INT(10) NOT NULL,
@@ -534,7 +534,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`DetalleEvolucion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`DetalleEvolucion` (
-  `IdDetalleEvolucion` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdDetalleEvolucion` INT(10) NOT NULL,
   `IdEvolucion` INT(10) NOT NULL,
   `IdTurno` INT(10) NOT NULL,
   `IdProfesional` INT(10) NOT NULL,
@@ -572,7 +572,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Dia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Dia` (
-  `IdDia` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdDia` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -589,7 +589,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`HorarioRecurso`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`HorarioRecurso` (
-  `IdHorarioRecurso` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdHorarioRecurso` INT(10) NOT NULL,
   `IdRecurso` INT(10) NOT NULL,
   `IdDia` INT(10) NOT NULL,
   `HoraDesde` TIME NULL,
@@ -621,7 +621,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Financiador`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Financiador` (
-  `IdFinanciador` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdFinanciador` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `IdDomicilio` INT(10) NULL,
   `Telefono` INT(15) NULL,
@@ -648,7 +648,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Rol`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Rol` (
-  `IdRol` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdRol` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Descripción` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -666,7 +666,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
-  `IdUsuario` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdUsuario` INT(10) NOT NULL,
   `IdRecurso` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Contraseña` VARCHAR(20) NOT NULL,
@@ -698,7 +698,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Privilegio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Privilegio` (
-  `IdPrivilegio` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdPrivilegio` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NOT NULL,
   `Descripcion` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -716,7 +716,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`RolPrivilegio`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`RolPrivilegio` (
-  `IdRolPrivilegio` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdRolPrivilegio` INT(10) NOT NULL,
   `IdRol` INT(10) NOT NULL,
   `IdPrivilegio` INT(10) NOT NULL,
   `FechaAlta` DATETIME NULL,
@@ -745,7 +745,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`PreguntaAdmision`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`PreguntaAdmision` (
-  `IdPreguntaAdmision` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdPreguntaAdmision` INT(10) NOT NULL,
   `DescripcionPregunta` VARCHAR(500) NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -762,7 +762,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`EntrevistaAdmision`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`EntrevistaAdmision` (
-  `IdEntrevistaAdmision` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdEntrevistaAdmision` INT(10) NOT NULL,
   `IdHistoriaClinica` INT(10) NULL,
   `FechaAlta` DATETIME NULL,
   `FechaModificacion` DATETIME NULL,
@@ -784,7 +784,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`DetalleAdmision`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`DetalleAdmision` (
-  `IdDetalleAdmision` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdDetalleAdmision` INT(10) NOT NULL,
   `IdEntrevistaAdmision` INT(10) NOT NULL,
   `IdPregunta` INT(10) NOT NULL,
   `Respuesta` VARCHAR(50) NULL,
@@ -815,7 +815,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`TipoPatologia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`TipoPatologia` (
-  `IdTipoPatologia` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTipoPatologia` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NULL,
   `Descripción` VARCHAR(100) NULL,
   `FechaAlta` VARCHAR(45) NULL,
@@ -832,7 +832,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`ConfiguracionTurno`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`ConfiguracionTurno` (
-  `IdConfiguracionTurno` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdConfiguracionTurno` INT(10) NOT NULL,
   `IdPaciente` INT(10) NOT NULL,
   `IdEspecialidad` INT(10) NOT NULL,
   `IdTipoPatologia` INT(10) NULL,
@@ -871,7 +871,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Afiliacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Afiliacion` (
-  `IdAfiliacion` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdAfiliacion` INT(10) NOT NULL,
   `IdPaciente` INT(10) NULL,
   `IdFinanciador` INT(10) NULL,
   `NumeroAfiliado` VARCHAR(20) NOT NULL,
@@ -901,7 +901,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`TipoReporte`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`TipoReporte` (
-  `IdTipoReporte` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdTipoReporte` INT(10) NOT NULL,
   `Nombre` VARCHAR(50) NULL,
   `Descripcion` VARCHAR(100) NULL,
   `FechaAlta` DATETIME NULL,
@@ -918,7 +918,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`HistorialReportes`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`HistorialReportes` (
-  `IdHistorialReportes` INT(10) AUTO_INCREMENT NOT NULL,
+  `IdHistorialReportes` INT(10) NOT NULL,
   `IdTipoReporte` INT(10) NULL,
   `IdUsuario` INT(10) NULL,
   `LinkReporte` VARCHAR(50) NULL,
