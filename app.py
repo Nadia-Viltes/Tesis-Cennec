@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 @app.route('/pacientes/')
 def paciente():
-    paciente = db.session.query(Paciente).first()
+    pacientes = db.session.query(Paciente).all()
     data={
         'titulo': 'Pacientes',
         'pacientes':paciente
