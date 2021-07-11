@@ -51,8 +51,8 @@
                     {% for paciente in data.pacientes %}
                     <tr>
                         <th scope="row"></th>
-                        <td>{{paciente.nombre}} {{paciente.apellido}}</td>
-                        <td>{{paciente.numero_documento}}</td>
+                        <td>{{paciente[0]}} {{paciente[1]}}</td>
+                        <td>{{paciente[2]}}</td>
                         <td>OSDE</td>
                         <td>Mariela Sanchez</td>
                         <td><button type="button " class="btn btn-outline-primary rounded-circle justify-content-center align-content-center " style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;width: 28px;height: 27px;" data-bs-toggle="tooltip " data-bs-placement="top " title="Editar ">

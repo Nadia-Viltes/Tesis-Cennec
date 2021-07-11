@@ -5,6 +5,6 @@ def obtener_pacientes():
     paciente = []
     with conexion.cursor() as cur:
         cur.execute('SELECT Nombre, Apellido, NumeroDocumento, IdTutoria from paciente')
-    paciente = cur.fetchone()
+    paciente = cur.fetchall()
     conexion.close()
     return paciente
