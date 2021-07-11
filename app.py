@@ -1,15 +1,17 @@
 from flask import Flask, render_template, redirect, url_for
 from logging import debug
-import controller
-from flask import request
+from models import Paciente
+from flask_sqlalchemy import SQLAlchemy
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']='mysql+pymysql://root:admin@localhost/mydb'
 
+db = SQLAlchemy(app)
 
 @app.route('/pacientes/')
 def paciente():
-    pacientes = controller.obtener_pacientes()
+    pacientes = db.session.query(Paciente).all()
     data={
         'titulo': 'Pacientes',
         'pacientes':pacientes
