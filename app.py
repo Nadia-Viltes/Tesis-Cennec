@@ -1,11 +1,5 @@
 from flask import Flask, render_template, redirect, url_for
-<<<<<<< Updated upstream
 from controller import obtener_pacientes
-=======
-from logging import debug
-import controller
-from flask import request
->>>>>>> Stashed changes
 
 
 app = Flask(__name__)
@@ -13,13 +7,8 @@ app = Flask(__name__)
 
 @app.route('/pacientes/')
 def paciente():
-<<<<<<< Updated upstream
     pacientes = obtener_pacientes()
     data = {
-=======
-    pacientes = controller.obtener_pacientes()
-    data={
->>>>>>> Stashed changes
         'titulo': 'Pacientes',
         'pacientes': pacientes
     }
