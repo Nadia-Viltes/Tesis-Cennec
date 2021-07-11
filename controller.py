@@ -1,11 +1,10 @@
-from bd_config import establecer_conexion
+from config_bd import get_conexion
 
 def obtener_pacientes():
-    conexion = establecer_conexion()
-    paciente = None
+    conexion = get_conexion()
+    paciente = []
     with conexion.cursor() as cur:
         cur.execute('SELECT Nombre, Apellido, NumeroDocumento, IdTutoria from paciente')
-    paciente = cur.fetchone()
+    paciente = cur.fetchall()
     conexion.close()
     return paciente
-
