@@ -12,3 +12,13 @@ header{
     height: 55px;
     display: flex;
 }
+
+.modal-content{
+    height: auto;
+    display: flex;
+}
+
+.modal-body{
+    height: 485px;
+    padding: 16px;
+}
