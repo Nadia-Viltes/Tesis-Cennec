@@ -21,13 +21,13 @@
     aria-label="breadcrumb">
     <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
       <li class="breadcrumb-item"><a href="/">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Historia clínica dígital</li>
+      <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
     </ol>
   </nav>
 
   <!-- Titulo de la pantalla -->
   <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
-    <h1 class="h2">{{ titulo }}</h1>
+    <h1 class="h2">{{ data.titulo }}</h1>
   </div>
 
 
@@ -50,11 +50,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Olga Pataki</td>
-        <td>35698652</td>
-        <td>2025</td>
+        {% for hcd in data.hcd %}
+        <tr>
+            <th scope="row"></th>
+            <td>{{hcd[1]}} {{hcd[2]}}</td>
+            <td>{{hcd[3]}}</td>
+            <td>{{hcd[4]}}</td>
         <td><button type="button"
             class="btn btn-outline-info rounded-circle justify-content-center align-content-center"
             style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;width: 28px;height: 27px;"
@@ -66,38 +67,7 @@
             </svg>
           </button></td>
       </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Sabrina Viltes</td>
-        <td>36233155</td>
-        <td>1026</td>
-        <td><button type="button"
-            class="btn btn-outline-info rounded-circle justify-content-center align-content-center"
-            style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;width: 28px;height: 27px;"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="Ver">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill"
-              viewBox="0 0 16 16">
-              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-            </svg>
-          </button></td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td>Mayra Viltes</td>
-        <td>3815236</td>
-        <td>0098</td>
-        <td><button type="button"
-            class="btn btn-outline-info rounded-circle justify-content-center align-content-center"
-            style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;width: 28px;height: 27px;"
-            data-bs-toggle="tooltip" data-bs-placement="top" title="Ver">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill"
-              viewBox="0 0 16 16">
-              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-            </svg>
-          </button></td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
 

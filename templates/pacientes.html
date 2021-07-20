@@ -19,7 +19,7 @@
     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
         aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
         </ol>
     </nav>
@@ -48,16 +48,16 @@
             </tr>
         </thead>
         <tbody>
-            {% for paciente in data.pacientes %}
+            {% for pacientes in data.pacientes %}
             <tr>
-                <th scope="row"></th>
-                <td>{{paciente[1]}}</td>
-                <td>{{paciente[2]}}</td>
-                <td>{{paciente[3]}}</td>
-                <td>{{paciente[4]}} {{paciente[5]}}</td>
-                <td><a href="editar_paciente.html" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <th scope="row">{{pacientes[row]}}</th>
+                <td>{{pacientes[1]}} {{pacientes[2]}}</td>
+                <td>{{pacientes[5]}}</td>
+                <td>{{pacientes[20]}}</td>
+                <td>{{pacientes[15]}} {{pacientes[16]}}</td>
+                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" name="botonEditar" id={{pacientes[0]}}>
                     Editar
-                </a>
+                </button>
                 </td>
             </tr>
             {% endfor %}
@@ -82,17 +82,17 @@
     <!-- Button trigger modal -->
     <div class="form-row text-center">
         <div class="col-12">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AgregarPaciente">
+            <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="agregar_button">
                 Agregar
             </button>
         </div>
     </div>
 
-    {% block editar_paciente %}
-    {% endblock %}
+    <div id="idSeccionModalAgregar">
+    </div>
 
-    {% block agregar_paciente %}
-    {% endblock %}
+    <div id="idSeccionModalEditar">
+    </div>
 
     <!-- ================================================ -->
     <!-- Config Pantalla -->
@@ -101,6 +101,55 @@
     <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
         style="display: block; height: 514px; width: 1218px;"></canvas>
 </main>
+
+<script>
+    $(document).on('click', '#agregar_button', function(){
+        $.ajax({
+         url:"/datos_modal_agregar",
+         method:"GET",
+         data:{},
+         success:function(data){
+          $('#idSeccionModalAgregar').append(data.htmlresponse)
+          $('#AgregarPaciente').modal('show');
+         }
+        });
+    });
+    $(document).on('click', '#idCerrarModal', function(){
+        $.ajax({
+         success:function(data){
+          $('#AgregarPaciente').modal('hide');
+          {
+            $('#idSeccionModalAgregar').empty()
+          }
+         }
+        });
+    });
+
+//boton Editar
+    $(document).on('click', "[name='botonEditar']", function(){
+            let paciente_id = $(this).attr("id");
+            $.ajax({
+            url:`/datos_modal_editar/${paciente_id}`,
+            method:"GET",
+            data:{},
+            success:function(data){
+                $('#idSeccionModalEditar').append(data.htmlresponse)
+                $('#EditarPaciente').modal('show');
+            }
+            });
+        });
+        $(document).on('click', '#idCerrarModalEditar', function(){
+            $.ajax({
+            success:function(data){
+            $('#EditarPaciente').modal('hide');
+            {
+                $('#idSeccionModalEditar').empty()
+            }
+            }
+            });
+        });
+
+</script>
 
 
 {% endblock %}
