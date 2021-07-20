@@ -70,9 +70,21 @@ def agregar_datos():
 @app.route('/datos_modal_editar/<int:id>')
 def obtener_paciente_id(id):
     paciente = obtener_paciente_por_id(id)
+    tipoDocumento = obtener_tipoDocumento()
+    pais = obtener_pais()
+    provincia = obtener_provincia()
+    localidad = obtener_localidad()
+    barrio = obtener_barrio()
+    financiador = obtener_financiador()
     values = {
             'titulo': 'Editar paciente',
-            'pacientes': paciente
+            'pacientes': paciente,
+            'tipoDocumento': tipoDocumento,
+            'pais': pais,
+            'provincia': provincia,
+            'localidad': localidad,
+            'barrio': barrio,
+            'financiador': financiador
     }
     return jsonify({'htmlresponse': render_template('editar_paciente.html', data=values)})
 
