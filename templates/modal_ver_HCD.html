@@ -1,14 +1,14 @@
-{% extends 'HCD.html' %}
-
- {% block ver_HCD %}
 
 <!-- Modal -->
-  <div class="modal fade" id="VerHCD" tabindex="-1" aria-labelledby="VerHCD" aria-hidden="true">
+  <div class="modal fade" id="idVerHCD" tabindex="-1" aria-labelledby="VerHCD" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
+
+        <form action="{{url_for('guardar_turnos_admision')}}" method="POST">
+
         <div class="modal-header">
           <h5 class="modal-title" id="VerHCDLabel">Historia clínica dígital</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" id="idButtonCerrarModalHCD" aria-label="Close"></button>
         </div>
 
         <!-- Body Modal -->
@@ -26,12 +26,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Olga Pataki</td>
-                <td>35698652</td>
-                <td>2025</td>
-                <td>OSDE</td>
-                <td>232659879878999</td>
+              <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
+                <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
+                <td>{{data.paciente_hcd[3]}}</td>
+                <td>{{data.paciente_hcd[4]}}</td>
+                <td>{{data.paciente_hcd[5]}}</td>
+                <td>{{data.paciente_hcd[6]}}</td>
               </tr>
             </tbody>
           </table>
@@ -121,20 +121,29 @@
             <div class="tab-pane" id="turnos_admision" role="tabpanel" aria-labelledby="turnos_admision-tab">
               <!-- Datos turnos de admisión -->
               <div class="row g-3 mt-1 align-items-end">
-                <div class="col-4">
+                <div class="col-2">
+                  <input type="hidden" name="idPaciente_HCD" value="{{data.paciente_hcd[0]}}">
                   <label for="inputCantidad" class="form-label">Cantidad</label>
-                  <input type="text" class="form-control">
+                  <input type="text" class="form-control" name="cantidad">
                 </div>
-                <div class="col-md-4">
-                  <label for="inputFinanciador" class="form-label">Especialidad</label>
-                  <select id="inputFinanciador" class="form-select">
-                    <option selected>Seleccionar</option>
-                    <option>Kinesiología</option>
+                <div class="col-md-3">
+                  <label for="Especialidad" class="form-label">Especialidad</label>
+                  <select name="tipoEspecialidad" class="form-select">
+                    {% for especialidades in data.especialidad %}
+                    <option value={{especialidades[0]}}>{{especialidades[1]}}</option>
+                    {% endfor %}
                   </select>
                 </div>
-                <div class="col-4">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="button"
-                    autocomplete="off">Agregar</button>
+                <div class="col-md-4">
+                  <label for="patologia" class="form-label">Patologia</label>
+                  <select name="tipoPatologia" class="form-select">
+                    {% for patologias in data.patologia %}
+                    <option value={{patologias[0]}}>{{patologias[1]}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-3">
+                  <button type="submit" class="btn btn-primary" data-bs-target="#turnos_admision">Agregar</button>
                 </div>
               </div>
 
@@ -167,13 +176,14 @@
               <div class="row align-items-md-stretch">
                 <div class="col-md-7">
                   <div class="form-floating mt-3">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                      style="height: 100px"></textarea>
-                    <label for="floatingTextarea2">Comments</label>
+                    <textarea class="form-control" id="floatingTextarea2"
+                      style="height: 350px; resize: none"></textarea>
+                    <label for="floatingTextarea2">Detalle de evolución</label>
                   </div>
                   <button type="button" class="btn btn-primary active mt-3" data-bs-toggle="button" autocomplete="off"
-                    aria-pressed="true">Editar</button>
+                    aria-pressed="true">Agregar</button>
                 </div>
+
                 <!-- Historial de evoluciones -->
                 <div class="col-md-5">
                   <div role="tabpanel">
@@ -209,8 +219,10 @@
             </div>
           </div>
       </div>
+
+    </form>
+
     </div>
   </div>
 </div>
 
-{% endblock %}

@@ -78,6 +78,7 @@
     </ul>
   </nav>
 
+  <div id="id_modal_ver_hcd"></div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -88,28 +89,31 @@
 
 </main>
 
+
+
 <script>
-  $(document).on('click', '#verHCD', function(){
-      $.ajax({
-       url:"/ver_HCD",
-       method:"GET",
-       data:{},
-       success:function(data){
-        $('#idSeccionModal').append(data.htmlresponse)
-        $('#AgregarPaciente').modal('show');
-       }
-      });
+  $(document).on('click', "[name='verHCD']", function () {
+    let hcd_paciente_id = $(this).attr("id");
+    $.ajax({
+      url: `/datos_modal_verHCD/${hcd_paciente_id}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#id_modal_ver_hcd').append(data.htmlresponse)
+        $('#idVerHCD').modal('show');
+      }
+    });
   });
-  $(document).on('click', '#idCerrarModal', function(){
-      $.ajax({
-       success:function(data){
-        $('#AgregarPaciente').modal('hide');
+  $(document).on('click', '#idButtonCerrarModalHCD', function () {
+    $.ajax({
+      success: function (data) {
+        $('#idVerHCD').modal('hide');
         {
-          $('#idSeccionModalAgregar').empty()
+          $('#id_modal_ver_hcd').empty()
         }
-       }
-      });
+      }
+    });
   });
-  </script>
+</script>
 
 {% endblock %}

@@ -167,9 +167,9 @@ def insertar_HCD (idPaciente):
 
 def obtener_paciente_por_id(idPaciente):
     query = """
-            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.IdTipoDocumento, pa.NumeroDocumento, pa.FechaNacimiento, p.Nombre, pro.Nombre, 
-            loc.Nombre, dom.calle, dom.altura, dom.piso, dom.Dpto, bar.Nombre, LPAD(hcd.IdHistoriaClinica, 5, '0'), tu.Nombre, tu.Apellido, tu.Ocupacion,
-            tu.TelefonoFijo, tu.TelefonoCelular, fi.Nombre, afi.NumeroAfiliado, afi.FechaAlta, afi.IdAfiliacion, pa.IdDomicilio, pa.IdTutoria
+            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.IdTipoDocumento, tdoc.Nombre, pa.NumeroDocumento, pa.FechaNacimiento, p.IdPais, p.Nombre, pro.IdProvincia, pro.Nombre, 
+            loc.IdLocalidad, loc.Nombre, dom.calle, dom.altura, dom.piso, dom.Dpto, bar.IdBarrio, bar.Nombre, LPAD(hcd.IdHistoriaClinica, 5, '0'), tu.Nombre, tu.Apellido, tu.Ocupacion,
+            tu.TelefonoFijo, tu.TelefonoCelular, fi.IdFinanciador, fi.Nombre, afi.NumeroAfiliado
             FROM PACIENTE AS pa, TipoDocumento as tdoc, Domicilio AS dom, pais AS p, provincia AS pro, localidad AS loc,
             barrio AS bar, Tutoria AS tu, afiliacion as afi, financiador as fi, historiaclinica hcd
             WHERE pa.IdTipoDocumento = tdoc.IdTipoDocumento
@@ -195,8 +195,8 @@ def obtener_paciente_por_id(idPaciente):
 def actualizar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso, dpto, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("""UPDATE domicilio SET IdPais=%s, IdProvincia=%s, IdLocalidad=%s, IdBarrio=%S, calle=%s, altura=%s, piso=%s, Dpto=%s
-                        WHERE IdPaciente = %s""",
+        cursor.execute("""UPDATE domicilio SET IdPais={}, IdProvincia={}, IdLocalidad={}, IdBarrio={}, calle='{}', altura='{}' piso='{}', Dpto='{}'
+                        WHERE IdPaciente = {}""".format
                        (pais, provincia, localidad, barrio, calle, altura, piso, dpto, idPaciente))
     conexion.commit()
     conexion.close()
@@ -204,8 +204,8 @@ def actualizar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso
 def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("""UPDATE tutoria SET Nombre = %s, Apellido = %s, Ocupacion = %s, TelefonoFijo= %s, TelefonoCelular= %s
-                        WHERE IdPaciente = %s""",
+        cursor.execute("""UPDATE tutoria SET Nombre = '{}', Apellido = '{}', Ocupacion = '{}', TelefonoFijo= '{}', TelefonoCelular= '{}'
+                        WHERE IdPaciente = %s""".format
                        (nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular))
     conexion.commit()
     conexion.close()
@@ -213,7 +213,7 @@ def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelula
 def actualizar_afiliacion(financiador,nroAfiliado):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE afiliacion SET IdFinanciador =%s, NumeroAfiliado=%s WHERE IdPaciente = %s);",
+        cursor.execute("UPDATE afiliacion SET IdFinanciador ={}, NumeroAfiliado='{}' WHERE IdPaciente = {});".format
                        (financiador,nroAfiliado))
     conexion.commit()
     conexion.close()
@@ -221,7 +221,7 @@ def actualizar_afiliacion(financiador,nroAfiliado):
 def actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento,nroDocumento, fechaNacimiento, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE paciente SET nombre=%s, apellido=%s, Genero=%s,IdTipoDocumento=%s, NumeroDocumento=%s,,FechaNacimiento=%s WHERE idPaciente = %s",
+        cursor.execute("UPDATE paciente SET nombre='{}'', apellido='{}', Genero='{}',IdTipoDocumento={}, NumeroDocumento={},,FechaNacimiento='{}' WHERE idPaciente = {}".format
                        (nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente))
     conexion.commit()
     conexion.close()

@@ -124,15 +124,37 @@ def actualizar_paciente():
 def index(name='Home'):
     return render_template('index.html', titulo=name)
 
-
 @app.route('/HCD')
 def HCD():
-    hcd = obtener_hcd()
+    hcd = obtener_lista_hcd()
     data={
         'titulo': 'Historia Clínica Dígital',
         'hcd': hcd
     }
     return render_template('HCD.html', data=data)
+
+@app.route('/datos_modal_verHCD/<int:id>')
+def obtener_hcd_id(id):
+    paciente_hcd = obtener_hcd_por_id(id)
+    IdEspecialidad = obtener_especialidad()
+    idPatologia = obtener_patologia()
+    values = {
+            'titulo': 'Historia clínica dígital',
+            'paciente_hcd': paciente_hcd,
+            'especialidad': IdEspecialidad,
+            'patologia': idPatologia
+    }
+    return jsonify({'htmlresponse': render_template('modal_ver_HCD.html', data=values)})
+
+@app.route("/guardar_turnos_admision", methods=["POST"])
+def guardar_turnos_admision():
+        idPaciente_HCD = request.form["idPaciente_HCD"]
+        IdEspecialidad = request.form["tipoEspecialidad"]
+        idPatologia = request.form["tipoPatologia"]
+        cantidad = request.form["cantidad"]
+        insertar_turnos_admision(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
+        return redirect("/datos_modal_verHCD")
+    # SI DA OK redireccionar
 
 
 @app.route('/reportes')
