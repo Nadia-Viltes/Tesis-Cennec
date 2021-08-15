@@ -1,3 +1,4 @@
+from controllerTurno import *
 from controllerHCD import *
 from flask import Flask, render_template, redirect, url_for, request, jsonify
 from controller import *
@@ -173,10 +174,13 @@ def agenda():
     return render_template('agenda.html', data=data)
 
 
-@app.route('/turno')
+# Operación para mostrar la lista
+@app.route('/turno/')
 def turnos():
+    turno = obtener_lista_turno()
     data = {
         'titulo': 'Turnos',
+        'turno': turno
     }
     return render_template('turnos.html', data=data)
 

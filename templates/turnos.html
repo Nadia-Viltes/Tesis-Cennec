@@ -38,23 +38,148 @@
   <table class="table table-hover">
         <thead class="table-warning">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre y Apellido</th>
-            <th scope="col">Especialidad</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Hora</th>
             <th scope="col">Estado</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Hora desde</th>
+            <th scope="col">Hora hasta</th>
+            <th scope="col">Nombre y Apellido</th>
+            <th scope="col">Nro. documento</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Profesional</th>
         </tr>
         </thead>
         <tbody>
+          {% for turno in data.turno %}
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <td>{{turno[1]}}</td>
+            <td>{{turno[2]}}</td>
+            <td>{{turno[3]}}</td>
+            <td>{{turno[4]}}</td>
+            <td>{{turno[5]}} {{turno[6]}}</td>
+            <td>{{turno[7]}}</td>
+            <td>{{turno[8]}}</td> 
+            <td>{{turno[9]}}</td>          
         </tr>
+          {% endfor %}
         </tbody>
   </table>
+
+
+      <!-- Button trigger modal -->
+      <div class="row">
+        <div class="col-3">
+            <button type="button" class="btn btn-success openBtn justify-content-center" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
+                Asignar
+            </button>
+        </div>
+        <div class="col-3">
+          <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
+              Receptar
+          </button>
+      </div>
+      <div class="col-3">
+        <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
+            Anular
+        </button>
+    </div>
+    <div class="col-3">
+      <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
+          Reprogramar
+      </button>
+  </div>
+    </div>
+
+
+    <div class="modal fade" id="modal_asignar_turno" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+
+                  <!-- Cabecera Modal -->
+                  <div class="modal-header">
+                      <h5 class="modal-title">Asignar turno</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+
+                  <!-- Body Modal -->
+                  <div class="modal-body">
+                    <h5>Seleccionar paciente</h5>
+
+                <div class="container">
+                  <div class="row">
+                    <div class="col-10">
+                      <table class="text-primary table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Nombre y Apellido</th>
+                            <th scope="col">DNI</th>
+                            <th scope="col">HCD</th>
+                            <th scope="col">Financiador</th>
+                            <th scope="col">Nro. afiliado</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                          </tr>
+                        </tbody>
+                      </table>    
+                    </div>
+                  <div class="col-2 d-grid d-md-flex justify-content-md-end">
+                    <button type="button" class="btn btn-outline-primary btn-lg">Buscar</button>
+                  </div>
+              </div>
+            </div>
+
+          <form class="row g-3">
+            <h5 style="padding-top: 30px;">Seleccionar turno</h5>
+            <div class="col-md-4">
+              <label for="inputState" class="form-label">Tipo de turno</label>
+              <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="inputState" class="form-label">Especialidad</label>
+              <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="inputState" class="form-label">Profesional</label>
+              <select id="inputState" class="form-select">
+                <option selected>Choose...</option>
+                <option>...</option>
+              </select>
+            </div>
+            <div class="col-4">
+              <label for="fechaTurno" class="form-label">Fecha</label>
+              <input type="date" class="form-control" name="fechaTurno">
+          </div>
+          <div class="col-4">
+            <label for="horaTurno" class="form-label">Hora</label>
+            <input type="time" class="form-control" name="horaTurno">
+        </div>
+          </form>
+      </div>
+
+                  <!-- footer modal-->
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                      <button type="submit" class="btn btn-primary">Guardar</button>
+                  </div>
+
+
+          </div>
+      </div>
+  </div>
+ 
+
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
