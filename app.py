@@ -40,12 +40,11 @@ def guardar_paciente():
     nroFijo = request.form["nroFijo"]
     financiador = request.form["financiador"]
     nroAfiliado = request.form["nroAfiliado"]
-    fechaAltaFinanciador = request.form["fechaAltaFinanciador"]
     idDomicilio = insertar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso, dpto)
     idTutoria = insertar_tutor(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular)
     idPaciente = insertar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, idTutoria)
     insertar_HCD(idPaciente)
-    insertar_afiliacion(idPaciente, financiador, nroAfiliado, fechaAltaFinanciador)
+    insertar_afiliacion(idPaciente, financiador, nroAfiliado)
     # SI DA OK redireccionar
     return redirect("/pacientes")
 
@@ -191,6 +190,15 @@ def configuracion():
         'titulo': 'Configuración',
     }
     return render_template('configuracion.html', data=data)
+
+
+@app.route('/login')
+def login():
+    data = {
+        'titulo': 'Login',
+    }
+    return render_template('login.html', data=data)
+
 
 
 def pagina_no_encontrada(error):

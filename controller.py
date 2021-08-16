@@ -138,11 +138,11 @@ def insertar_paciente (nombre, apellido, genero, tipoDocumento, nroDocumento, fe
     return idPaciente_insertado
 
 ## INSERTAR AFILIACION
-def insertar_afiliacion (idPaciente, financiador, nroAfiliado, fechaAltaFinanciador):
+def insertar_afiliacion (idPaciente, financiador, nroAfiliado):
     conexion = get_conexion()
     query = """
         INSERT INTO Afiliacion (IdPaciente, IdFinanciador, NumeroAfiliado, FechaAlta)
-        VALUES ({},{},'{}','{}');""".format(idPaciente, financiador, nroAfiliado, fechaAltaFinanciador)
+        VALUES ({},{},'{}',NOW());""".format(idPaciente, financiador, nroAfiliado)
     print("Este es mi insertar afiliacion -> {}".format(query))       
     idAfiliacion_insertado = None
     with conexion.cursor() as cur:
