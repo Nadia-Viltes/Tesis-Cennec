@@ -1,0 +1,66 @@
+    <!-- Modal-->
+
+    <div class="modal fade" id="AgregarRol" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+
+                <form>
+                    <!-- Cabecera Modal -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Agregar rol</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <!-- Body Modal -->
+                    <div class="modal-body">
+
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="rol-tab" data-bs-toggle="tab"
+                                    data-bs-target="#datos_rol" type="button" role="tab"
+                                    aria-controls="datos_rol" aria-selected="true">Rol</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="privilegio-tab" data-bs-toggle="tab" data-bs-target="#datos_privilegio"
+                                    type="button" role="tab" aria-controls="datos_privilegio" aria-selected="false">Privilegios</button>
+                            </li>
+                        </ul>
+
+
+                        <!-- Tab panes -->
+                        <div class="tab-content">
+
+                        <!-- TAB datos rol -->
+                            <div class="tab-pane active" id="datos_rol" role="tabpanel" aria-labelledby="datos_rol-tab">
+                        <!-- Datos rol -->        
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label for="nombreRol" class="form-label">Nombre del rol</label>
+                                        <input type="text" class="form-control" name="nombreRol">
+                                    </div>
+                                    <div class="form-floating mt-3">
+                                        <textarea class="form-control" id="descripcionRol"style="height: 350px; resize: none"></textarea>
+                                        <label for="descripcionRol">Descripción</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                         <!-- TAB datos privilegios -->
+                            <div class="tab-pane" id="datos_privilegio" role="tabpanel" aria-labelledby="datos_privilegio-tab">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- footer modal-->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,116 @@
+{% extends 'base/base.html' %}
+
+<!-- ================================================ -->
+<!-- PANTALLA HCD -->
+<!-- ================================================ -->
+{% block configuracion_usuarios %}
+<main class="col-md-9 ms-sm-auto col-lg-10">
+  <div class="chartjs-size-monitor">
+    <div class="chartjs-size-monitor-expand">
+      <div class></div>
+    </div>
+    <div class="chartjs-size-monitor-shrink">
+      <div class=""></div>
+    </div>
+  </div>
+
+
+  <!-- Breadcrumb -->
+  <nav
+    style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+    aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
+    </ol>
+  </nav>
+
+  <!-- Titulo de la pantalla -->
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
+    <h1 class="h2">{{ data.titulo }}</h1>
+  </div>
+
+
+  <!-- Search - Barra de busqueda -->
+  <form class="d-flex p-2 m-3" style="width: 515px;">
+    <input class="form-control me-2 flex-end" type="search" placeholder="Buscar usuario" aria-label="Buscar">
+    <button class="btn btn-outline-success" type="submit">Buscar</button>
+  </form>
+
+
+  <!-- Tabla -->
+  <table class="table table-hover p-3 m-2">
+    <thead>
+      <tr>
+        <th scope="col">Nombre y apellido</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for hcd in data.hcd %}
+        <tr>
+          <th scope="row"></th>
+          <td>{{hcd[1]}} {{hcd[2]}}</td>
+          <td>{{hcd[3]}}</td>
+          <td><button type="button" class="btn btn-info" data-bs-toggle="modal" name="verHCD" id={{hcd[0]}}>
+              Ver</button></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Paginado -->
+  <nav aria-label="Page navigation example">
+    <ul class="pagination pagination-sm justify-content-center m-5">
+      <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Atrás</a>
+      </li>
+      <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li>
+      <li class="page-item">
+        <a class="page-link" href="#">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="id_modal_ver_hcd"></div>
+  <!-- ================================================ -->
+  <!-- Config Pantalla -->
+  <!-- ================================================ -->
+
+  <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+    style="display: block; height: 514px; width: 1218px;">
+  </canvas>
+
+</main>
+
+
+
+<script>
+  $(document).on('click', "[name='verHCD']", function () {
+    let hcd_paciente_id = $(this).attr("id");
+    $.ajax({
+      url: `/datos_modal_verHCD/${hcd_paciente_id}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#id_modal_ver_hcd').append(data.htmlresponse)
+        $('#idVerHCD').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idButtonCerrarModalHCD', function () {
+    $.ajax({
+      success: function (data) {
+        $('#idVerHCD').modal('hide');
+        {
+          $('#id_modal_ver_hcd').empty()
+        }
+      }
+    });
+  });
+</script>
+
+{% endblock %}

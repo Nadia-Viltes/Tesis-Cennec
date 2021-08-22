@@ -184,13 +184,26 @@ def turnos():
     return render_template('turnos.html', data=data)
 
 
-@app.route('/configuracion')
-def configuracion():
+@app.route('/rol')
+def configuracion_roles():
     data = {
-        'titulo': 'Configuración',
+        'titulo': 'Configuración de roles',
     }
-    return render_template('configuracion.html', data=data)
+    return render_template('roles.html', data=data)
 
+@app.route('/agregar_rol')
+def agregar_rol():
+    data = {
+        'titulo': 'agregar_rol',
+    }
+    return render_template('agregar_roles.html', data=data)
+
+@app.route('/usuario')
+def configuracion_usuarios():
+    data = {
+        'titulo': 'Configuración de usuarios',
+    }
+    return render_template('usuarios.html', data=data)
 
 @app.route('/login')
 def login():

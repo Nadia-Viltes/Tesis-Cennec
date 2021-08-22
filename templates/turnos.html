@@ -46,6 +46,7 @@
             <th scope="col">Nro. documento</th>
             <th scope="col">Especialidad</th>
             <th scope="col">Profesional</th>
+            <th class="text-center" scope="col">Acción</th>
         </tr>
         </thead>
         <tbody>
@@ -58,7 +59,17 @@
             <td>{{turno[5]}} {{turno[6]}}</td>
             <td>{{turno[7]}}</td>
             <td>{{turno[8]}}</td> 
-            <td>{{turno[9]}}</td>          
+            <td>{{turno[9]}}</td>
+            <td><button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_receptar_turno" data-bs-target="#modal_asignar_turno">
+                    Receptar
+                </button>
+              <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_anular_turno" data-bs-target="#modal_asignar_turno">
+                  Anular
+              </button>
+            <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_reprogramar_turno" data-bs-target="#modal_asignar_turno">
+                Reprogramar
+            </button>
+          </td>          
         </tr>
           {% endfor %}
         </tbody>
@@ -66,27 +77,12 @@
 
 
       <!-- Button trigger modal -->
-      <div class="row">
-        <div class="col-3 text-center">
+      <div class="form-row text-center">
+        <div class="col-12">
             <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
                 Asignar
             </button>
         </div>
-        <div class="col-3 text-center">
-          <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
-              Receptar
-          </button>
-      </div>
-      <div class="col-3 text-center">
-        <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
-            Anular
-        </button>
-    </div>
-    <div class="col-3 text-center">
-      <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="asignar_turno" data-bs-target="#modal_asignar_turno">
-          Reprogramar
-      </button>
-  </div>
     </div>
 
 
