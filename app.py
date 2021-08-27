@@ -198,8 +198,10 @@ def configuracion_roles():
 
 @app.route('/modal_agregar_rol')
 def agregar_rol():
+    privilegios = obtener_lista_privilegios()
     data = {
         'titulo': 'agregar_rol',
+        'privilegios': privilegios
     }
     return jsonify({'htmlresponse': render_template('agregar_rol.html', data=data)})
 
