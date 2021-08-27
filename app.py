@@ -1,3 +1,4 @@
+from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
 from flask import Flask, render_template, redirect, url_for, request, jsonify
@@ -10,9 +11,11 @@ app = Flask(__name__)
 @app.route('/pacientes/')
 def pacientes():
     pacientes = obtener_pacientes()
+    privilegios = obtener_lista_privilegios()
     data = {
         'titulo': 'Pacientes',
-        'pacientes': pacientes
+        'pacientes': pacientes,
+        'privilegios': privilegios
     }
     return render_template('pacientes.html', data=data)
 
@@ -173,7 +176,7 @@ def agenda():
     return render_template('agenda.html', data=data)
 
 
-# Operación para mostrar la lista
+# Operación para mostrar la lista de turnos
 @app.route('/turno/')
 def turnos():
     turno = obtener_lista_turno()
@@ -186,17 +189,19 @@ def turnos():
 
 @app.route('/rol')
 def configuracion_roles():
+    rol = obtener_lista_roles()
     data = {
         'titulo': 'Configuración de roles',
+        'rol': rol
     }
     return render_template('roles.html', data=data)
 
-@app.route('/agregar_rol')
+@app.route('/modal_agregar_rol')
 def agregar_rol():
     data = {
         'titulo': 'agregar_rol',
     }
-    return render_template('agregar_roles.html', data=data)
+    return jsonify({'htmlresponse': render_template('agregar_rol.html', data=data)})
 
 @app.route('/usuario')
 def configuracion_usuarios():

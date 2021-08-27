@@ -1,0 +1,59 @@
+  <!-- Modal-->
+
+  <div class="modal fade" id="AgregarRol" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+        <form>
+          <!-- Cabecera Modal -->
+          <div class="modal-header">
+            <h5 class="modal-title">Agregar rol</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Body Modal -->
+          <div class="modal-body">
+
+            <!-- Datos rol -->
+            <div class="container">
+              <div class="row">
+                <div class="col-5">
+                  <div class="row">
+                    <label for="nombreRol" class="form-label">Nombre del rol</label>
+                    <input type="text" class="form-control" name="nombreRol">
+
+                    <div class="form-floating mt-3" style="padding: 0%;">
+                      <textarea class="form-control" id="descripcionRol"
+                        style="height: 350px; resize: none;"></textarea>
+                      <label for="descripcionRol">Descripción</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-6">
+                  <div class="list-group" style="width: 420px;">
+                    <label for="Privilegios" class="form-label">Privilegios</label>
+                    <label class="list-group-item">
+                      {% for privilegios in data.privilegios %}
+                      <tr>
+                        <td class="form-check-input me-1" type="checkbox" id={{privilegios[0]}}>{{privilegios[1]}}</td>
+                      </tr>
+                      {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+          <!-- footer modal-->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
