@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
 
-        <form>
+        <form action="{{url_for('guardar_rol')}}" method="POST">
           <!-- Cabecera Modal -->
           <div class="modal-header">
             <h5 class="modal-title">Agregar rol</h5>
@@ -35,7 +35,7 @@
                     <label for="Privilegios" class="form-label">Privilegios</label>
                     {% for privilegios in data.privilegios %}
                     <label class="list-group-item">
-                      <input class="form-check-input me-1" type="checkbox" value="" id={{privilegios[0]}}>{{privilegios[1]}}
+                      <input class="form-check-input me-1" name="privilegio_nombre" type="checkbox" value={{privilegios[0]}} id={{privilegios[0]}}>{{privilegios[1]}}</>
                     </label>
                   {% endfor %}
                   </div>

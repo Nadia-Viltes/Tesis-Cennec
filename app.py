@@ -205,6 +205,11 @@ def agregar_rol():
     }
     return jsonify({'htmlresponse': render_template('agregar_rol.html', data=data)})
 
+@app.route('/guardar_rol', methods=["POST"])
+def guardar_rol():
+    print("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
+    return redirect("/rol")
+
 @app.route('/usuario')
 def configuracion_usuarios():
     data = {
