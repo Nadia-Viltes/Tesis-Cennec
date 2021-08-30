@@ -42,19 +42,22 @@
   <table class="table table-hover p-3 m-2">
     <thead>
       <tr>
-        <th scope="col">Nombre y apellido</th>
-        <th scope="col">Usuario</th>
+        <th scope="col">Nombre y apellido del recurso</th>
+        <th scope="col">Rol usuario</th>
+        <th scope="col">Nombre usuario</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
-        {% for hcd in data.hcd %}
+        {% for usuario in data.usuario %}
         <tr>
-          <th scope="row"></th>
-          <td>{{hcd[1]}} {{hcd[2]}}</td>
-          <td>{{hcd[3]}}</td>
-          <td><button type="button" class="btn btn-info" data-bs-toggle="modal" name="verHCD" id={{hcd[0]}}>
-              Ver</button>
+          <td>{{usuario[1]}} {{usuario[2]}}</td>
+          <td>{{usuario[3]}}</td>
+          <td>{{usuario[4]}}</td>
+          <td><button type="button" class="btn btn-info" data-bs-toggle="modal" name="EditarUsuario" id={{usuario[0]}}>
+              Editar</button>
+              <button type="button" class="btn btn-danger" data-bs-toggle="modal" name="EliminarUsuario" id={{usuario[0]}}>
+                Eliminar</button>
             </td>
         </tr>
         {% endfor %}
@@ -76,7 +79,16 @@
     </ul>
   </nav>
 
-  <div id="id_modal_ver_hcd"></div>
+    <!-- Button trigger modal -->
+    <div class="form-row text-center">
+      <div class="col-12">
+        <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_agregar_usuario">
+          Agregar
+        </button>
+      </div>
+    </div>
+
+  <div id="idSeccionModalAgregarUsuario"></div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -90,28 +102,28 @@
 
 
 <script>
-  $(document).on('click', "[name='verHCD']", function () {
-    let hcd_paciente_id = $(this).attr("id");
-    $.ajax({
-      url: `/datos_modal_verHCD/${hcd_paciente_id}`,
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#id_modal_ver_hcd').append(data.htmlresponse)
-        $('#idVerHCD').modal('show');
-      }
-    });
+  $(document).on('click', '#button_agregar_usuario', function(){
+      $.ajax({
+       url:"/modal_agregar_usuario",
+       method:"GET",
+       data:{},
+       success:function(data){
+        $('#idSeccionModalAgregarUsuario').append(data.htmlresponse)
+        $('#AgregarUsuario').modal('show');
+       }
+      });
   });
-  $(document).on('click', '#idButtonCerrarModalHCD', function () {
-    $.ajax({
-      success: function (data) {
-        $('#idVerHCD').modal('hide');
+  $(document).on('click', '#idCerrarModalUsuario', function(){
+      $.ajax({
+       success:function(data){
+        $('#AgregarUsuario').modal('hide');
         {
-          $('#id_modal_ver_hcd').empty()
+          $('#idSeccionModalAgregarUsuario').empty()
         }
-      }
-    });
+       }
+      });
   });
-</script>
+
+  </script>
 
 {% endblock %}

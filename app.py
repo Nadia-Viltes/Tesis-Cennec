@@ -1,8 +1,10 @@
+from controllerUsuario import *
 from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
+from controllerMiAgenda import *
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from controller import *
+from controllerPaciente import *
 
 app = Flask(__name__)
 
@@ -11,11 +13,9 @@ app = Flask(__name__)
 @app.route('/pacientes/')
 def pacientes():
     pacientes = obtener_pacientes()
-    privilegios = obtener_lista_privilegios()
     data = {
         'titulo': 'Pacientes',
         'pacientes': pacientes,
-        'privilegios': privilegios
     }
     return render_template('pacientes.html', data=data)
 
@@ -170,10 +170,12 @@ def reportes():
 
 @app.route('/agenda')
 def agenda():
+    mi_agenda = obtener_lista_turno_mi_agenda()
     data = {
         'titulo': 'Mi Agenda',
+        'turnoprof': mi_agenda
     }
-    return render_template('agenda.html', data=data)
+    return render_template('mi_agenda.html', data=data)
 
 
 # Operación para mostrar la lista de turnos
@@ -187,6 +189,40 @@ def turnos():
     return render_template('turnos.html', data=data)
 
 
+# Acción para abrir el modal de asignar turno
+@app.route('/modal_asignar_turno')
+def asignar_turno():
+    tipoTurno = obtener_tipoTurno()
+    especialidad = obtener_especialidad()
+    #profesional = obtener_profesional(especialidad)
+    value = {
+        'titulo': 'Asignar turno',
+        'tipoTurno': tipoTurno,
+        'especialidad': especialidad
+        #'profesional': profesional
+    }
+    return jsonify({'htmlresponse': render_template('turnos_asignar.html', data=value)})
+
+
+    # Acción para abrir el modal para buscar un paciente
+@app.route('/modal_buscar_paciente')
+def buscar_paciente():
+    value = {
+        'titulo': 'Buscar paciente'
+    }
+    return jsonify({'htmlresponse': render_template('modal_buscar_paciente.html', data=value)})
+
+
+# Acción para abrir el modal de RECEPTAR turno
+@app.route('/modal_receptar_turno')
+def receptar_turno():
+    value = {
+        'titulo': 'Receptar turno'
+        #'profesional': profesional
+    }
+    return jsonify({'htmlresponse': render_template('turnos_asignar.html', data=value)})
+
+
 @app.route('/rol')
 def configuracion_roles():
     rol = obtener_lista_roles()
@@ -195,6 +231,7 @@ def configuracion_roles():
         'rol': rol
     }
     return render_template('roles.html', data=data)
+
 
 @app.route('/modal_agregar_rol')
 def agregar_rol():
@@ -205,17 +242,33 @@ def agregar_rol():
     }
     return jsonify({'htmlresponse': render_template('agregar_rol.html', data=data)})
 
+
 @app.route('/guardar_rol', methods=["POST"])
 def guardar_rol():
     print("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
     return redirect("/rol")
 
+
 @app.route('/usuario')
 def configuracion_usuarios():
+    usuario = obtener_lista_usuarios()
     data = {
         'titulo': 'Configuración de usuarios',
+        'usuario': usuario
     }
     return render_template('usuarios.html', data=data)
+
+
+@app.route('/modal_agregar_usuario')
+def agregar_usuario():
+    privilegios = obtener_lista_privilegios()
+    roles = obtener_lista_roles()
+    values = {
+        'titulo': 'agregar_rol',
+        'roles': roles,
+        'privilegios': privilegios
+    }
+    return jsonify({'htmlresponse': render_template('agregar_usuario.html', data=values)})
 
 @app.route('/login')
 def login():

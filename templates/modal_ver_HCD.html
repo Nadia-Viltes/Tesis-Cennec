@@ -1,21 +1,21 @@
-
 <!-- Modal -->
-  <div class="modal fade" id="idVerHCD" tabindex="-1" aria-labelledby="VerHCD" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
+<div class="modal fade" id="idVerHCD" tabindex="-1" aria-labelledby="VerHCD" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
 
-        <form action="{{url_for('guardar_turnos_admision')}}" method="POST">
+      <form action="{{url_for('guardar_turnos_admision')}}" method="POST">
 
+        <!-- Header Modal -->
         <div class="modal-header">
           <h5 class="modal-title" id="VerHCDLabel">Historia clínica dígital</h5>
           <button type="button" class="btn-close" id="idButtonCerrarModalHCD" aria-label="Close"></button>
         </div>
 
         <!-- Body Modal -->
-        <div class="modal-body" style="height: 710px;">
+        <div class="modal-body" style="height: 580px;">
 
           <!-- Tabla -->
-          <table class="table table-hover">
+          <table class="table">
             <thead>
               <tr>
                 <th scope="col">Nombre y Apellido</th>
@@ -27,98 +27,117 @@
             </thead>
             <tbody>
               <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
-                <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
-                <td>{{data.paciente_hcd[3]}}</td>
-                <td>{{data.paciente_hcd[4]}}</td>
-                <td>{{data.paciente_hcd[5]}}</td>
-                <td>{{data.paciente_hcd[6]}}</td>
+              <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
+              <td>{{data.paciente_hcd[3]}}</td>
+              <td>{{data.paciente_hcd[4]}}</td>
+              <td>{{data.paciente_hcd[5]}}</td>
+              <td>{{data.paciente_hcd[6]}}</td>
               </tr>
             </tbody>
           </table>
 
-
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" id="myTab" role="tablist">
-            <li class="nav-item" role="presentation">
-              <button class="nav-link active" id="-tab" data-bs-toggle="tab" data-bs-target="#entrevista_admision"
-                type="button" role="tab" aria-controls="entrevista_admision" aria-selected="true">Entrevista
-                admisión</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#turnos_admision"
-                type="button" role="tab" aria-controls="turnos_admision" aria-selected="false">Turnos admisión</button>
-            </li>
-            <li class="nav-item" role="presentation">
-              <button class="nav-link" id="messages-tab" data-bs-toggle="tab" data-bs-target="#evoluciones"
-                type="button" role="tab" aria-controls="evoluciones" aria-selected="false">Evoluciones</button>
-            </li>
-          </ul>
-
-          <!-- Tab entrevista admisión -->
-          <div class="tab-content">
-            <div class="tab-pane active" id="entrevista_admision" role="tabpanel"
-              aria-labelledby="entrevista_admision-tab">
-
-              <!-- Entrevista admisión -->
-              <div class="form-group mt-3">
-                <li class="list-group-item list-group-item-info">Datos del desarrollo evolutivo</li>
-                <li class="list-group-item list-group-item-secondary">1- Relaciones afectivas familiares</li>
-                <ul class="list-group list-group-horizontal">
-                  <li class="list-group-item flex-fill">¿Los padres del niño viven juntos?</li>
-                  <li class="list-group-item">Sí</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-sm">
-                  <li class="list-group-item flex-fill">¿El niño vive con sus padres biológicos?</li>
-                  <li class="list-group-item">Sí</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-md">
-                  <li class="list-group-item flex-fill">¿El niño tiene hermanos? ¿Cuántos?</li>
-                  <li class="list-group-item">Sí, 2 hermanas</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-lg">
-                  <li class="list-group-item flex-fill">¿Los padres cuentan con antecedentes médicos?</li>
-                  <li class="list-group-item">No, no tienen.</li>
-                </ul>
-                <li class="list-group-item list-group-item-secondary">2- Embarazo</li>
-                <ul class="list-group list-group-horizontal-xl">
-                  <li class="list-group-item flex-fill">¿La madre presentó alguna molestia en el embarazo?</li>
-                  <li class="list-group-item">No</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-xxl">
-                  <li class="list-group-item flex-fill">¿La madre mantuvo consumos de tabaco, alcohol o medicamentos
-                    durante el embarazo?</li>
-                  <li class="list-group-item">No</li>
-                </ul>
-                <li class="list-group-item list-group-item-secondary">3- Parto</li>
-                <ul class="list-group list-group-horizontal-xl">
-                  <li class="list-group-item flex-fill">¿El parto fue natural?</li>
-                  <li class="list-group-item">Sí</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-xxl">
-                  <li class="list-group-item flex-fill">¿El parto fue a término?</li>
-                  <li class="list-group-item">No, se adelantó a las 29 semanas</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-xxl">
-                  <li class="list-group-item flex-fill">¿El parto presentó complicaciones?</li>
-                  <li class="list-group-item">No</li>
-                </ul>
-                <li class="list-group-item list-group-item-secondary">4- Desarrollo durante el primer año</li>
-                <ul class="list-group list-group-horizontal-xl">
-                  <li class="list-group-item flex-fill">¿La lactancia fue de pecho?</li>
-                  <li class="list-group-item">Sí</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-xxl">
-                  <li class="list-group-item flex-fill">¿El niño presentó dificultados con los alimentos sólidos?</li>
-                  <li class="list-group-item">No</li>
-                </ul>
-                <ul class="list-group list-group-horizontal-xxl">
-                  <li class="list-group-item flex-fill">¿Se chupó el dedo o usó chupete?</li>
-                  <li class="list-group-item">Si, usó chupete</li>
-                </ul>
-              </div>
+          <!-- NAVs -->
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-entrevista-admision-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-entrevista-adm" type="button" role="tab" aria-controls="nav-entrevista-adm"
+                aria-selected="true">Entrevista de admisión</button>
+              <button class="nav-link" id="nav-turnos-admision-tab" data-bs-toggle="tab"
+                data-bs-target="#nav-turnos-adm" type="button" role="tab" aria-controls="nav-turnos-adm"
+                aria-selected="false">Turnos de admisión</button>
+              <button class="nav-link" id="nav-evoluciones-tab" data-bs-toggle="tab" data-bs-target="#nav-evoluciones"
+                type="button" role="tab" aria-controls="nav-evoluciones" aria-selected="false">Evoluciones</button>
             </div>
-            <!-- TAB turnos de admisión -->
-            <div class="tab-pane" id="turnos_admision" role="tabpanel" aria-labelledby="turnos_admision-tab">
+          </nav>
+          <!-- Contenidos de las navs -->
+          <div class="tab-content" id="nav-tabContent">
+            <!-- NAV ENTREVISTA DE ADMISIÓN -->
+            <div class="tab-pane fade show active" id="nav-entrevista-adm" role="tabpanel"
+              aria-labelledby="nav-entrevista-admision-tab">
+              <form>
+                <div class="container">
+                  <h6 style="margin-top: 20px;">1- Relaciones afectivas familiares</h6>
+                  <div class="mb-3 row">
+                    <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres del niño viven juntos?</label>
+                    <div class="col-sm-4">
+                      <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled
+                        readonly>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño tiene hermanos? ¿Cuántos?</label>
+                    <div class="col-sm-4">
+                      <input class="form-control" type="text" value="Sí, 2 hermanas" aria-label="Disabled input example"
+                        disabled readonly>
+                    </div>
+                  </div>
+                  <div class="mb-3 row">
+                    <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres cuentan con antecedentes
+                      médicos?</label>
+                    <div class="col-sm-4">
+                      <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                    </div>
+                  </div>
+                <h6 style="margin-top: 20px;">2- Embarazo</h6>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre presentó alguna molestia en el embarazo?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre mantuvo consumos de tabaco, alcohol o medicamentos
+                    durante el embarazo?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <h6 style="margin-top: 20px;">3- Parto</h6>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue natural?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue a término?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="No, nació a las 29 semanas" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto presentó complicaciones?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <h6 style="margin-top: 20px;">4- Desarrollo durante el primer año</h6>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿La lactancia fue de pecho?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño presentó dificultados con los alimentos sólidos?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticPreg1" class="col-sm-8 col-form-label">¿Se chupó el dedo o usó chupete?</label>
+                  <div class="col-sm-4">
+                    <input class="form-control" type="text" value="Si, usó chupete" aria-label="Disabled input example" disabled readonly>
+                  </div>
+                </div>
+              </div>
+              </form>
+
+
+
+            </div>
+            <!-- NAV TURNOS DE ADMISIÓN -->
+            <div class="tab-pane fade" id="nav-turnos-adm" role="tabpanel" aria-labelledby="nav-turnos-admision-tab">
               <!-- Datos turnos de admisión -->
               <div class="row g-3 mt-1 align-items-end">
                 <div class="col-2">
@@ -146,10 +165,9 @@
                   <button type="submit" class="btn btn-primary" data-bs-target="#turnos_admision">Agregar</button>
                 </div>
               </div>
-
               <!-- Tabla turnos otorgados-->
               <div>
-                <table class="table table-hover p-3 m-2">
+                <table class="table p-3 m-2">
                   <thead>
                     <tr>
                       <th scope="col">Cantidad</th>
@@ -168,10 +186,10 @@
                   </tbody>
                 </table>
               </div>
-            </div>
 
-            <!-- TAB evoluciones -->
-            <div class="tab-pane" id="evoluciones" role="tabpanel" aria-labelledby="evoluciones-tab">
+            </div>
+            <!-- NAV EVOLUCIÓN -->
+            <div class="tab-pane fade" id="nav-evoluciones" role="tabpanel" aria-labelledby="nav-evoluciones-tab">
               <!-- TAB evoluciones -->
               <div class="row align-items-md-stretch">
                 <div class="col-md-7">
@@ -215,14 +233,13 @@
                 </div>
 
               </div>
-              <!-- fin de los datos-->
             </div>
-          </div>
-      </div>
 
-    </form>
+          </div>
+        </div>
+
+      </form>
 
     </div>
   </div>
 </div>
-
