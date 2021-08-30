@@ -26,6 +26,34 @@ def obtener_pacientes():
     conexion.close()
     return pacientes
 
+#Necesitas una query para pedirlo
+def obtener_pacientes_query(parametros):
+    query = """
+           SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.Nombre, pa.NumeroDocumento, pa.FechaNacimiento, 
+           p.Nombre, pro.Nombre, loc.Nombre, dom.calle, dom.altura, dom.piso, dom.Dpto, bar.Nombre, tu.Nombre, tu.Apellido, 
+           tu.Ocupacion, tu.TelefonoFijo, tu.TelefonoCelular, fi.Nombre, afi.NumeroAfiliado, afi.FechaAlta
+            FROM PACIENTE AS pa, TipoDocumento as tdoc, Domicilio AS dom, pais AS p, provincia AS pro, localidad AS loc,
+            barrio AS bar, Tutoria AS tu, afiliacion afi, financiador fi
+            WHERE pa.IdTipoDocumento = tdoc.IdTipoDocumento
+            AND pa.IdDomicilio = dom.IdDomicilio
+            AND p.IdPais = dom.IdPais
+            AND pro.IdProvincia = dom.IdProvincia
+            AND loc.IdLocalidad = dom.IdLocalidad
+            AND bar.IdBarrio = dom.IdBarrio
+            AND tu.IdTutoria = pa.idTutoria
+            AND pa.IdPaciente = afi.IdPaciente
+            AND fi.IdFinanciador = afi.IdFinanciador
+            AND (LOWER(pa.Nombre) LIKE '%{0}%' OR LOWER(pa.Apellido) LIKE '%{0}%' OR pa.NumeroDocumento LIKE '%{0}%')
+            """.format(parametros.lower())
+    print("Esta es la consutla final {}".format(query))        
+    conexion = get_conexion()
+    pacientes = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    pacientes = cur.fetchall()
+    conexion.close()
+    return pacientes
+
 ## Select tipo de documento - Lista de valores
 def obtener_tipoDocumento(): 
     query = "select IdTipoDocumento, Nombre from tipodocumento where FechaBaja is null"

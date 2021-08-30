@@ -30,8 +30,8 @@
     </div>
 
     <!-- Search - Barra de busqueda -->
-    <form class="d-flex p-2 m-3" style="width: 515px;">
-        <input class="form-control me-2 flex-end" type="search" placeholder="Buscar paciente" aria-label="Search">
+    <form action="{{url_for('pacientes')}}" method="POST" class="d-flex p-2 m-3" style="width: 515px;">
+        <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar paciente" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
 

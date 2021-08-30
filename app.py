@@ -10,12 +10,18 @@ app = Flask(__name__)
 
 
 # Operación para mostrar la lista
-@app.route('/pacientes/')
+@app.route('/pacientes/', methods=['GET', 'POST'])
 def pacientes():
-    pacientes = obtener_pacientes()
+    pacientes = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        print("Esta es la puta query {}".format(parametros))
+        pacientes = obtener_pacientes_query(parametros)
+    else:
+        pacientes = obtener_pacientes()
     data = {
         'titulo': 'Pacientes',
-        'pacientes': pacientes,
+        'pacientes': pacientes
     }
     return render_template('pacientes.html', data=data)
 
