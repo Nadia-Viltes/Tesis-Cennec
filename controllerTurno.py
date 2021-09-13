@@ -45,19 +45,19 @@ def obtener_profesional(IdEspecialidad):
     return profesional
 
 
-def obtener_turno_por_id(idTurno):
-    query = """SELECT est.IdEstadoTurno, est.Nombre, tur.FechaTurno, tur.HoraDesde, tur.HoraHasta, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre, rec.Nombre
+def obtener_turno_por_id(id_turno):
+    query = """SELECT est.IdEstadoTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), tur.HoraDesde, tur.HoraHasta, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre, rec.Nombre
                 FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp , profesional AS prof, recurso AS rec
                 WHERE est.IdEstadoTurno = tur.IdEstadoTurno
                 AND pac.IdPaciente = tur.IdPaciente
                 AND tur.IdEspecialidad = esp.IdEspecialidad
                 AND prof.idEspecialidad = esp.IdEspecialidad
                 AND prof.IdRecurso = rec.IdRecurso
-                AND tur.IdTurno = {}""".format(idTurno)
+                AND tur.IdTurno = {}""".format(id_turno)
     conexion = get_conexion()
     id_turno = None
     with conexion.cursor() as cur:
-        cur.execute(query),(idTurno,)
+        cur.execute(query),(id_turno,)
     id_turno = cur.fetchone()
     conexion.close()
     return id_turno

@@ -43,7 +43,7 @@ def obtener_pacientes_query(parametros):
             AND tu.IdTutoria = pa.idTutoria
             AND pa.IdPaciente = afi.IdPaciente
             AND fi.IdFinanciador = afi.IdFinanciador
-            AND (LOWER(pa.Nombre) LIKE '%{0}%' OR LOWER(pa.Apellido) LIKE '%{0}%' OR pa.NumeroDocumento LIKE '%{0}%')
+            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido)) LIKE '%{0}%' OR pa.NumeroDocumento LIKE '%{0}%')
             """.format(parametros.lower())
     print("Esta es la consutla final {}".format(query))        
     conexion = get_conexion()
@@ -155,7 +155,7 @@ def insertar_paciente (nombre, apellido, genero, tipoDocumento, nroDocumento, fe
     conexion = get_conexion()
     query = """
         INSERT INTO paciente (Nombre, Apellido, Genero, IdTipoDocumento, NumeroDocumento, FechaNacimiento, IdDomicilio, IdTutoria, FechaAlta)
-        VALUES ('{}','{}','{}',{},{},'{}',{},{}, NOW())""".format(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria)
+        VALUES ('{}','{}','{}',{},{},(STR_TO_DATE('{}','%d-%m-%Y')),{},{}, now())""".format(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria)
     print("Este es mi insertar paciente -> {}".format(query))    
     idPaciente_insertado = None    
     with conexion.cursor() as cur:
@@ -180,6 +180,7 @@ def insertar_afiliacion (idPaciente, financiador, nroAfiliado):
     conexion.close()
     return idAfiliacion_insertado
 
+## INSERTAR NUMERO DE HISTORIA CLINICA DIGITAL
 def insertar_HCD (idPaciente):
     conexion = get_conexion()
     query = """

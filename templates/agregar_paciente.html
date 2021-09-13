@@ -5,7 +5,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
 
-                <form action="{{url_for('guardar_paciente')}}" method="POST">
+                <form action="{{url_for('guardar_paciente')}}" method="POST" id="AgregarPaciente_form">
                     <!-- Cabecera Modal -->
                     <div class="modal-header">
                         <h5 class="modal-title">Agregar paciente</h5>
@@ -44,30 +44,37 @@
                                     <div class="col-4">
                                         <label for="nombrePaciente" class="form-label">Nombre</label>
                                         <input type="text" class="form-control" name="nombrePaciente">
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-4">
                                         <label for="apellidoPaciente" class="form-label">Apellido</label>
                                         <input type="text" class="form-control" name="apellidoPaciente">
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="genero" class="form-label">Genero</label>
                                         <input type="text" class="form-control" name="genero">
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="tipoDocumento" class="form-label">Tipo de documento</label>
                                         <select name="tipoDocumento" class="form-select">
+                                            <option selected disabled value="">Seleccionar...</option>
                                             {% for tipoDoc in data.tipoDocumento %}
                                             <option value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
                                             {% endfor %}
                                         </select>
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-4">
                                         <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
                                         <input type="text" class="form-control" name="nroDocumento">
+                                        <div class="invalid-feedback">Campo requerido</div> 
                                     </div>
                                     <div class="col-4">
                                         <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
                                         <input type="date" class="form-control" name="fechaNacimiento">
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <!-- <div class="col-1">
                                                         <label for="inputEdad" class="form-label">Edad</label>
@@ -80,6 +87,7 @@
                                             <option value={{paises[0]}}>{{paises[1]}}</option>
                                             {% endfor %}
                                         </select>
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="provincia" class="form-label">Provincia</label>
@@ -88,6 +96,7 @@
                                             <option value={{provincias[0]}}>{{provincias[1]}}</option>
                                             {% endfor %}
                                         </select>
+                                        <div class="invalid-feedback">Campo requerido</div>
                                     </div>
                                     <div class="col-md-4">
                                         <label for="localidad" class="form-label">Localidad</label>
@@ -123,7 +132,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <label for="HCD" class="form-label">Número de HCD</label>
-                                        <input class="form-control" type="text" aria-label="Nro. de HCD" disabled>
+                                        <input class="form-control" type="text" name="hcdPantallaPaciente" disabled>
                                     </div>
                                 </div>
                             </div>

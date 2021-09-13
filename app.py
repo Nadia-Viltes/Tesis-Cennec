@@ -1,10 +1,10 @@
+from controllerPaciente import *
 from controllerUsuario import *
 from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
 from controllerMiAgenda import *
 from flask import Flask, render_template, redirect, url_for, request, jsonify
-from controllerPaciente import *
 
 app = Flask(__name__)
 
@@ -220,13 +220,14 @@ def buscar_paciente():
 
 
 # Acción para abrir el modal de RECEPTAR turno
-@app.route('/modal_receptar_turno')
-def receptar_turno():
+@app.route('/modal_receptar_turno/<int:id_turno>')
+def receptar_turno(id_turno):
+    turno_id = obtener_turno_por_id(id_turno)
     value = {
-        'titulo': 'Receptar turno'
-        #'profesional': profesional
+        'titulo': 'Receptar turno',
+        'turno_id': 'turno_id'
     }
-    return jsonify({'htmlresponse': render_template('turnos_asignar.html', data=value)})
+    return jsonify({'htmlresponse': render_template('turnos_receptar.html', data=value)})
 
 
 @app.route('/rol')
