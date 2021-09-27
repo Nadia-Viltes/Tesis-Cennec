@@ -1,0 +1,99 @@
+<div class="modal fade" id="modal_reprogramar_turno" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+
+              <!-- Cabecera Modal -->
+              <div class="modal-header">
+                  <h5 class="modal-title">Reprogramar turno</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="idCerrarModalReprogramarTurno"></button>
+              </div>
+
+              <!-- Body Modal -->
+              <div class="modal-body">
+                <h5>Seleccionar paciente</h5>
+
+            <div class="container">
+              <div class="row">
+                <div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Nombre y Apellido</th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">HCD</th>
+                        <th scope="col">Financiador</th>
+                        <th scope="col">Nro. afiliado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                      </tr>
+                    </tbody>
+                  </table>    
+                </div>
+          </div>
+        </div>
+
+<br>
+
+      <form class="row g-3">
+        <h5 style="padding-top: 30px;">Seleccionar turno</h5>
+        <div class="col-md-4">
+          <label for="tipoTurno" class="form-label">Tipo de turno</label>
+          <select id="tipoTurno" class="form-select" disabled>
+              {% for tipoTurno in data.tipoTurno %}
+              {% if tipoTurno[0] == 1 %}
+            <option selected value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
+            {% else %}
+            <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
+              {% endif %}
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="Especialidad" class="form-label">Especialidad</label>
+          <select id="Especialidad" class="form-select" disabled>
+              {% for especialidad in data.especialidad %}
+              {% if especialidad[0] == data.turno_por_id[10] %}
+            <option selected value={{especialidad[0]}}>{{especialidad[1]}}</option>
+            {% else %}
+            <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="Profesional" class="form-label">Profesional</label>
+          <select id="Profesional" class="form-select">
+              {% for profesional in data.profesional %}
+            <option value={{profesional[0]}}>{{profesional[1]}}</option>
+              {% endfor %}
+          </select>
+        </div>
+        <div class="col-4">
+          <label for="fechaTurno" class="form-label">Fecha</label>
+          <input type="date" class="form-control" name="fechaTurno" value="{{data.turno_por_id[2]}}">
+      </div>
+      <div class="col-4">
+        <label for="horaTurno" class="form-label">Hora</label>
+        <input type="time" class="form-control" name="horaTurno" value="{{data.turno_por_id[3]}}">
+    </div>
+      </form>
+  </div>
+
+              <!-- footer modal-->
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="idCerrarModalReprogramarTurno">Cerrar</button>
+                  <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+
+
+      </div>
+  </div>
+</div>
+

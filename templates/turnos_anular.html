@@ -1,0 +1,98 @@
+<div class="modal fade" id="modal_anular_turno" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- Cabecera Modal -->
+      <div class="modal-header">
+        <h5 class="modal-title">Anular turno</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          id="idCerrarModalAnularTurno"></button>
+      </div>
+
+      <!-- Body Modal -->
+      <div class="modal-body">
+        <h5>Seleccionar paciente</h5>
+
+        <div class="container">
+          <div class="row">
+            <div class="col-10">
+              <table class="text-primary table">
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre y Apellido</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">HCD</th>
+                    <th scope="col">Financiador</th>
+                    <th scope="col">Nro. afiliado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <form class="row g-3">
+          <h5 style="padding-top: 30px;">Seleccionar turno</h5>
+
+          <div class=row>
+            <div class=row>
+              <div class="col-md-6">
+                <label for="motivoTurno" class="form-label">Motivo</label>
+                <select id="motivoTurno" class="form-select">
+                  {% for motivoTurno in data.motivoTurno %}
+                  <option value={{motivoTurno[0]}}>{{motivoTurno[1]}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+              <div class= "row pt-3">
+                <div class="col-md-12">
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    First checkbox
+                  </li>
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    Second checkbox
+                  </li>
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    Third checkbox
+                  </li>
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    Fourth checkbox
+                  </li>
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+                    Fifth checkbox
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+      <!-- footer modal-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+          id="idCerrarModalAnularTurno">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+
+
+    </div>
+  </div>
+</div>

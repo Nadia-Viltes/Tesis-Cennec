@@ -60,14 +60,15 @@
         <td>{{turno[7]}}</td>
         <td>{{turno[8]}}</td>
         <td>{{turno[9]}}</td>
-        <td><button type="button" class="btn btn-primary openBtn" data-bs-toggle="modal" name="button_receptar_turno" value="{{turno[0]}}">
+        <td><button type="button" class="btn btn-primary openBtn" data-bs-toggle="modal" name="button_receptar_turno"
+            id="{{turno[0]}}">
             Receptar
           </button>
-          <button type="button" class="btn btn-warning openBtn" data-bs-toggle="modal" name="button_reprogramar_turno" value="{{turno[0]}}">
+          <button type="button" class="btn btn-warning openBtn" data-bs-toggle="modal" name="button_reprogramar_turno" 
+          id="{{turno[0]}}">
             Reprogramar
           </button>
-          <button type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" id="button_anular_turno"
-            data-bs-target="#modal_asignar_turno">
+          <button type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" name="button_anular_turno"  id="{{turno[0]}}">
             Anular
           </button>
         </td>
@@ -80,9 +81,7 @@
   <!-- Button trigger modal -->
   <div class="form-row text-center">
     <div class="col-12">
-      <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_asignar_turno">
-        Asignar
-      </button>
+      <a class="btn btn-success" href="/asignar_turno" role="button">Asignar nuevo turno</a>
     </div>
   </div>
 
@@ -91,6 +90,14 @@
   </div>
 
   <div id="idSeccionModalReceptarTurno">
+
+  </div>
+
+  <div id="idSeccionModalReprogramarTurno">
+
+  </div>
+
+  <div id="idSeccionModalAnularTurno">
 
   </div>
 
@@ -128,29 +135,86 @@
   });
 
 
-//boton RECEPTAR
-$(document).on('click', "[name='button_receptar_turno']", function(){
-            let id_turno = $(this).attr("id");
-            $.ajax({
-            url:`/modal_receptar_turno/${id_turno}`,
-            method:"GET",
-            data:{},
-            success:function(data){
-                $('#idSeccionModalReceptarTurno').append(data.htmlresponse)
-                $('#modal_receptar_turno').modal('show');
-            }
-            });
-        });
-        $(document).on('click', '#idCerrarModalEditar', function(){
-            $.ajax({
-            success:function(data){
-            $('#modal_receptar_turno').modal('hide');
-            {
-                $('#idSeccionModalReceptarTurno').empty()
-            }
-            }
-            });
-        });
+  //boton RECEPTAR
+  $(document).on('click', "[name='button_receptar_turno']", function () {
+    let id_turno = $(this).attr("id");
+    $.ajax({
+      url: `/modal_receptar_turno/${id_turno}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#idSeccionModalReceptarTurno').append(data.htmlresponse)
+        $('#modal_receptar_turno').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalReceptarTurno', function () {
+    $.ajax({
+      success: function (data) {
+        $('#modal_receptar_turno').modal('hide');
+        {
+          $('#idSeccionModalReceptarTurno').empty()
+        }
+      }
+    });
+  });
+
+
+    //boton REPROGRAMAR
+    $(document).on('click', "[name='button_reprogramar_turno']", function () {
+    let id_turno = $(this).attr("id");
+    $.ajax({
+      url: `/modal_reprogramar_turno/${id_turno}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#idSeccionModalReprogramarTurno').append(data.htmlresponse)
+        $('#modal_reprogramar_turno').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalReprogramarTurno', function () {
+    $.ajax({
+      success: function (data) {
+        $('#modal_reprogramar_turno').modal('hide');
+        {
+          $('#idSeccionModalReprogramarTurno').empty()
+        }
+      }
+    });
+  });
+
+
+   //boton ANULAR
+   $(document).on('click', "[name='button_anular_turno']", function () {
+    let id_turno = $(this).attr("id");
+    $.ajax({
+      url: `/modal_anular_turno/${id_turno}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#idSeccionModalAnularTurno').append(data.htmlresponse)
+        $('#modal_anular_turno').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalAnularTurno', function () {
+    $.ajax({
+      success: function (data) {
+        $('#modal_anular_turno').modal('hide');
+        {
+          $('#idSeccionModalAnularTurno').empty()
+        }
+      }
+    });
+  });
+
 </script>
+
+
+
+
+
+
 
 {% endblock %}

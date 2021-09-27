@@ -26,7 +26,7 @@ def obtener_pacientes():
     conexion.close()
     return pacientes
 
-#Necesitas una query para pedirlo
+#Necesitas una query para pedirlo - BUSQUEDA
 def obtener_pacientes_query(parametros):
     query = """
            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.Nombre, pa.NumeroDocumento, pa.FechaNacimiento, 

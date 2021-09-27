@@ -1,0 +1,348 @@
+{% extends 'base/base.html' %}
+
+<!-- ================================================ -->
+<!-- PANTALLA TURNOS -->
+<!-- ================================================ -->
+{% block pruebaHCD %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class></div>
+        </div>
+        <div class="chartjs-size-monitor-shrink">
+            <div class=""></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+        aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/HCD/">Historia clínica digital</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</li>
+        </ol>
+    </nav>
+
+    <!-- ================================================ -->
+    <!-- PANTALLA VER HCD -->
+    <!-- ================================================ -->
+
+    <div class="card border-success mb-3">
+        <div class="card-header bg-transparent border-success">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-0">
+                <h4 class="h4">{{ data.titulo }}</h4>
+            </div>
+        </div>
+
+        <div class="card-body">
+                      <!-- Tabla -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nombre y Apellido</th>
+                <th scope="col">Nro. Documento</th>
+                <th scope="col">HCD</th>
+                <th scope="col">Financiador</th>
+                <th scope="col">Nro. Afiliado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
+              <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
+              <td>{{data.paciente_hcd[3]}}</td>
+              <td>{{data.paciente_hcd[4]}}</td>
+              <td>{{data.paciente_hcd[5]}}</td>
+              <td>{{data.paciente_hcd[6]}}</td>
+              </tr>
+            </tbody>
+          </table>
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <button class="nav-link active" id="nav-entrevista-admision-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-entrevista-adm" type="button" role="tab"
+                                aria-controls="nav-entrevista-adm" aria-selected="true">Entrevista de admisión</button>
+                            <button class="nav-link" id="nav-turnos-admision-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-turnos-adm" type="button" role="tab" aria-controls="nav-turnos-adm"
+                                aria-selected="false">Turnos de admisión</button>
+                            <button class="nav-link" id="nav-evoluciones-tab" data-bs-toggle="tab"
+                                data-bs-target="#nav-evoluciones" type="button" role="tab"
+                                aria-controls="nav-evoluciones" aria-selected="false">Evoluciones</button>
+                        </div>
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="tab-content" id="nav-tabContent">
+
+                        <!-- NAV ENTREVISTA DE ADMISIÓN -->
+                        <div class="tab-pane fade show active" id="nav-entrevista-adm" role="tabpanel"
+                            aria-labelledby="nav-entrevista-admision-tab">
+
+                            <div class="accordion accordion-flush" id="accordionFlushExample">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-preguntasFamiliares">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseOne"
+                                            aria-expanded="false" aria-controls="flush-collapseOne">
+                                            1- Relaciones afectivas familiares
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseOne" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-preguntasFamiliares" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres del niño viven juntos?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled
+                                                    readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño tiene hermanos? ¿Cuántos?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="Sí, 2 hermanas" aria-label="Disabled input example"
+                                                    disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres cuentan con antecedentes
+                                                  médicos?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-preguntasEmbarazo">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo"
+                                            aria-expanded="false" aria-controls="flush-collapseTwo">
+                                            2- Embarazo
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseTwo" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre presentó alguna molestia en el embarazo?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre mantuvo consumos de tabaco, alcohol o medicamentos
+                                                  durante el embarazo?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-preguntasParto">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseThree"
+                                            aria-expanded="false" aria-controls="flush-collapseThree">
+                                            3- Parto
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseThree" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-preguntasParto" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue natural?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue a término?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No, nació a las 29 semanas" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto presentó complicaciones?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="flush-preguntasDesarrollo">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseFour"
+                                            aria-expanded="false" aria-controls="flush-collapseFour">
+                                            4- Desarrollo durante el primer año
+                                        </button>
+                                    </h2>
+                                    <div id="flush-collapseFour" class="accordion-collapse collapse"
+                                        aria-labelledby="flush-preguntasDesarrollo" data-bs-parent="#accordionFlushExample">
+                                        <div class="accordion-body">
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La lactancia fue de pecho?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño presentó dificultados con los alimentos sólidos?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+                                              <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Se chupó el dedo o usó chupete?</label>
+                                                <div class="col-sm-4">
+                                                  <input class="form-control" type="text" value="Si, usó chupete" aria-label="Disabled input example" disabled readonly>
+                                                </div>
+                                              </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- NAV TURNOS DE ADMISIÓN -->
+                        <div class="tab-pane fade" id="nav-turnos-adm" role="tabpanel"
+                            aria-labelledby="nav-turnos-admision-tab">
+                            <h6>Ingresar la cantidad de turnos otorgados en la admisión</h6>
+                            <!-- Datos turnos de admisión -->
+                            <div class="row g-3 mt-1 align-items-end">
+                                <div class="col-2">
+                                    <input type="hidden" name="idPaciente_HCD" value="{{data.paciente_hcd[0]}}">
+                                    <label for="inputCantidad" class="form-label">Cantidad</label>
+                                    <input type="text" class="form-control" name="cantidad">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="Especialidad" class="form-label">Especialidad</label>
+                                    <select name="tipoEspecialidad" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for especialidades in data.especialidad %}
+                                        <option value={{especialidades[0]}}>{{especialidades[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="patologia" class="form-label">Patologia</label>
+                                    <select name="tipoPatologia" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for patologias in data.patologia %}
+                                        <option value={{patologias[0]}}>{{patologias[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <button type="submit" class="btn btn-primary"
+                                        data-bs-target="#turnos_admision">Agregar</button>
+                                </div>
+                            </div>
+                            <!-- Tabla turnos otorgados-->
+                            <div>
+                                <table class="table p-3 m-2">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Especialidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for turnosadm in data.turnosadm %}
+                                        <tr>
+                                            <td>{{turnosadm[1]}}</td>
+                                            <td>{{turnosadm[3]}}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <!-- NAV EVOLUCIÓN -->
+                        <div class="tab-pane fade" id="nav-evoluciones" role="tabpanel"
+                            aria-labelledby="nav-evoluciones-tab">
+                            <!-- TAB evoluciones -->
+                            <div class="row align-items-md-stretch">
+                                <div class="col-md-7">
+                                    <div class="form-floating mt-3">
+                                        <textarea class="form-control" id="floatingTextarea2"
+                                            style="height: 350px; resize: none"></textarea>
+                                        <label for="floatingTextarea2">Detalle de evolución</label>
+                                    </div>
+                                    <button type="button" class="btn btn-primary active mt-3" data-bs-toggle="button"
+                                        autocomplete="off" aria-pressed="true">Agregar</button>
+                                </div>
+
+                                <!-- Historial de evoluciones -->
+                                <div class="col-md-5">
+                                    <div role="tabpanel">
+                                        <!-- List CARD -->
+                                        <div class="card mt-3">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Kinesiología</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">Fabiana Juarez - 26/04/2020
+                                                </h6>
+                                                <a href="#" class="card-link">Ver</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Fonoaudiología</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">Yo - 21/03/2020</h6>
+                                                <a href="#" class="card-link">Ver</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Fonoaudiología</h5>
+                                                <h6 class="card-subtitle mb-2 text-muted">Yo - 15/03/2020</h6>
+                                                <a href="#" class="card-link">Ver</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-transparent border-success">
+            <div class="row">
+                <div class="col-6 justify-content-md-start">
+                    <a class="btn btn-primary" href="/HCD/" role="button">Atrás</a>
+                </div>
+                <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+  <!-- ================================================ -->
+  <!-- Config Pantalla -->
+  <!-- ================================================ -->
+
+  <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+  style="display: block; height: 514px; width: 1218px;">
+</canvas>
+
+    {% endblock %}

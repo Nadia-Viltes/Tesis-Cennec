@@ -56,8 +56,8 @@
         <td>{{hcd[1]}} {{hcd[2]}}</td>
         <td>{{hcd[3]}}</td>
         <td>{{hcd[4]}}</td>
-        <td><button type="button" class="btn btn-info" data-bs-toggle="modal" name="verHCD" id={{hcd[0]}}>
-            Ver</td></button>
+        <td><a class="btn btn-success" href="/ver_HCD/{{hcd[0]}}" role="button" id={{hcd[0]}}>
+            Ver</td></a>
       </tr>
       {% endfor %}
     </tbody>
@@ -78,7 +78,6 @@
     </ul>
   </nav>
 
-  <div id="id_modal_ver_hcd"></div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -89,31 +88,5 @@
 
 </main>
 
-
-
-<script>
-  $(document).on('click', "[name='verHCD']", function () {
-    let hcd_paciente_id = $(this).attr("id");
-    $.ajax({
-      url: `/datos_modal_verHCD/${hcd_paciente_id}`,
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#id_modal_ver_hcd').append(data.htmlresponse)
-        $('#idVerHCD').modal('show');
-      }
-    });
-  });
-  $(document).on('click', '#idButtonCerrarModalHCD', function () {
-    $.ajax({
-      success: function (data) {
-        $('#idVerHCD').modal('hide');
-        {
-          $('#id_modal_ver_hcd').empty()
-        }
-      }
-    });
-  });
-</script>
 
 {% endblock %}

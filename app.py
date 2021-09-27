@@ -17,7 +17,7 @@ def pacientes():
         parametros = request.form["buscar"]
         print("Esta es la puta query {}".format(parametros))
         pacientes = obtener_pacientes_query(parametros)
-    else:
+    else: 
         pacientes = obtener_pacientes()
     data = {
         'titulo': 'Pacientes',
@@ -133,7 +133,7 @@ def actualizar_paciente():
 def index(name='Home'):
     return render_template('index.html', titulo=name)
 
-@app.route('/HCD')
+@app.route('/HCD/')
 def HCD():
     hcd = obtener_lista_hcd()
     data={
@@ -142,18 +142,22 @@ def HCD():
     }
     return render_template('HCD.html', data=data)
 
-@app.route('/datos_modal_verHCD/<int:id>')
-def obtener_hcd_id(id):
+@app.route('/ver_HCD/<int:id>')
+def obtener_hcd_idd(id):
     paciente_hcd = obtener_hcd_por_id(id)
     IdEspecialidad = obtener_especialidad()
     idPatologia = obtener_patologia()
-    values = {
-            'titulo': 'Historia clínica dígital',
-            'paciente_hcd': paciente_hcd,
-            'especialidad': IdEspecialidad,
-            'patologia': idPatologia
+    turnosadm = obtener_lista_turnos_admision(id)
+    values={
+        'titulo': 'Historia clínica digital',
+        'paciente_hcd': paciente_hcd,
+        'especialidad': IdEspecialidad,
+        'patologia': idPatologia,
+        'turnosadm': turnosadm
     }
-    return jsonify({'htmlresponse': render_template('modal_ver_HCD.html', data=values)})
+    return render_template('ver_HCD.html', data=values)
+
+
 
 @app.route("/guardar_turnos_admision", methods=["POST"])
 def guardar_turnos_admision():
@@ -162,7 +166,7 @@ def guardar_turnos_admision():
         idPatologia = request.form["tipoPatologia"]
         cantidad = request.form["cantidad"]
         insertar_turnos_admision(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
-        return redirect("/datos_modal_verHCD")
+        return redirect("/modal_ver_HCD")
     # SI DA OK redireccionar
 
 
@@ -195,39 +199,81 @@ def turnos():
     return render_template('turnos.html', data=data)
 
 
-# Acción para abrir el modal de asignar turno
-@app.route('/modal_asignar_turno')
+# Acción para ver la pantalla de asignar turno
+@app.route('/asignar_turno/')
 def asignar_turno():
     tipoTurno = obtener_tipoTurno()
     especialidad = obtener_especialidad()
-    #profesional = obtener_profesional(especialidad)
-    value = {
+    #profesional = obtener_profesional()
+    values = {
         'titulo': 'Asignar turno',
         'tipoTurno': tipoTurno,
-        'especialidad': especialidad
+        'especialidad': especialidad,
         #'profesional': profesional
     }
-    return jsonify({'htmlresponse': render_template('turnos_asignar.html', data=value)})
+    return render_template('turnos_asignar.html', data=values)
 
 
     # Acción para abrir el modal para buscar un paciente
-@app.route('/modal_buscar_paciente')
+@app.route('/modal_buscar_paciente', methods=['GET', 'POST'])
 def buscar_paciente():
-    value = {
-        'titulo': 'Buscar paciente'
+    pacientes = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        print("Esta es la puta query {}".format(parametros))
+        pacientes = obtener_pacientes_query(parametros)
+    else: 
+        pacientes = obtener_pacientes()
+    values = {
+        'pacientes': pacientes
     }
-    return jsonify({'htmlresponse': render_template('modal_buscar_paciente.html', data=value)})
+    return jsonify({'htmlresponse': render_template('modal_buscar_paciente.html', data=values)})
 
 
 # Acción para abrir el modal de RECEPTAR turno
-@app.route('/modal_receptar_turno/<int:id_turno>')
-def receptar_turno(id_turno):
-    turno_id = obtener_turno_por_id(id_turno)
-    value = {
+@app.route('/modal_receptar_turno/<int:id>')
+def receptar_turno(id):
+    turno_por_id = obtener_turno_por_id(id)
+    tipoTurno = obtener_tipoTurno()
+    especialidad = obtener_especialidad_turnos()
+    values = {
         'titulo': 'Receptar turno',
-        'turno_id': 'turno_id'
+        'turno_por_id': turno_por_id,
+        'tipoTurno': tipoTurno,
+        'especialidad': especialidad
     }
-    return jsonify({'htmlresponse': render_template('turnos_receptar.html', data=value)})
+    return jsonify({'htmlresponse': render_template('turnos_receptar.html', data=values)})
+
+
+
+# Acción para abrir el modal de REPROGRAMAR turno
+@app.route('/modal_reprogramar_turno/<int:id>')
+def reprogramar_turno(id):
+    turno_por_id = obtener_turno_por_id(id)
+    tipoTurno = obtener_tipoTurno()
+    especialidad = obtener_especialidad_turnos()
+    values = {
+        'titulo': 'Reprogramar turno',
+        'turno_por_id': turno_por_id,
+        'tipoTurno': tipoTurno,
+        'especialidad': especialidad
+    }
+    return jsonify({'htmlresponse': render_template('turnos_reprogramar.html', data=values)})
+
+
+
+# Acción para abrir el modal de ANULAR turno
+@app.route('/modal_anular_turno/<int:id>')
+def anular_turno(id):
+    turno_por_id = obtener_turno_por_id(id)
+    motivoTurno = obtener_motivoTurno()
+    values = {
+        'titulo': 'Anular turno',
+        'turno_por_id': turno_por_id,
+        'motivoTurno': motivoTurno
+    }
+    return jsonify({'htmlresponse': render_template('turnos_anular.html', data=values)})
+
 
 
 @app.route('/rol')
@@ -277,13 +323,13 @@ def agregar_usuario():
     }
     return jsonify({'htmlresponse': render_template('agregar_usuario.html', data=values)})
 
+
 @app.route('/login')
 def login():
     data = {
         'titulo': 'Login',
     }
     return render_template('login.html', data=data)
-
 
 
 def pagina_no_encontrada(error):
