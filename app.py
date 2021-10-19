@@ -15,7 +15,6 @@ def pacientes():
     pacientes = None
     if request.method == 'POST':
         parametros = request.form["buscar"]
-        print("Esta es la puta query {}".format(parametros))
         pacientes = obtener_pacientes_query(parametros)
     else: 
         pacientes = obtener_pacientes()
@@ -60,14 +59,14 @@ def guardar_paciente():
 
 @app.route('/datos_modal_agregar')
 def agregar_datos():
-    tipoDocumento = obtener_tipoDocumento()
+    tipoDoc = obtener_tipoDocumento()
     pais = obtener_pais()
     provincia = obtener_provincia()
     localidad = obtener_localidad()
     barrio = obtener_barrio()
     financiador = obtener_financiador()
     values = {
-        'tipoDocumento': tipoDocumento,
+        'tipoDocumento': tipoDoc,
         'pais': pais,
         'provincia': provincia,
         'localidad': localidad,
@@ -99,7 +98,7 @@ def obtener_paciente_id(id):
 
 
 @app.route("/actualizar_paciente", methods=["POST"])
-def actualizar_paciente():
+def actualizar_pacientes():
     idPaciente = request.form["idPaciente"]
     nombrePaciente = request.form["nombrePaciente"]
     apellidoPaciente = request.form["apellidoPaciente"]
@@ -122,10 +121,10 @@ def actualizar_paciente():
     nroFijo = request.form["nroFijo"]
     financiador = request.form["financiador"]
     nroAfiliado = request.form["nroAfiliado"]
-    actualizar_domicilio(pais, provincia, localidad, calle, altura, piso, dpto, barrio, idPaciente)
-    actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular)
-    actualizar_afiliacion(financiador,nroAfiliado)
-    actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento,nroDocumento, fechaNacimiento, idPaciente)
+    actualizar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso, dpto, idPaciente)
+    actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular,idPaciente)
+    actualizar_afiliacion(financiador,nroAfiliado,idPaciente)
+    actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente)
     return redirect("/pacientes")
 
 
@@ -199,6 +198,7 @@ def turnos():
     return render_template('turnos.html', data=data)
 
 
+
 # Acción para ver la pantalla de asignar turno
 @app.route('/asignar_turno/')
 def asignar_turno():
@@ -207,6 +207,7 @@ def asignar_turno():
     #profesional = obtener_profesional()
     values = {
         'titulo': 'Asignar turno',
+        'subtitulo': 'Seleccionar fecha y hora',
         'tipoTurno': tipoTurno,
         'especialidad': especialidad,
         #'profesional': profesional
@@ -214,20 +215,26 @@ def asignar_turno():
     return render_template('turnos_asignar.html', data=values)
 
 
-    # Acción para abrir el modal para buscar un paciente
-@app.route('/modal_buscar_paciente', methods=['GET', 'POST'])
+
+# Acción para ver la pantalla de seleccionar el paciente en asignar turnos
+# Acción para abrir el modal para buscar un paciente
+@app.route('/seleccionar_paciente', methods=['GET', 'POST'])
 def buscar_paciente():
     pacientes = None
     if request.method == 'POST':
         parametros = request.form["buscar"]
-        print("Esta es la puta query {}".format(parametros))
         pacientes = obtener_pacientes_query(parametros)
     else: 
         pacientes = obtener_pacientes()
     values = {
+        'titulo': 'Asignar turno',
+        'subtitulo': 'Seleccionar paciente',
         'pacientes': pacientes
     }
-    return jsonify({'htmlresponse': render_template('modal_buscar_paciente.html', data=values)})
+    return render_template('turnos_seleccionar_paciente.html', data=values)
+
+
+
 
 
 # Acción para abrir el modal de RECEPTAR turno

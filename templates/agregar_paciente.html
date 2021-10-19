@@ -59,7 +59,6 @@
                                     <div class="col-md-4">
                                         <label for="tipoDocumento" class="form-label">Tipo de documento</label>
                                         <select name="tipoDocumento" class="form-select">
-                                            <option selected disabled value="">Seleccionar...</option>
                                             {% for tipoDoc in data.tipoDocumento %}
                                             <option value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
                                             {% endfor %}

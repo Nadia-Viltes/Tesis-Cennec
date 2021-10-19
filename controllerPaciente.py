@@ -16,7 +16,8 @@ def obtener_pacientes():
             AND bar.IdBarrio = dom.IdBarrio
             AND tu.IdTutoria = pa.idTutoria
             AND pa.IdPaciente = afi.IdPaciente
-            AND fi.IdFinanciador = afi.IdFinanciador;
+            AND fi.IdFinanciador = afi.IdFinanciador
+            AND pa.FechaBaja is null;
             """
     conexion = get_conexion()
     pacientes = []
@@ -155,7 +156,7 @@ def insertar_paciente (nombre, apellido, genero, tipoDocumento, nroDocumento, fe
     conexion = get_conexion()
     query = """
         INSERT INTO paciente (Nombre, Apellido, Genero, IdTipoDocumento, NumeroDocumento, FechaNacimiento, IdDomicilio, IdTutoria, FechaAlta)
-        VALUES ('{}','{}','{}',{},{},(STR_TO_DATE('{}','%d-%m-%Y')),{},{}, now())""".format(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria)
+        VALUES ('{}','{}','{}',{},{},'{}',{},{}, now())""".format(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria)
     print("Este es mi insertar paciente -> {}".format(query))    
     idPaciente_insertado = None    
     with conexion.cursor() as cur:
@@ -211,6 +212,7 @@ def obtener_paciente_por_id(idPaciente):
             AND pa.IdPaciente = afi.IdPaciente
             AND fi.IdFinanciador = afi.IdFinanciador
             AND pa.IdPaciente = hcd.IdPaciente
+            AND pa.FechaBaja is null
             AND pa.idPaciente = {}""".format(idPaciente)
     conexion = get_conexion()
     paciente = None
@@ -224,33 +226,34 @@ def obtener_paciente_por_id(idPaciente):
 def actualizar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso, dpto, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("""UPDATE domicilio SET IdPais={}, IdProvincia={}, IdLocalidad={}, IdBarrio={}, calle='{}', altura='{}' piso='{}', Dpto='{}'
-                        WHERE IdPaciente = {}""".format
+        cursor.execute("""UPDATE domicilio SET IdPais={}, IdProvincia={}, IdLocalidad={}, IdBarrio={}, calle='{}', altura='{}', piso='{}', Dpto='{}',FechaModificacion=NOW()
+                        WHERE IdDomicilio = (select IdDomicilio from (select pa.IdDomicilio from paciente as pa, domicilio as dom Where pa.IdDomicilio = dom.IdDomicilio and pa.IdPaciente = {})AS alias_domicilio)""".format
                        (pais, provincia, localidad, barrio, calle, altura, piso, dpto, idPaciente))
     conexion.commit()
     conexion.close()
 
-def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular):
+def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("""UPDATE tutoria SET Nombre = '{}', Apellido = '{}', Ocupacion = '{}', TelefonoFijo= '{}', TelefonoCelular= '{}'
-                        WHERE IdPaciente = %s""".format
-                       (nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular))
+        cursor.execute("""UPDATE tutoria SET Nombre = '{}', Apellido = '{}', Ocupacion = '{}', TelefonoFijo= '{}', TelefonoCelular= '{}',FechaModificacion=NOW()
+                        WHERE IdTutoria = (select IdTutoria from (select pa.IdTutoria from paciente as pa, tutoria as tu Where pa.IdTutoria = tu.IdTutoria and pa.IdPaciente = {})AS alias_tutoria)""".format
+                       (nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular, idPaciente))
     conexion.commit()
     conexion.close()
 
-def actualizar_afiliacion(financiador,nroAfiliado):
+def actualizar_afiliacion(financiador,nroAfiliado,idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE afiliacion SET IdFinanciador ={}, NumeroAfiliado='{}' WHERE IdPaciente = {});".format
-                       (financiador,nroAfiliado))
+        cursor.execute("UPDATE afiliacion SET IdFinanciador ={}, NumeroAfiliado='{}', FechaModificacion=NOW() WHERE IdPaciente = {}".format
+                       (financiador,nroAfiliado,idPaciente))
     conexion.commit()
     conexion.close()
 
-def actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento,nroDocumento, fechaNacimiento, idPaciente):
+def actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
-        cursor.execute("UPDATE paciente SET nombre='{}'', apellido='{}', Genero='{}',IdTipoDocumento={}, NumeroDocumento={},,FechaNacimiento='{}' WHERE idPaciente = {}".format
+        cursor.execute("""UPDATE paciente SET Nombre='{}', Apellido='{}', Genero='{}',IdTipoDocumento={}, NumeroDocumento={}, FechaNacimiento='{}',FechaModificacion=NOW() 
+                        WHERE IdPaciente = {}""".format
                        (nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente))
     conexion.commit()
     conexion.close()
