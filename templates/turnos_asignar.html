@@ -71,8 +71,8 @@
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
                         <select id="tipoTurno" class="form-select">
+                        <option selected disabled>Seleccionar...</option>
                             {% for tipoTurno in data.tipoTurno %}
-                            <option selected disabled>Seleccionar...</option>
                             <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
                             {% endfor %}
                         </select>
@@ -113,7 +113,7 @@
         <div class="card-footer bg-transparent border-success">
             <div class="row">
                 <div class="col-6 justify-content-md-start">
-                    <a class="btn btn-primary" href="/turno/" role="button">Atrás</a>
+                    <a class="btn btn-primary" href="/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
                     <button type="submit" class="btn btn-success">Guardar</button>

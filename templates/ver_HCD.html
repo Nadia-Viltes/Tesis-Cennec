@@ -255,6 +255,7 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Cantidad</th>
+                                            <th scope="col">Turnos computados</th>
                                             <th scope="col">Especialidad</th>
                                         </tr>
                                     </thead>
@@ -262,7 +263,8 @@
                                         {% for turnosadm in data.turnosadm %}
                                         <tr>
                                             <td>{{turnosadm[1]}}</td>
-                                            <td>{{turnosadm[3]}}</td>
+                                            <td>{{turnosadm[2]}}</td>
+                                            <td>{{turnosadm[4]}}</td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

@@ -21,7 +21,7 @@ def obtener_lista_turno():
     return turno
 
     ## Select tipo de turno - Lista de valores
-def obtener_tipoTurno(): 
+def obtener_tipoTurno():
     query = "SELECT IdTipoTurno, Nombre FROM tipoturno WHERE FechaBaja is null;"
     conexion = get_conexion()
     tipoTurno = []
@@ -32,8 +32,11 @@ def obtener_tipoTurno():
     return tipoTurno
 
 ## Select Especialidades - Lista de valores
-def obtener_especialidad_turnos(): 
-    query = "SELECT IdEspecialidad, Nombre FROM especialidad WHERE FechaBaja is null;"
+def obtener_especialidad_turnos(id): 
+    query = """Select IdEspecialidad, Nombre from especialidad 
+    WHERE IdEspecialidad in (Select esp.IdEspecialidad from configuracionturno as config, especialidad as esp 
+    WHERE config.IdEspecialidad = esp.IdEspecialidad AND config.CantidadComputados <> config.CantidadDisponibles 
+    AND config.FechaBaja is null AND config.IdPaciente = {})""".format(id)
     conexion = get_conexion()
     IdEspecialidad = []
     with conexion.cursor() as cur:

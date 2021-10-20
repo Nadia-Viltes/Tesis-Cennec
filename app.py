@@ -144,7 +144,7 @@ def HCD():
 @app.route('/ver_HCD/<int:id>')
 def obtener_hcd_idd(id):
     paciente_hcd = obtener_hcd_por_id(id)
-    IdEspecialidad = obtener_especialidad()
+    IdEspecialidad = obtener_especialidad(id)
     idPatologia = obtener_patologia()
     turnosadm = obtener_lista_turnos_admision(id)
     values={
@@ -204,8 +204,14 @@ def turnos():
 @app.route('/asignar_turno/<int:id>')
 def asignar_turno(id):
     paciente = obtener_paciente_por_id(id)
+    tipoTurno = obtener_tipoTurno()
+    especialidad = obtener_especialidad_turnos(id)
     values = {
-        'paciente': paciente,  
+        'titulo': 'Asignar turno',
+        'subtitulo': 'Seleccionar turno',
+        'paciente': paciente,
+        'tipoTurno': tipoTurno,
+        'especialidad': especialidad
     }
     return render_template('turnos_asignar.html', data=values)
 

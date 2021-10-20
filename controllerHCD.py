@@ -33,8 +33,11 @@ def obtener_hcd_por_id(idPaciente):
     return paciente_hcd
 
     ## Select tipo de especialidad - Lista de valores - ESTO ES PARA LA ASIGNACIÓN DE TURNOS DE ADMISIÓN
-def obtener_especialidad(): 
-    query = "SELECT IdEspecialidad, Nombre FROM especialidad WHERE FechaBaja is null;"
+def obtener_especialidad(id): 
+    query = """Select IdEspecialidad, Nombre from especialidad WHERE IdEspecialidad not in 
+            (Select esp.IdEspecialidad from configuracionturno as config, especialidad as esp 
+            WHERE config.IdEspecialidad = esp.IdEspecialidad AND config.CantidadComputados <> config.CantidadDisponibles
+            AND config.FechaBaja is null AND config.IdPaciente = {})""".format(id)  
     conexion = get_conexion()
     IdEspecialidad = []
     with conexion.cursor() as cur:
@@ -55,25 +58,11 @@ def obtener_patologia():
     conexion.close()
     return idPatologia
 
-## INSERTAR TURNOS DE ADMISIÓN
-def insertar_turnos_admision (idPaciente_HCD, IdEspecialidad, idPatologia, cantidad):
-    conexion = get_conexion()
-    query = """
-        INSERT INTO configuracionturno (IdPaciente, IdEspecialidad, IdTipoPatologia, CantidadDisponibles, FechaAlta)
-        VALUES ({}, {}, {}, '{}', NOw());""".format(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
-    idconfiguracion_turno = None
-    with conexion.cursor() as cur:
-        cur.execute(query)
-        idconfiguracion_turno = cur.lastrowid
-    conexion.commit()
-    conexion.close()
-    return idconfiguracion_turno
 
-
-## SELECT PARA VER LA CANTIDAD DE TURNOS DE ADMINISIÓN ASIGNADOS
+ ## SELECT PARA VER LA CANTIDAD DE TURNOS DE ADMINISIÓN ASIGNADOS
 def obtener_lista_turnos_admision(idPaciente):
     query = """
-           SELECT config.IdConfiguracionTurno, config.CantidadDisponibles, espe.IdEspecialidad, espe.Nombre
+           SELECT config.IdConfiguracionTurno, config.CantidadDisponibles, config.CantidadComputados, espe.IdEspecialidad, espe.Nombre
             FROM configuracionturno as config, especialidad as espe
             WHERE config.IdEspecialidad = espe.IdEspecialidad
             AND config.IdPaciente = {}""".format(idPaciente)              
@@ -84,3 +73,18 @@ def obtener_lista_turnos_admision(idPaciente):
     turnosadm = cur.fetchall()
     conexion.close()
     return turnosadm
+
+
+ ## INSERTAR TURNOS DE ADMISIÓN
+def insertar_turnos_admision (idPaciente_HCD, IdEspecialidad, idPatologia, cantidad):
+    conexion = get_conexion()
+    query = """
+        INSERT INTO configuracionturno (IdPaciente, IdEspecialidad, IdTipoPatologia, CantidadDisponibles, CantidadComputados, FechaAlta)
+        VALUES ({}, {}, {}, '{}',0, NOw());""".format(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
+    idconfiguracion_turno = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        idconfiguracion_turno = cur.lastrowid
+    conexion.commit()
+    conexion.close()
+    return idconfiguracion_turno
