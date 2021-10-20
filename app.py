@@ -200,17 +200,12 @@ def turnos():
 
 
 # Acción para ver la pantalla de asignar turno
-@app.route('/asignar_turno/')
-def asignar_turno():
-    tipoTurno = obtener_tipoTurno()
-    especialidad = obtener_especialidad()
-    #profesional = obtener_profesional()
+#aca
+@app.route('/asignar_turno/<int:id>')
+def asignar_turno(id):
+    paciente = obtener_paciente_por_id(id)
     values = {
-        'titulo': 'Asignar turno',
-        'subtitulo': 'Seleccionar fecha y hora',
-        'tipoTurno': tipoTurno,
-        'especialidad': especialidad,
-        #'profesional': profesional
+        'paciente': paciente,  
     }
     return render_template('turnos_asignar.html', data=values)
 
@@ -232,9 +227,6 @@ def buscar_paciente():
         'pacientes': pacientes
     }
     return render_template('turnos_seleccionar_paciente.html', data=values)
-
-
-
 
 
 # Acción para abrir el modal de RECEPTAR turno
