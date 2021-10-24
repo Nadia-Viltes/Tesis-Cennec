@@ -21,7 +21,8 @@
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/HCD/">Historia clínica digital</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.paciente_hcd[1]}}
+                {{data.paciente_hcd[2]}}</li>
         </ol>
     </nav>
 
@@ -37,27 +38,27 @@
         </div>
 
         <div class="card-body">
-                      <!-- Tabla -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nombre y Apellido</th>
-                <th scope="col">Nro. Documento</th>
-                <th scope="col">HCD</th>
-                <th scope="col">Financiador</th>
-                <th scope="col">Nro. Afiliado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
-              <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
-              <td>{{data.paciente_hcd[3]}}</td>
-              <td>{{data.paciente_hcd[4]}}</td>
-              <td>{{data.paciente_hcd[5]}}</td>
-              <td>{{data.paciente_hcd[6]}}</td>
-              </tr>
-            </tbody>
-          </table>
+            <!-- Tabla -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre y Apellido</th>
+                        <th scope="col">Nro. Documento</th>
+                        <th scope="col">HCD</th>
+                        <th scope="col">Financiador</th>
+                        <th scope="col">Nro. Afiliado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
+                    <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
+                    <td>{{data.paciente_hcd[3]}}</td>
+                    <td>{{data.paciente_hcd[4]}}</td>
+                    <td>{{data.paciente_hcd[5]}}</td>
+                    <td>{{data.paciente_hcd[6]}}</td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="card">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
@@ -92,29 +93,34 @@
                                         </button>
                                     </h2>
                                     <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                        aria-labelledby="flush-preguntasFamiliares" data-bs-parent="#accordionFlushExample">
+                                        aria-labelledby="flush-preguntasFamiliares"
+                                        data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body">
                                             <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres del niño viven juntos?</label>
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres del
+                                                    niño viven juntos?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled
-                                                    readonly>
+                                                    <input class="form-control" type="text" value="Sí"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño tiene hermanos? ¿Cuántos?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño tiene
+                                                    hermanos? ¿Cuántos?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="Sí, 2 hermanas" aria-label="Disabled input example"
-                                                    disabled readonly>
+                                                    <input class="form-control" type="text" value="Sí, 2 hermanas"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres cuentan con antecedentes
-                                                  médicos?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Los padres
+                                                    cuentan con antecedentes
+                                                    médicos?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="No"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -131,18 +137,22 @@
                                         aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body">
                                             <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre presentó alguna molestia en el embarazo?</label>
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre
+                                                    presentó alguna molestia en el embarazo?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="No"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre mantuvo consumos de tabaco, alcohol o medicamentos
-                                                  durante el embarazo?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La madre
+                                                    mantuvo consumos de tabaco, alcohol o medicamentos
+                                                    durante el embarazo?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="No"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -158,23 +168,30 @@
                                         aria-labelledby="flush-preguntasParto" data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body">
                                             <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue natural?</label>
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue
+                                                    natural?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="Sí"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue a término?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto fue a
+                                                    término?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No, nació a las 29 semanas" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text"
+                                                        value="No, nació a las 29 semanas"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto presentó complicaciones?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El parto
+                                                    presentó complicaciones?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="No"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -187,26 +204,33 @@
                                         </button>
                                     </h2>
                                     <div id="flush-collapseFour" class="accordion-collapse collapse"
-                                        aria-labelledby="flush-preguntasDesarrollo" data-bs-parent="#accordionFlushExample">
+                                        aria-labelledby="flush-preguntasDesarrollo"
+                                        data-bs-parent="#accordionFlushExample">
                                         <div class="accordion-body">
                                             <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La lactancia fue de pecho?</label>
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿La lactancia
+                                                    fue de pecho?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="Sí" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="Sí"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño presentó dificultados con los alimentos sólidos?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿El niño
+                                                    presentó dificultados con los alimentos sólidos?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="No" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="No"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
-                                              <div class="mb-3 row">
-                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Se chupó el dedo o usó chupete?</label>
+                                            </div>
+                                            <div class="mb-3 row">
+                                                <label for="staticPreg1" class="col-sm-8 col-form-label">¿Se chupó el
+                                                    dedo o usó chupete?</label>
                                                 <div class="col-sm-4">
-                                                  <input class="form-control" type="text" value="Si, usó chupete" aria-label="Disabled input example" disabled readonly>
+                                                    <input class="form-control" type="text" value="Si, usó chupete"
+                                                        aria-label="Disabled input example" disabled readonly>
                                                 </div>
-                                              </div>
+                                            </div>
 
                                         </div>
                                     </div>
@@ -224,7 +248,7 @@
                                 <div class="col-2">
                                     <input type="hidden" name="idPaciente_HCD" value="{{data.paciente_hcd[0]}}">
                                     <label for="inputCantidad" class="form-label">Cantidad</label>
-                                    <input type="text" class="form-control" name="cantidad">
+                                    <input type="number" class="form-control" name="cantidad">
                                 </div>
                                 <div class="col-md-3">
                                     <label for="Especialidad" class="form-label">Especialidad</label>
@@ -245,9 +269,10 @@
                                     </select>
                                 </div>
                                 <div class="col-3">
-                                    <button type="submit" class="btn btn-primary"
-                                        data-bs-target="#turnos_admision">Agregar</button>
+                                    <button type="button" id="buttonAgregarAdmision"
+                                        class="btn btn-primary">Agregar</button>
                                 </div>
+
                             </div>
                             <!-- Tabla turnos otorgados-->
                             <div>
@@ -259,7 +284,7 @@
                                             <th scope="col">Especialidad</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="tablaTurnosAdmision">
                                         {% for turnosadm in data.turnosadm %}
                                         <tr>
                                             <td>{{turnosadm[1]}}</td>
@@ -339,12 +364,50 @@
 
     </div>
 
-  <!-- ================================================ -->
-  <!-- Config Pantalla -->
-  <!-- ================================================ -->
+    <!-- ================================================ -->
+    <!-- Config Pantalla -->
+    <!-- ================================================ -->
 
-  <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
-  style="display: block; height: 514px; width: 1218px;">
-</canvas>
+    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+        style="display: block; height: 514px; width: 1218px;">
+    </canvas>
 
+    <script>
+        $(document).on("click", "#buttonAgregarAdmision", function () {
+            let idPaciente = $("[name=paciente_hcd]").val();
+            let idEspecialidad = $("[name=tipoEspecialidad]").val();
+            let cantidad = $("[name=cantidad]").val();
+            let idPatologia = $("[name=tipoPatologia]").val();
+
+            //validaciones
+            if (!(cantidad > 0)) {
+                return alert("Elija un valor valido para la cantidad mayor a 0");
+            }
+            if (idEspecialidad === null) {
+                return alert("Debe seleccionar una Especialidad");
+            }
+            if (idPatologia === null) {
+                return alert("Debe seleccionar una Patologia");
+            }
+
+            $.ajax({
+                url: "/agrega_turnos_admision",
+                method: "POST",
+                data: {
+                    "idPaciente": idPaciente,
+                    "idEspecialidad": idEspecialidad,
+                    "cantidad": cantidad,
+                    "idPatologia": idPatologia
+                },
+                success: function (response) {
+                    $("#tablaTurnosAdmision tr").remove();
+                    $("#tablaTurnosAdmision").append(response.htmlresponse);
+                    $("[name=cantidad]").val('');
+                    $(`[name=tipoEspecialidad] option[value='${idEspecialidad}']`).remove();
+                    $("[name=tipoEspecialidad] option:first").prop('selected', 'selected').trigger('change');
+                    $("[name=tipoPatologia] option:first").prop('selected', 'selected').trigger('change');
+                }
+            });
+        });
+    </script>
     {% endblock %}

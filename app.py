@@ -4,7 +4,7 @@ from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
 from controllerMiAgenda import *
-from flask import Flask, render_template, redirect, url_for, request, jsonify
+from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify
 
 app = Flask(__name__)
 
@@ -141,7 +141,7 @@ def HCD():
     }
     return render_template('HCD.html', data=data)
 
-@app.route('/ver_HCD/<int:id>')
+@app.route('/ver_HCD/<int:id>', methods=["GET", "POST"])
 def obtener_hcd_idd(id):
     paciente_hcd = obtener_hcd_por_id(id)
     IdEspecialidad = obtener_especialidad(id)
@@ -156,7 +156,24 @@ def obtener_hcd_idd(id):
     }
     return render_template('ver_HCD.html', data=values)
 
-
+#Carga los turnos admision llenando la tabla con jquery
+@app.route('/agrega_turnos_admision', methods=["POST"])
+def agrega_turnos_admision():
+    #tomo los datos que vienen del form
+    id_paciente = request.form['idPaciente']
+    id_especialidad = request.form['idEspecialidad']
+    cantidad = request.form['cantidad']
+    id_patologia = request.form['idPatologia']
+    #inserto los datos en configuracion de turno
+    insertar_turnos_admision(id_paciente, id_especialidad, id_patologia, cantidad)
+    #hago la consulta para obtener todos los turnos por id de paciente por especialidad
+    lista_turnos = obtener_lista_turnos_admision(id_paciente)
+    table = ""
+    #creo una tabla con los datos de la lista de turnos y se la envío
+    #a ver_HCD.html
+    for turno in lista_turnos:
+        table+= "<tr><td>{}</td><td>0</td><td>{}</td></tr>".format(turno[1], turno[4])
+    return jsonify({'htmlresponse': render_template_string(table)})
 
 @app.route("/guardar_turnos_admision", methods=["POST"])
 def guardar_turnos_admision():
