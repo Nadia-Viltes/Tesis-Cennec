@@ -232,7 +232,14 @@ def asignar_turno(id):
     }
     return render_template('turnos_asignar.html', data=values)
 
-
+#Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad
+@app.route('/profesionales_dropdown/<int:id>')
+def profesionales_especialidad_dropdown(id):
+    profesionales = obtener_profesionales_especialidad(id)
+    options = "<option selected disabled>Seleccionar...</option>"
+    for profesional in profesionales:
+        options+= "<option value={}>{} {}</option>".format(profesional[0], profesional[1], profesional[2])
+    return jsonify({'htmlresponse': render_template_string(options)})
 
 # Acción para ver la pantalla de seleccionar el paciente en asignar turnos
 # Acción para abrir el modal para buscar un paciente
