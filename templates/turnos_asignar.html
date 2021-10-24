@@ -79,7 +79,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select id="Especialidad" class="form-select">
+                        <select id="idEspecialidadDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -88,11 +88,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="Profesional" class="form-select">
+                        <select id="idProfesionalDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
-                            {% for profesional in data.profesional %}
-                            <option value={{profesional[0]}}>{{profesional[1]}}</option>
-                            {% endfor %}
                         </select>
                     </div>
                     <div class="col-4">
@@ -159,6 +156,19 @@
         });
     });
 
+    //carga el dropdown de profesional por especialidad
+    $("#idEspecialidadDropdown").change(function(){
+        let idEspecialidad = $(this).val();
+        $.ajax({
+            url: `/profesionales_dropdown/${idEspecialidad}`,
+            method: "GET",
+            success: function (response) {
+                $("#idProfesionalDropdown option").remove();
+                $("#idProfesionalDropdown").append(response.htmlresponse);
+            }
+        });
+    });
+    
 </script>
 
 

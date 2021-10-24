@@ -20,6 +20,22 @@ def obtener_lista_turno():
     conexion.close()
     return turno
 
+def obtener_profesionales_especialidad(id):
+    query = """
+            SELECT pro.idprofesional, rec.nombre, rec.apellido, esp.idespecialidad, esp.nombre
+            FROM profesional AS pro, recurso AS rec, especialidad AS esp
+            WHERE pro.idespecialidad = esp.idespecialidad
+            AND pro.idrecurso = rec.idrecurso
+            AND esp.IdEspecialidad = {};""".format(id)
+    conexion = get_conexion()
+    profesionales_especialidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    profesionales_especialidad = cur.fetchall()
+    conexion.close()
+    return profesionales_especialidad    
+        
+
     ## Select tipo de turno - Lista de valores
 def obtener_tipoTurno():
     query = "SELECT IdTipoTurno, Nombre FROM tipoturno WHERE FechaBaja is null;"
