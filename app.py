@@ -172,7 +172,7 @@ def agrega_turnos_admision():
     #creo una tabla con los datos de la lista de turnos y se la envío
     #a ver_HCD.html
     for turno in lista_turnos:
-        table+= "<tr><td>{}</td><td>0</td><td>{}</td></tr>".format(turno[1], turno[4])
+        table+= "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(turno[1], turno[2], turno[4])
     return jsonify({'htmlresponse': render_template_string(table)})
 
 @app.route("/guardar_turnos_admision", methods=["POST"])
@@ -182,7 +182,7 @@ def guardar_turnos_admision():
         idPatologia = request.form["tipoPatologia"]
         cantidad = request.form["cantidad"]
         insertar_turnos_admision(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
-        return redirect("/modal_ver_HCD")
+        return redirect("/HCD")
     # SI DA OK redireccionar
 
 
@@ -257,14 +257,14 @@ def buscar_paciente():
 def receptar_turno(id):
     turno_por_id = obtener_turno_por_id(id)
     tipoTurno = obtener_tipoTurno()
-    especialidad = obtener_especialidad_turnos()
+    especialidad = obtener_especialidad_turnos(id)
     values = {
         'titulo': 'Receptar turno',
         'turno_por_id': turno_por_id,
         'tipoTurno': tipoTurno,
-        'especialidad': especialidad
+        'especialidad': especialidad,
     }
-    return jsonify({'htmlresponse': render_template('turnos_receptar.html', data=values)})
+    return render_template('turnos_receptar2.html', data=values)
 
 
 

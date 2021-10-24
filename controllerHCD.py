@@ -65,6 +65,7 @@ def obtener_lista_turnos_admision(idPaciente):
            SELECT config.IdConfiguracionTurno, config.CantidadDisponibles, config.CantidadComputados, espe.IdEspecialidad, espe.Nombre
             FROM configuracionturno as config, especialidad as espe
             WHERE config.IdEspecialidad = espe.IdEspecialidad
+            AND config.FechaBaja is null
             AND config.IdPaciente = {}""".format(idPaciente)              
     conexion = get_conexion()
     turnosadm = []

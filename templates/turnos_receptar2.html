@@ -21,7 +21,7 @@
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/turno/">Turnos</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} / {{ data.subtitulo }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
         </ol>
     </nav>
 
@@ -44,20 +44,20 @@
                     <thead>
                       <tr>
                         <th scope="col">Nombre y Apellido</th>
-                        <th scope="col">DNI</th>
-                        <th scope="col">HCD</th>
+                        <th scope="col">Nro. de documento</th>
                         <th scope="col">Financiador</th>
                         <th scope="col">Nro. afiliado</th>
-                      </tr>
+                        <th scope="col">HCD</th>
+                    </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                      </tr>
+                        <td>{{ data.paciente[1] }} {{data.paciente[2] }}</td>
+                        <td>{{ data.paciente[6] }}</td>
+                        <td>{{ data.paciente[27]}}</td>
+                        <td>{{ data.paciente[28]}} </td>
+                        <td>{{ data.paciente[20]}}</td>
+                    </tr>
                     </tbody>
                   </table>   
                     </div>
@@ -71,7 +71,7 @@
                     <h5 style="padding-top: 30px;">Seleccionar turno</h5>
                     <div class="col-md-4">
                       <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                      <select id="tipoTurno" class="form-select" disabled>
+                      <select name="tipoTurno" class="form-select" disabled>
                           {% for tipoTurno in data.tipoTurno %}
                           {% if tipoTurno[0] == 1 %}
                         <option selected value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-md-4">
                       <label for="Especialidad" class="form-label">Especialidad</label>
-                      <select id="Especialidad" class="form-select" disabled>
+                      <select name="Especialidad" class="form-select" disabled>
                           {% for especialidad in data.especialidad %}
                           {% if especialidad[0] == data.turno_por_id[10] %}
                         <option selected value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -95,7 +95,7 @@
                     </div>
                     <div class="col-md-4">
                       <label for="Profesional" class="form-label">Profesional</label>
-                      <select id="Profesional" class="form-select">
+                      <select name="Profesional" class="form-select">
                           {% for profesional in data.profesional %}
                         <option value={{profesional[0]}}>{{profesional[1]}}</option>
                           {% endfor %}
