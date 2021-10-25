@@ -211,7 +211,7 @@ def agenda():
 
 
 # Operación para mostrar la lista de turnos
-@app.route('/turnos/')
+@app.route('/turno/')
 def turnos():
     turno = obtener_lista_turno()
     data = {

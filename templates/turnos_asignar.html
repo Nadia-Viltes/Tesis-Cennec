@@ -84,7 +84,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select name="idEspecialidadDropdown" class="form-select">
+                        <select id="idEspecialidadDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -93,7 +93,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select name="idProfesionalDropdown" class="form-select">
+                        <select id="idProfesionalDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                         </select>
                     </div>
@@ -102,8 +102,12 @@
                         <input type="date" class="form-control" name="fechaTurno">
                     </div>
                     <div class="col-4">
-                        <label for="horaTurno" class="form-label">Hora</label>
+                        <label for="horaTurno" class="form-label">Hora inicio</label>
                         <input type="time" class="form-control" name="horaTurno">
+                    </div>
+                    <div class="col-4">
+                        <label for="horaTurno" class="form-label">Hora fin</label>
+                        <input type="time" class="form-control" name="horaTurno" disabled>
                     </div>
                 </form>
 
@@ -170,33 +174,7 @@
 
 </main>
 
-<div id="idSeccionModalBuscarPaciente">
-
-</div>
-
 <script>
-    $(document).on('click', '#button_buscar_paciente', function () {
-        $.ajax({
-            url: "/modal_buscar_paciente",
-            method: "GET",
-            data: {},
-            success: function (data) {
-                $('#idSeccionModalBuscarPaciente').append(data.htmlresponse)
-                $('#modal_buscar_paciente').modal('show');
-            }
-        });
-    });
-    $(document).on('click', '#idCerrarModalAsignarTurno', function () {
-        $.ajax({
-            success: function (data) {
-                $('#modal_buscar_paciente').modal('hide');
-                {
-                    $('#idSeccionModalBuscarPaciente').empty()
-                }
-            }
-        });
-    });
-
     //carga el dropdown de profesional por especialidad
     $("#idEspecialidadDropdown").change(function(){
         let idEspecialidad = $(this).val();
