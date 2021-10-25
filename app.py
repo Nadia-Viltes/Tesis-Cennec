@@ -132,6 +132,8 @@ def actualizar_pacientes():
 def index(name='Home'):
     return render_template('index.html', titulo=name)
 
+
+
 @app.route('/HCD/')
 def HCD():
     hcd = obtener_lista_hcd()
@@ -140,6 +142,8 @@ def HCD():
         'hcd': hcd
     }
     return render_template('HCD.html', data=data)
+
+
 
 @app.route('/ver_HCD/<int:id>', methods=["GET", "POST"])
 def obtener_hcd_idd(id):
@@ -155,6 +159,7 @@ def obtener_hcd_idd(id):
         'turnosadm': turnosadm
     }
     return render_template('ver_HCD.html', data=values)
+
 
 #Carga los turnos admision llenando la tabla con jquery
 @app.route('/agrega_turnos_admision', methods=["POST"])
@@ -174,6 +179,7 @@ def agrega_turnos_admision():
     for turno in lista_turnos:
         table+= "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(turno[1], turno[2], turno[4])
     return jsonify({'htmlresponse': render_template_string(table)})
+
 
 @app.route("/guardar_turnos_admision", methods=["POST"])
 def guardar_turnos_admision():
@@ -205,7 +211,7 @@ def agenda():
 
 
 # Operación para mostrar la lista de turnos
-@app.route('/turno/')
+@app.route('/turnos/')
 def turnos():
     turno = obtener_lista_turno()
     data = {
@@ -215,7 +221,6 @@ def turnos():
     return render_template('turnos.html', data=data)
 
 
-
 # Acción para ver la pantalla de asignar turno
 #aca
 @app.route('/asignar_turno/<int:id>')
@@ -223,14 +228,18 @@ def asignar_turno(id):
     paciente = obtener_paciente_por_id(id)
     tipoTurno = obtener_tipoTurno()
     especialidad = obtener_especialidad_turnos(id)
+    turnosadm = obtener_lista_turnos_admision(id)
     values = {
         'titulo': 'Asignar turno',
         'subtitulo': 'Seleccionar turno',
         'paciente': paciente,
         'tipoTurno': tipoTurno,
-        'especialidad': especialidad
+        'especialidad': especialidad,
+        'turnosadm': turnosadm
     }
     return render_template('turnos_asignar.html', data=values)
+
+
 
 #Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad
 @app.route('/profesionales_dropdown/<int:id>')
@@ -240,6 +249,7 @@ def profesionales_especialidad_dropdown(id):
     for profesional in profesionales:
         options+= "<option value={}>{} {}</option>".format(profesional[0], profesional[1], profesional[2])
     return jsonify({'htmlresponse': render_template_string(options)})
+
 
 # Acción para ver la pantalla de seleccionar el paciente en asignar turnos
 # Acción para abrir el modal para buscar un paciente
@@ -257,6 +267,7 @@ def buscar_paciente():
         'pacientes': pacientes
     }
     return render_template('turnos_seleccionar_paciente.html', data=values)
+
 
 
 # Acción para abrir el modal de RECEPTAR turno

@@ -36,11 +36,11 @@
             </div>
         </div>
 
-        <div class="card-body text-success">
+        <div class="card-body text-dark">
             <h5 class="card-title">Paciente seleccionado</h5>
 
             <div class="container">
-                <table class="table text-success">
+                <table class="table text-secondary">
                     <thead>
                         <tr>
                             <th scope="col">Nombre y Apellido</th>
@@ -48,6 +48,7 @@
                             <th scope="col">Financiador</th>
                             <th scope="col">Nro. afiliado</th>
                             <th scope="col">HCD</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -57,6 +58,10 @@
                             <td>{{ data.paciente[27]}}</td>
                             <td>{{ data.paciente[28]}} </td>
                             <td>{{ data.paciente[20]}}</td>
+                            <td><button type="button" class="btn btn-dark" data-bs-toggle="modal"
+                                    data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
+                                    Ver Turnos
+                                </button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -70,8 +75,8 @@
                 <form class="row g-3">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                        <select id="tipoTurno" class="form-select">
-                        <option selected disabled>Seleccionar...</option>
+                        <select name="tipoTurno" class="form-select">
+                            <option selected disabled>Seleccionar...</option>
                             {% for tipoTurno in data.tipoTurno %}
                             <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
                             {% endfor %}
@@ -79,7 +84,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select id="idEspecialidadDropdown" class="form-select">
+                        <select name="idEspecialidadDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -88,7 +93,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="idProfesionalDropdown" class="form-select">
+                        <select name="idProfesionalDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                         </select>
                     </div>
@@ -114,6 +119,42 @@
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
                     <button type="submit" class="btn btn-success">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ModalVerTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalVerTurnos">Ver turnos</h5>
+                </div>
+                <div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Turnos computados</th>
+                                    <th scope="col">Especialidad</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaTurnosAdmision">
+                                {% for turnosadm in data.turnosadm %}
+                                <tr>
+                                    <td>{{turnosadm[1]}}</td>
+                                    <td>{{turnosadm[2]}}</td>
+                                    <td>{{turnosadm[4]}}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
                 </div>
             </div>
         </div>

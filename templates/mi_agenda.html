@@ -54,8 +54,8 @@
         <td>{{turnoprof[3]}}</td>
         <td>{{turnoprof[4]}}</td>
         <td>{{turnoprof[1]}}</td>
-        <td>{{turnoprof[5]}} {{turnoprof[6]}}</td>
-        <td>{{turnoprof[7]}}</td>
+        <td>{{turnoprof[6]}} {{turnoprof[7]}}</td>
+        <td>{{turnoprof[8]}}</td>
         <td style="text-align: right;"><button type="button" class="btn btn-primary openBtn" data-bs-toggle="modal" name="button_iniciar_atencion" value="{{turnoprof[0]}}">
             Iniciar atención
           </button>
@@ -63,10 +63,9 @@
             data-bs-target="#modal_asignar_turno">
             Finalizar atención
           </button>
-          <button type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" id="button_ver_hcd_miagenda"
-            data-bs-target="#modal_asignar_turno">
+          <a class="btn btn-success" href="/ver_HCD/{{turnoprof[5]}}" role="button" id={{turnoprof[5]}}>
             Ver HCD
-          </button>
+          </a>
         </td>
       </tr>
       {% endfor %}
