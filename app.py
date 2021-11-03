@@ -239,6 +239,21 @@ def asignar_turno(id):
     }
     return render_template('turnos_asignar.html', data=values)
 
+@app.route('/grabar_turno', methods=["POST"])
+def grabar_turno():
+    #tomo los datos que vienen del form
+    print("este es mi request form")
+    print(request.form)
+    id_tipo_turno = request.form['tipoTurno']
+    id_especialidad = request.form['nameEspecialidadDropdown']
+    id_profesional = request.form['nameProfesionalDropdown']
+    fecha_turno = request.form['fechaTurno']
+    hora_inicio = request.form['nameHoraInicio']
+    hora_fin = request.form['nameHoraFin']
+    id_paciente = request.form['inputPacienteId']
+    #inserto los datos en turno
+    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin)
+    return redirect("/turno/")
 
 
 #Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad

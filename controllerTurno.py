@@ -96,11 +96,11 @@ def obtener_motivoTurno():
 
 
 ## Agregar un nuevo turno en estado asignado:
-def insertar_turno_asignado (tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaTurno):
+def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta):
     conexion = get_conexion()
     query = """
-        INSERT INTO paciente (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',2,now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaTurno)
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalReceptado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
+        VALUES ({},{},{},{},'{}','{}','{}',10,now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta)
     print("Este es mi insertar turno asignado -> {}".format(query))    
     idTurno_asignado = None    
     with conexion.cursor() as cur:

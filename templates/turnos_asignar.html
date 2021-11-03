@@ -59,7 +59,7 @@
                             <td>{{ data.paciente[28]}} </td>
                             <td>{{ data.paciente[20]}}</td>
                             <td><button type="button" class="btn btn-dark" data-bs-toggle="modal"
-                                    data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
+                                    name="botonVerTurnos" data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
                                     Ver Turnos
                                 </button></td>
                         </tr>
@@ -70,12 +70,12 @@
 
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
-
             <div class="container">
-                <form class="row g-3">
+                <form action="/grabar_turno" method="POST" class="row g-3">
+                    <input type="hidden" value={{data.paciente[0]}} name="inputPacienteId">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                        <select name="tipoTurno" class="form-select">
+                        <select id="idTipoTurnoDropdown" name="tipoTurno" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                             {% for tipoTurno in data.tipoTurno %}
                             <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
@@ -84,7 +84,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select id="idEspecialidadDropdown" class="form-select">
+                        <select id="idEspecialidadDropdown" name="nameEspecialidadDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -93,27 +93,23 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="idProfesionalDropdown" class="form-select">
+                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select">
                             <option selected disabled>Seleccionar...</option>
                         </select>
                     </div>
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fechaTurno">
+                        <input type="date" class="form-control" id="idFechaTurno" name="fechaTurno" min="2021-01-01" max="2022-12-31">
                     </div>
                     <div class="col-4">
                         <label for="horaTurno" class="form-label">Hora inicio</label>
-                        <input type="time" class="form-control" name="horaTurno">
+                        <input type="time" class="form-control" id="idhoraInicio" name="nameHoraInicio" min="08:00" max="19:30">
                     </div>
                     <div class="col-4">
-                        <label for="horaTurno" class="form-label">Hora fin</label>
-                        <input type="time" class="form-control" name="horaTurno" disabled>
+                        <label for="horaFin" class="form-label">Hora fin</label>
+                        <input type="time" class="form-control" id="idhoraFin" name="nameHoraFin">
                     </div>
-                </form>
-
             </div>
-
-
         </div>
 
         <div class="card-footer bg-transparent border-success">
@@ -122,10 +118,12 @@
                     <a class="btn btn-primary" href="/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-success">Guardar</button>
+                    <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
+    </form>
+        
     </div>
 
     <!-- Modal -->
@@ -187,7 +185,25 @@
             }
         });
     });
-    
+
+    //Inteligencia en minutos
+    $("#idhoraInicio").on("input", function(){
+        let tiempoCompleto = $(this).val().split(":");
+        let hora = tiempoCompleto[0]
+        let minutos = tiempoCompleto[1]
+        if(hora.length > 1 && minutos.length > 1){
+            let date = new Date()
+            date.setHours(hora)
+            date.setMinutes(minutos)
+            date.setMinutes(date.getMinutes() + 30)
+            let horaFinal = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+            let minutoFinal = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+            $("#idhoraFin").val(`${horaFinal}:${minutoFinal}`)
+        }else{
+            $("#idhoraFin").val('')
+        }
+    });
+
 </script>
 
 
