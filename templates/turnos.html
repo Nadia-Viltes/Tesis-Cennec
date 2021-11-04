@@ -60,11 +60,11 @@
         <td>{{turno[7]}}</td>
         <td>{{turno[8]}}</td>
         <td>{{turno[9]}}</td>
-        <td><button type="button" class="btn btn-primary openBtn" href="/modal_receptar_turno" name="button_receptar_turno"
+        <td><button type="button" class="btn btn-primary openBtn" href="/receptar_turno/{{turno[0]}}" name="button_receptar_turno"
             id="{{turno[0]}}">
             Receptar
           </button>
-          <button type="button" class="btn btn-warning openBtn" data-bs-toggle="modal" name="button_reprogramar_turno" 
+          <button type="button" class="btn btn-warning openBtn" href="/reprogramar_turno/{{turno[0]}}" name="button_reprogramar_turno" 
           id="{{turno[0]}}">
             Reprogramar
           </button>
@@ -86,11 +86,6 @@
   </div>
 
 
-
-  <div id="idSeccionModalReceptarTurno">
-
-  </div>
-
   <div id="idSeccionModalReprogramarTurno">
 
   </div>
@@ -110,54 +105,7 @@
 </main>
 
 <script>
-  $(document).on('click', '#button_asignar_turno', function () {
-    $.ajax({
-      url: "/modal_asignar_turno",
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#idSeccionModalAsignarTurno').append(data.htmlresponse)
-        $('#modal_asignar_turno').modal('show');
-      }
-    });
-  });
-  $(document).on('click', '#idCerrarModalAsignarTurno', function () {
-    $.ajax({
-      success: function (data) {
-        $('#modal_asignar_turno').modal('hide');
-        {
-          $('#idSeccionModalAsignarTurno').empty()
-        }
-      }
-    });
-  });
-
-
-  //boton RECEPTAR
-  $(document).on('click', "[name='button_receptar_turno']", function () {
-    let id_turno = $(this).attr("id");
-    $.ajax({
-      url: `/modal_receptar_turno/${id_turno}`,
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#idSeccionModalReceptarTurno').append(data.htmlresponse)
-        $('#modal_receptar_turno').modal('show');
-      }
-    });
-  });
-  $(document).on('click', '#idCerrarModalReceptarTurno', function () {
-    $.ajax({
-      success: function (data) {
-        $('#modal_receptar_turno').modal('hide');
-        {
-          $('#idSeccionModalReceptarTurno').empty()
-        }
-      }
-    });
-  });
-
-
+ 
     //boton REPROGRAMAR
     $(document).on('click', "[name='button_reprogramar_turno']", function () {
     let id_turno = $(this).attr("id");

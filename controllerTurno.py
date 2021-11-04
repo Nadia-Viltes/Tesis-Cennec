@@ -94,13 +94,24 @@ def obtener_motivoTurno():
     conexion.close()
     return motivoTurno
 
+## Acá obtengo el ID del turno que está macheado en el app.py
+def obtener_id_estado_turno_por_nombre(nombre):
+    query = "SELECT IdEstadoTurno FROM estadoturno WHERE Nombre like '{}' AND FechaBaja is null;".format(nombre)
+    conexion = get_conexion()
+    idEstadoTurno = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    idEstadoTurno = cur.fetchone()
+    conexion.close()
+    return idEstadoTurno
+
 
 ## Agregar un nuevo turno en estado asignado:
 def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalReceptado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',10,now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta)
+        VALUES ({},{},{},{},'{}','{}','{}',2,now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta)
     print("Este es mi insertar turno asignado -> {}".format(query))    
     idTurno_asignado = None    
     with conexion.cursor() as cur:
@@ -109,3 +120,17 @@ def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDrop
     conexion.commit()
     conexion.close()
     return idTurno_asignado
+
+
+def actualizar_turnos_computados(id_paciente, id_especialidad):
+    conexion = get_conexion()
+    query = """UPDATE configuracionTurno SET CantidadComputados=(SELECT count(IdTurno) from turno WHERE IdPaciente = {}),
+                FechaModificacion=NOW()
+                WHERE IdEspecialidad = {};""".format(id_paciente, id_especialidad)
+    turnos_computados = None    
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        turnos_computados = cur.lastrowid
+    conexion.commit()
+    conexion.close()
+    return turnos_computados

@@ -253,6 +253,8 @@ def grabar_turno():
     id_paciente = request.form['inputPacienteId']
     #inserto los datos en turno
     insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin)
+    #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
+    actualizar_turnos_computados(id_paciente,id_especialidad)
     return redirect("/turno/")
 
 
@@ -286,18 +288,14 @@ def buscar_paciente():
 
 
 # Acción para abrir el modal de RECEPTAR turno
-@app.route('/modal_receptar_turno/<int:id>')
-def receptar_turno(id):
-    turno_por_id = obtener_turno_por_id(id)
-    tipoTurno = obtener_tipoTurno()
-    especialidad = obtener_especialidad_turnos(id)
+@app.route('/receptar_turno/<int:id>')
+def receptar_turno(id_turno):
+    turno_por_id = obtener_turno_por_id(id_turno)
     values = {
         'titulo': 'Receptar turno',
-        'turno_por_id': turno_por_id,
-        'tipoTurno': tipoTurno,
-        'especialidad': especialidad,
+        'turno_por_id': turno_por_id
     }
-    return render_template('turnos_receptar2.html', data=values)
+    return render_template('turnos_receptar.html', data=values)
 
 
 
