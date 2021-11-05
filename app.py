@@ -290,12 +290,22 @@ def buscar_paciente():
 
 
 # Acción para abrir el modal de RECEPTAR turno
-@app.route('/receptar_turno/<int:id>')
+@app.route('/receptar_turno/<int:id_turno>')
 def receptar_turno(id_turno):
-    turno_por_id = obtener_turno_por_id(id_turno)
+    turno = obtener_turno_por_id(id_turno)
+    id_paciente = turno[5]
+    id_especialidad = turno[11]
+    id_profesional_actual = turno[13]
+    profesional_actual = [id_profesional_actual, turno[14], turno[15]]
+    paciente = obtener_paciente_por_id(id_paciente)
+    profesionales = obtener_profesionales_especialidad(id_especialidad)
+    profesionales_filtrados = [x for x in profesionales if x[0] != id_profesional_actual]
     values = {
         'titulo': 'Receptar turno',
-        'turno_por_id': turno_por_id
+        'turno': turno,
+        'paciente': paciente,
+        'profesionales': profesionales_filtrados,
+        'profesional_actual': profesional_actual
     }
     return render_template('turnos_receptar.html', data=values)
 

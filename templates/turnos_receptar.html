@@ -16,12 +16,18 @@
     </div>
 
     <!-- Breadcrumb -->
-    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-        aria-label="breadcrumb">
+    <nav style="
+      --bs-breadcrumb-divider: url(
+        &#34;data:image/svg + xml,
+        %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+      );
+    " aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item"><a href="/turno/">Turnos</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ data.titulo }}
+            </li>
         </ol>
     </nav>
 
@@ -31,7 +37,13 @@
 
     <div class="card border-success mb-3">
         <div class="card-header bg-transparent border-success">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-0">
+            <div class="
+          d-flex
+          justify-content-between
+          flex-wrap flex-md-nowrap
+          align-items-center
+          pb-0
+        ">
                 <h4 class="h4">{{ data.titulo }}</h4>
             </div>
         </div>
@@ -56,12 +68,14 @@
                             <td>{{ data.paciente[1] }} {{data.paciente[2] }}</td>
                             <td>{{ data.paciente[6] }}</td>
                             <td>{{ data.paciente[27]}}</td>
-                            <td>{{ data.paciente[28]}} </td>
+                            <td>{{ data.paciente[28]}}</td>
                             <td>{{ data.paciente[20]}}</td>
-                            <td><button type="button" class="btn btn-dark" data-bs-toggle="modal" name="botonVerTurnos"
-                                    data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
+                            <td>
+                                <button type="button" class="btn btn-dark" data-bs-toggle="modal" name="botonVerTurnos"
+                                    data-bs-target="#ModalVerTurnos" id="{{data.paciente[0]}}">
                                     Ver Turnos
-                                </button></td>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -71,53 +85,38 @@
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
+                <form class="row g-3">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                        <select name="tipoTurno" class="form-select" disabled>
-                            {% for tipoTurno in data.tipoTurno %}
-                            {% if tipoTurno[0] == 1 %}
-                            <option selected value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
-                            {% else %}
-                            <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
+                        <input type="text" class="form-control" value="{{data.turno[10]}}" disabled />
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select name="Especialidad" class="form-select" disabled>
-                            {% for especialidad in data.especialidad %}
-                            {% if especialidad[0] == data.turno_por_id[10] %}
-                            <option selected value={{especialidad[0]}}>{{especialidad[1]}}</option>
-                            {% else %}
-                            <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
+                        <input type="text" class="form-control" value="{{data.turno[12]}}" disabled />
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select name="Profesional" class="form-select">
-                            {% for profesional in data.profesional %}
-                            <option value={{profesional[0]}}>{{profesional[1]}}</option>
+                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select">
+                            <option value="{{data.profesional_actual[0]}}" selected >{{data.profesional_actual[1]}} {{data.profesional_actual[2]}}</option>
+                            {% for profesional in data.profesionales %}
+                                <option value={{profesional[0]}}>{{profesional[1]}} {{profesional[2]}}</option>
                             {% endfor %}
                         </select>
-                    </div>
+                    </div> 
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fechaTurno" value="{{data.turno_por_id[2]}}"
-                            disabled>
+                        <input type="date" class="form-control" name="fechaTurno" value="{{data.turno[2]}}" disabled />
                     </div>
                     <div class="col-4">
-                        <label for="horaTurno" class="form-label">Hora</label>
-                        <input type="time" class="form-control" name="horaTurno" value="{{data.turno_por_id[3]}}"
-                            disabled>
+                        <label for="horaInicio" class="form-label">Hora inicio</label>
+                        <input type="time" class="form-control" name="horaTurno" value="{{data.turno[3]}}" disabled />
+                    </div>
+                    <div class="col-4">
+                        <label for="horaFin" class="form-label">Hora fin</label>
+                        <input type="time" class="form-control" value="{{data.turno[4]}}" name="nameHoraFin" disabled>
                     </div>
                 </form>
-
             </div>
-
-
         </div>
 
         <div class="card-footer bg-transparent border-success">
@@ -131,7 +130,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- Modal -->
     <div class="modal fade" id="ModalVerTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -163,7 +161,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                        Aceptar
+                    </button>
                 </div>
             </div>
         </div>
@@ -173,39 +173,34 @@
     <!-- ================================================ -->
 
     <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
-        style="display: block; height: 514px; width: 1218px;">
+        style="display: block; height: 514px; width: 1218px">
     </canvas>
-
 </main>
 
-<div id="idSeccionModalBuscarPaciente">
-
-</div>
+<div id="idSeccionModalBuscarPaciente"></div>
 
 <script>
-    $(document).on('click', '#button_buscar_paciente', function () {
+    $(document).on("click", "#button_buscar_paciente", function () {
         $.ajax({
             url: "/modal_buscar_paciente",
             method: "GET",
             data: {},
             success: function (data) {
-                $('#idSeccionModalBuscarPaciente').append(data.htmlresponse)
-                $('#modal_buscar_paciente').modal('show');
-            }
+                $("#idSeccionModalBuscarPaciente").append(data.htmlresponse);
+                $("#modal_buscar_paciente").modal("show");
+            },
         });
     });
-    $(document).on('click', '#idCerrarModalAsignarTurno', function () {
+    $(document).on("click", "#idCerrarModalAsignarTurno", function () {
         $.ajax({
             success: function (data) {
-                $('#modal_buscar_paciente').modal('hide');
+                $("#modal_buscar_paciente").modal("hide");
                 {
-                    $('#idSeccionModalBuscarPaciente').empty()
+                    $("#idSeccionModalBuscarPaciente").empty();
                 }
-            }
+            },
         });
     });
-
 </script>
-
 
 {% endblock %}

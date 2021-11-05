@@ -56,21 +56,19 @@
         <td>{{turno[2]}}</td>
         <td>{{turno[3]}}</td>
         <td>{{turno[4]}}</td>
-        <td>{{turno[5]}} {{turno[6]}}</td>
-        <td>{{turno[7]}}</td>
+        <td>{{turno[6]}} {{turno[7]}}</td>
         <td>{{turno[8]}}</td>
         <td>{{turno[9]}}</td>
-        <td><button type="button" class="btn btn-primary openBtn" href="/receptar_turno/{{turno[0]}}" name="button_receptar_turno"
-            id="{{turno[0]}}">
+        <td>{{turno[10]}}</td>
+        <td><a type="button" class="btn btn-primary openBtn" href="/receptar_turno/{{turno[0]}}" name="button_receptar_turno">
             Receptar
-          </button>
-          <button type="button" class="btn btn-warning openBtn" href="/reprogramar_turno/{{turno[0]}}" name="button_reprogramar_turno" 
-          id="{{turno[0]}}">
+        </a>
+          <a type="button" class="btn btn-warning openBtn" href="/reprogramar_turno/{{turno[0]}}" name="button_reprogramar_turno">
             Reprogramar
-          </button>
-          <button type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" name="button_anular_turno"  id="{{turno[0]}}">
+          </a>
+          <a type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" name="button_anular_turno"  id="{{turno[0]}}">
             Anular
-          </button>
+          </a>
         </td>
       </tr>
       {% endfor %}
