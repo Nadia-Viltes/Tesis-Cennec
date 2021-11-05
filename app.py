@@ -251,8 +251,10 @@ def grabar_turno():
     hora_inicio = request.form['nameHoraInicio']
     hora_fin = request.form['nameHoraFin']
     id_paciente = request.form['inputPacienteId']
+    #busco el id del turno asignado
+    id_estado = obtener_id_estado_turno_por_estado("asignado")
     #inserto los datos en turno
-    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin)
+    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado)
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
     actualizar_turnos_computados(id_paciente,id_especialidad)
     return redirect("/turno/")

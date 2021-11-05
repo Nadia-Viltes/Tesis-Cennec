@@ -95,23 +95,23 @@ def obtener_motivoTurno():
     return motivoTurno
 
 ## Acá obtengo el ID del turno que está macheado en el app.py
-def obtener_id_estado_turno_por_nombre(nombre):
-    query = "SELECT IdEstadoTurno FROM estadoturno WHERE Nombre like '{}' AND FechaBaja is null;".format(nombre)
+def obtener_id_estado_turno_por_estado(estado):
+    query = "SELECT IdEstadoTurno FROM estadoturno WHERE LOWER(Nombre) like LOWER('{}') AND FechaBaja is null".format(estado)
     conexion = get_conexion()
-    idEstadoTurno = []
     with conexion.cursor() as cur:
-        cur.execute(query)
-    idEstadoTurno = cur.fetchone()
+        cur.execute(query)    
+    id_estado_turno = cur.fetchone()[0]
+    print("esto tiene mi fetchone -> {}".format(id_estado_turno))
     conexion.close()
-    return idEstadoTurno
+    return id_estado_turno
 
 
 ## Agregar un nuevo turno en estado asignado:
-def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta):
+def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalReceptado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',2,now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta)
+        VALUES ({},{},{},{},'{}','{}','{}',{},now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno)
     print("Este es mi insertar turno asignado -> {}".format(query))    
     idTurno_asignado = None    
     with conexion.cursor() as cur:
