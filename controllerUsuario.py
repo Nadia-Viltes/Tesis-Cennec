@@ -30,6 +30,20 @@ def obtener_lista_recursos():
     conexion.close()
     return recursos
 
+#busqueda dinamica de recursos por nombre o dni
+#para utilizar en la busqueda
+def obtener_recursos_nombre_apellido_dni(valor):
+    query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo
+            FROM recurso as re, tiporecurso as tre
+            WHERE re.IdTipoRecurso = tre.IdTipoRecurso
+            AND LOWER(CONCAT(re.nombre, re.apellido, NumeroDocumento)) like LOWER('{}')""".format(valor)    
+    conexion = get_conexion()
+    recursos = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    recursos = cur.fetchall()
+    conexion.close()
+    return recursos
 
 
         

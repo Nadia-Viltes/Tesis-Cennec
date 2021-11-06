@@ -52,7 +52,7 @@
             <h5 class="card-title">¿A qué recurso deseas asignarle un usuario?</h5>
 
             <!-- Search - Barra de busqueda -->
-            <form  class="d-flex p-2 m-3" style="width: 515px">
+            <form action="{{url_for('seleccionar_recurso')}}" method="POST" class="d-flex p-2 m-3" style="width: 515px">
                 <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar recurso"
                     aria-label="Search" />
                 <button class="btn btn-outline-success" type="submit">Buscar</button>

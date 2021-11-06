@@ -378,9 +378,15 @@ def configuracion_usuarios():
     return render_template('usuarios.html', data=data)
 
 
-@app.route('/seleccionar_recurso')
+@app.route('/seleccionar_recurso', methods=['GET', 'POST'])
 def seleccionar_recurso():
-    recursos = obtener_lista_recursos()
+    recursos = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        parametros = '%' + '%'.join(parametros.split()) + '%'
+        recursos = obtener_recursos_nombre_apellido_dni(parametros)
+    else:
+        recursos = obtener_lista_recursos()
     data = {
         'titulo': 'Crear usuario',
         'subtitulo': 'Seleccionar recurso',
