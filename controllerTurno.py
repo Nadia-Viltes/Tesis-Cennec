@@ -10,7 +10,8 @@ def obtener_lista_turno():
             AND pac.IdPaciente = tur.IdPaciente
             AND tur.IdEspecialidad = esp.IdEspecialidad
             AND prof.idEspecialidad = esp.IdEspecialidad
-            AND prof.IdRecurso = rec.IdRecurso;             
+            AND prof.IdRecurso = rec.IdRecurso
+            AND tur.FechaBaja is null;             
             """
     conexion = get_conexion()
     turno = []
@@ -20,22 +21,7 @@ def obtener_lista_turno():
     conexion.close()
     return turno
 
-def obtener_profesionales_especialidad(id):
-    query = """
-            SELECT pro.idprofesional, rec.nombre, rec.apellido, esp.idespecialidad, esp.nombre
-            FROM profesional AS pro, recurso AS rec, especialidad AS esp
-            WHERE pro.idespecialidad = esp.idespecialidad
-            AND pro.idrecurso = rec.idrecurso
-            AND esp.IdEspecialidad = {};""".format(id)
-    conexion = get_conexion()
-    profesionales_especialidad = []
-    with conexion.cursor() as cur:
-        cur.execute(query)
-    profesionales_especialidad = cur.fetchall()
-    conexion.close()
-    return profesionales_especialidad    
-        
-
+   
     ## Select tipo de turno - Lista de valores
 def obtener_tipoTurno():
     query = "SELECT IdTipoTurno, Nombre FROM tipoturno WHERE FechaBaja is null;"
@@ -60,6 +46,23 @@ def obtener_especialidad_turnos(id):
     IdEspecialidad = cur.fetchall()
     conexion.close()
     return IdEspecialidad
+
+
+## Select profesionales según especialidad - Lista de valores
+def obtener_profesionales_especialidad(id):
+    query = """
+            SELECT pro.idprofesional, rec.nombre, rec.apellido, esp.idespecialidad, esp.nombre
+            FROM profesional AS pro, recurso AS rec, especialidad AS esp
+            WHERE pro.idespecialidad = esp.idespecialidad
+            AND pro.idrecurso = rec.idrecurso
+            AND esp.IdEspecialidad = {};""".format(id)
+    conexion = get_conexion()
+    profesionales_especialidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    profesionales_especialidad = cur.fetchall()
+    conexion.close()
+    return profesionales_especialidad 
     
 
 def obtener_turno_por_id(id_turno):
@@ -122,11 +125,23 @@ def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDrop
     return idTurno_asignado
 
 
-def actualizar_turnos_computados(id_paciente, id_especialidad):
+## Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
+def obtener_id_configuracion_turno(id_paciente, id_especialidad):
+    query = "SELECT IdconfiguracionTurno FROM configuracionTurno WHERE IdPaciente = {} and IdEspecialidad = {} AND FechaBaja is null;".format(id_paciente, id_especialidad)
     conexion = get_conexion()
-    query = """UPDATE configuracionTurno SET CantidadComputados=(SELECT count(IdTurno) from turno WHERE IdPaciente = {}),
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    idConfigTurno = cur.fetchone()[0]
+    conexion.close()
+    return idConfigTurno
+
+
+def actualizar_turnos_computados(id_paciente, id_especialidad,id_configturno):
+    conexion = get_conexion()
+    query = """UPDATE configuracionTurno SET CantidadComputados=(SELECT count(IdTurno) from turno WHERE IdPaciente = {} and IdEspecialidad = {} AND FechaBaja is null),
                 FechaModificacion=NOW()
-                WHERE IdEspecialidad = {};""".format(id_paciente, id_especialidad)
+                WHERE IdconfiguracionTurno = {};""".format(id_paciente, id_especialidad, id_configturno)
+    print("Este es mi insertar turnos computados -> {}".format(query))  
     turnos_computados = None    
     with conexion.cursor() as cur:
         cur.execute(query)

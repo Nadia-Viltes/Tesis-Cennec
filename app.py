@@ -256,7 +256,8 @@ def grabar_turno():
     #inserto los datos en turno
     insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado)
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
-    actualizar_turnos_computados(id_paciente,id_especialidad)
+    id_configturno = obtener_id_configuracion_turno(id_paciente,id_especialidad)
+    actualizar_turnos_computados(id_paciente,id_especialidad,id_configturno)
     return redirect("/turno/")
 
 
@@ -377,16 +378,15 @@ def configuracion_usuarios():
     return render_template('usuarios.html', data=data)
 
 
-@app.route('/modal_agregar_usuario')
-def agregar_usuario():
-    privilegios = obtener_lista_privilegios()
-    roles = obtener_lista_roles()
-    values = {
-        'titulo': 'agregar_rol',
-        'roles': roles,
-        'privilegios': privilegios
+@app.route('/seleccionar_recurso')
+def seleccionar_recurso():
+    recursos = obtener_lista_recursos()
+    data = {
+        'titulo': 'Crear usuario',
+        'subtitulo': 'Seleccionar recurso',
+        'recursos': recursos
     }
-    return jsonify({'htmlresponse': render_template('agregar_usuario.html', data=values)})
+    return render_template('usuarios_seleccionar_recurso.html', data=data)
 
 
 @app.route('/login')

@@ -42,53 +42,36 @@
   <table class="table table-hover p-3 m-2">
     <thead>
       <tr>
-        <th scope="col">Nombre y apellido del recurso</th>
-        <th scope="col">Rol usuario</th>
         <th scope="col">Nombre usuario</th>
+        <th scope="col">Rol usuario</th>
+        <th scope="col">Nombre y apellido del recurso</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
     <tbody>
         {% for usuario in data.usuario %}
         <tr>
-          <td>{{usuario[1]}} {{usuario[2]}}</td>
-          <td>{{usuario[3]}}</td>
           <td>{{usuario[4]}}</td>
-          <td><button type="button" class="btn btn-info" data-bs-toggle="modal" name="EditarUsuario" id={{usuario[0]}}>
-              Editar</button>
-              <button type="button" class="btn btn-danger" data-bs-toggle="modal" name="EliminarUsuario" id={{usuario[0]}}>
-                Eliminar</button>
+          <td>{{usuario[3]}}</td>
+          <td>{{usuario[1]}} {{usuario[2]}}</td>
+          <td><a type="button" class="btn btn-info" href="/editar_usuario/{{usuario[0]}}" name="EditarUsuario" id={{usuario[0]}}>
+              Editar</a>
+              <a type="button" class="btn btn-danger" href="/eliminar_usuario/{{usuario[0]}}" name="EliminarUsuario" id={{usuario[0]}}>
+                Eliminar</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
   </table>
 
-  <!-- Paginado -->
-  <nav aria-label="Page navigation example">
-    <ul class="pagination pagination-sm justify-content-center m-5">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Atrás</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Siguiente</a>
-      </li>
-    </ul>
-  </nav>
 
     <!-- Button trigger modal -->
     <div class="form-row text-center">
       <div class="col-12">
-        <button type="button" class="btn btn-success openBtn" data-bs-toggle="modal" id="button_agregar_usuario">
-          Agregar
-        </button>
+        <a class="btn btn-success" href="/seleccionar_recurso" role="button">Agregar nuevo usuario</a>
       </div>
     </div>
 
-  <div id="idSeccionModalAgregarUsuario"></div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -99,31 +82,5 @@
 
 </main>
 
-
-
-<script>
-  $(document).on('click', '#button_agregar_usuario', function(){
-      $.ajax({
-       url:"/modal_agregar_usuario",
-       method:"GET",
-       data:{},
-       success:function(data){
-        $('#idSeccionModalAgregarUsuario').append(data.htmlresponse)
-        $('#AgregarUsuario').modal('show');
-       }
-      });
-  });
-  $(document).on('click', '#idCerrarModalUsuario', function(){
-      $.ajax({
-       success:function(data){
-        $('#AgregarUsuario').modal('hide');
-        {
-          $('#idSeccionModalAgregarUsuario').empty()
-        }
-       }
-      });
-  });
-
-  </script>
 
 {% endblock %}
