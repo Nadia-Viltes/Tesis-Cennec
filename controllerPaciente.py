@@ -44,8 +44,8 @@ def obtener_pacientes_query(parametros):
             AND tu.IdTutoria = pa.idTutoria
             AND pa.IdPaciente = afi.IdPaciente
             AND fi.IdFinanciador = afi.IdFinanciador
-            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido)) LIKE '%{0}%' OR pa.NumeroDocumento LIKE '%{0}%')
-            """.format(parametros.lower())
+            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento))) LIKE LOWER('{}')
+            """.format(parametros)
     print("Esta es la consutla final {}".format(query))        
     conexion = get_conexion()
     pacientes = []

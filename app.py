@@ -15,6 +15,7 @@ def pacientes():
     pacientes = None
     if request.method == 'POST':
         parametros = request.form["buscar"]
+        parametros = '%' + '%'.join(parametros.split()) + '%'
         pacientes = obtener_pacientes_query(parametros)
     else: 
         pacientes = obtener_pacientes()
