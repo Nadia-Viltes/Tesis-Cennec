@@ -365,7 +365,13 @@ def agregar_rol():
 
 @app.route('/guardar_rol', methods=["POST"])
 def guardar_rol():
+    nombreRol = request.form["nombreRol"]
+    descripcionRol = request.form["descripcionRol"]
+    privilegio_nombre = request.form["privilegio_nombre"]
+    idRol = insertar_rol(nombreRol, descripcionRol)
+    insertar_rol_privilegio(idRol, privilegio_nombre)
     print("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
+    # SI DA OK redireccionar
     return redirect("/rol")
 
 
@@ -394,6 +400,23 @@ def seleccionar_recurso():
         'recursos': recursos
     }
     return render_template('usuarios_seleccionar_recurso.html', data=data)
+
+
+# Acción para ver la pantalla de agregar usuario
+#aca
+@app.route('/agregar_usuario/<int:id>')
+def agregar_usuario(id):
+    recurso = obtener_recurso_por_id(id)
+    rol = obtener_lista_roles()
+    privilegios = obtener_lista_privilegios()
+    values = {
+        'titulo': 'Crear usuario',
+        'subtitulo': 'Datos de autenticación',
+        'recurso': recurso,
+        'rol': rol,
+        'privilegios': privilegios
+    }
+    return render_template('usuario_agregar.html', data=values)
 
 
 @app.route('/login')
