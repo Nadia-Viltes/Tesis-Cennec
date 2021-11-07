@@ -367,9 +367,10 @@ def agregar_rol():
 def guardar_rol():
     nombreRol = request.form["nombreRol"]
     descripcionRol = request.form["descripcionRol"]
-    privilegio_nombre = request.form["privilegio_nombre"]
+    idPrivilegios = request.form.getlist('privilegio_nombre')
     idRol = insertar_rol(nombreRol, descripcionRol)
-    insertar_rol_privilegio(idRol, privilegio_nombre)
+    for idPrivilegio in idPrivilegios:
+        insertar_rol_privilegio(idRol, idPrivilegio)
     print("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
     # SI DA OK redireccionar
     return redirect("/rol")

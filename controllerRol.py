@@ -46,11 +46,11 @@ def insertar_rol (nombreRol,descripcionRol):
 
 
 # Acá inserto los privilegios que le asigné a ese rol
-def insertar_rol_privilegio (idRol,privilegio_nombre):
+def insertar_rol_privilegio (idRol, idPrivilegio):
     conexion = get_conexion()
     query = """
         INSERT INTO rolprivilegio (IdRol, IdPrivilegio, FechaAlta) 
-        VALUES ({},{},NOW());""".format(idRol,privilegio_nombre)
+        VALUES ({},{},NOW());""".format(idRol, idPrivilegio)
     rol_privilegio = None
     print("ESTE ES MI INSERTAR ROL/PRIVILEGIO -> {}".format(query))
     with conexion.cursor() as cur:
