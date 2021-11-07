@@ -96,17 +96,23 @@
                 <form action="/grabar_turno" method="POST">
                     <div class="row">
                         <div class="col-6">
+                            <div><h6>Roles</h6></div>
                             <ul class="list-group">
                                 {% for rol in data.rol %}
                                 <li class="list-group-item">
-                                  <input class="form-check-input me-1" type="checkbox" value={{rol[0]}} id={{rol[0]}}>
+                                <div class="form-check">
+                                  <input class="form-check-input me-1" type="radio" value={{rol[0]}} id={{rol[0]}} name="checkRol">
+                                  <label class="form-check-label" for="flexRadioDefault1">
                                   {{rol[1]}}
-                                </li>
+                                </label>
+                                </div>
+                            </li>
                                 {% endfor %}
                               </ul>
                             </div>
                             <div class="col-6">
-                                <ul class="list-group">
+                                <div><h6>Privilegios</h6></div>
+                                <ul class="list-group">   
                                     {% for privilegios in data.privilegios %}
                                     <li class="list-group-item">
                                       <input class="form-check-input me-1" type="checkbox" value={{privilegios[0]}} id={{privilegios[0]}} disabled>

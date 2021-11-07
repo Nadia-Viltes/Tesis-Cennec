@@ -217,7 +217,7 @@ def obtener_paciente_por_id(idPaciente):
     conexion = get_conexion()
     paciente = None
     with conexion.cursor() as cur:
-        cur.execute(query),(idPaciente,)
+        cur.execute(query)
     paciente = cur.fetchone()
     conexion.close()
     return paciente

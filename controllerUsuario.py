@@ -17,11 +17,13 @@ def obtener_lista_usuarios():
     conexion.close()
     return usuario
 
-# query para que me muestre los datos del recuerso a seleccionar
+# query para que me muestre los datos del recurso a seleccionar
 def obtener_lista_recursos():
     query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo 
-            FROM recurso as re, tiporecurso as tre 
-            WHERE re.IdTipoRecurso = tre.IdTipoRecurso"""
+            FROM recurso as re, tiporecurso as tre
+            WHERE re.IdTipoRecurso = tre.IdTipoRecurso
+            AND re.IdRecurso not in (Select IdRecurso from usuario WHERE fechabaja is null)
+            """
     conexion = get_conexion()
     recursos = []
     with conexion.cursor() as cur:

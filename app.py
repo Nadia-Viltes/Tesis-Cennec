@@ -291,7 +291,7 @@ def buscar_paciente():
 
 
 
-# Acción para abrir el modal de RECEPTAR turno
+# Acción para ver la pantalla de RECEPTAR turno
 @app.route('/receptar_turno/<int:id_turno>')
 def receptar_turno(id_turno):
     turno = obtener_turno_por_id(id_turno)
@@ -307,7 +307,7 @@ def receptar_turno(id_turno):
         'turno': turno,
         'paciente': paciente,
         'profesionales': profesionales_filtrados,
-        'profesional_actual': profesional_actual
+        'profesional_actual': profesional_actual,
     }
     return render_template('turnos_receptar.html', data=values)
 
@@ -410,14 +410,14 @@ def agregar_usuario(id):
     recurso = obtener_recurso_por_id(id)
     rol = obtener_lista_roles()
     privilegios = obtener_lista_privilegios()
-    values = {
+    data = {
         'titulo': 'Crear usuario',
         'subtitulo': 'Datos de autenticación',
         'recurso': recurso,
         'rol': rol,
         'privilegios': privilegios
     }
-    return render_template('usuario_agregar.html', data=values)
+    return render_template('usuario_agregar.html', data=data)
 
 
 @app.route('/login')
