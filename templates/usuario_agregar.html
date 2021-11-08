@@ -122,9 +122,10 @@
                                   </ul>
                                 </div>
                         </div>
-                    </form>
                     </div>
+                </form>
             </div>
+        </div>
 
 
         <div class="card-footer bg-transparent border-success">
@@ -152,7 +153,23 @@
 </main>
 
 <script>
-
+    $("[name='checkRol']").change(function(){
+        const idRol = $(this).val();
+        $.ajax({
+            url: "/setear_privilegios_rol_seleccionado",
+            method: "POST",
+            data: {
+                "idRol": idRol
+            },
+            success: function (response) {
+                const privilegios = response.privilegios
+                $(`[type='checkbox']`).prop('checked',false)
+                for (const privilegio of privilegios) {
+                    $(`[type='checkbox'][value='${privilegio}']`).prop('checked',true)
+                }  
+            }
+        });
+    });
 </script>
 
 

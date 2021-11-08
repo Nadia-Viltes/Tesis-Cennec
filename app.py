@@ -341,7 +341,13 @@ def anular_turno(id):
     }
     return jsonify({'htmlresponse': render_template('turnos_anular.html', data=values)})
 
-
+@app.route('/setear_privilegios_rol_seleccionado', methods=["POST"])
+def setear_privilegios():
+    #tomo los datos del rol
+    id_rol = request.form['idRol']
+    privilegios = obtener_privilegio_por_id_rol(id_rol)
+    print("estos son los privilegios -> {}".format(privilegios))
+    return jsonify({'privilegios': privilegios})
 
 @app.route('/rol')
 def configuracion_roles():
@@ -375,7 +381,6 @@ def guardar_rol():
     # SI DA OK redireccionar
     return redirect("/rol")
 
-
 @app.route('/usuario')
 def configuracion_usuarios():
     usuario = obtener_lista_usuarios()
@@ -404,7 +409,6 @@ def seleccionar_recurso():
 
 
 # Acción para ver la pantalla de agregar usuario
-#aca
 @app.route('/agregar_usuario/<int:id>')
 def agregar_usuario(id):
     recurso = obtener_recurso_por_id(id)
@@ -418,7 +422,6 @@ def agregar_usuario(id):
         'privilegios': privilegios
     }
     return render_template('usuario_agregar.html', data=data)
-
 
 @app.route('/login')
 def login():

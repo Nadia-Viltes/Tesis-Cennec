@@ -56,8 +56,20 @@ def obtener_recurso_por_id(idRecurso):
     conexion = get_conexion()
     recurso_id = None
     with conexion.cursor() as cur:
-        cur.execute(query),(idRecurso,)
+        cur.execute(query)
     recurso_id = cur.fetchone()
     conexion.close()
     return recurso_id
 
+# query para obtener recurso por ID
+def obtener_privilegio_por_id_rol(id_rol):
+    query = """SELECT idprivilegio FROM ROLPRIVILEGIO
+               WHERE idrol = {}
+               AND fechabaja is null;""".format(id_rol)
+    conexion = get_conexion()
+    privilegios = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    privilegios = cur.fetchall()
+    conexion.close()
+    return privilegios
