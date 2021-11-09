@@ -4,7 +4,8 @@ from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
 from controllerMiAgenda import *
-from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify
+from controllerLogIn import *
+from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify, session, flash
 
 app = Flask(__name__)
 
@@ -389,12 +390,38 @@ def agregar_usuario():
     return jsonify({'htmlresponse': render_template('agregar_usuario.html', data=values)})
 
 
-@app.route('/login')
+# @app.route('/login')
+# def login():
+#     data = {
+#         'titulo': 'Login', 
+#     }
+#     return render_template('login.html', data=data)
+
+@app.route('/login',methods=["GET","POST"])
 def login():
-    data = {
-        'titulo': 'Login',
-    }
-    return render_template('login.html', data=data)
+    if request.method == 'POST':
+        usuario = request.form['usuario']
+        password = request.form['password'].encode('utf-8')
+        IdUsuario = login_usuario_id()
+        contraseña = login_pass()
+
+        if len(usuario) > 0:
+            if (password, usuario["password"].encode('utf-8')) == IdUsuario["contraseña"].encode('utf-8'):
+                session['name'] = usuario['name']
+                return render_template("home.html")
+            else:
+                return "Error password and usuario not match"
+        else:
+            return "Error user not found"
+    else:
+        return render_template("login.html")
+
+@app.route('/logout', methods=["GET", "POST"])
+def logout():
+    session.clear()
+    return render_template("home.html")
+
+
 
 
 def pagina_no_encontrada(error):
