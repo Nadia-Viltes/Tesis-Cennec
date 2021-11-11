@@ -65,12 +65,12 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <label for="nombrePaciente" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="nombrePaciente">
+                                    <input type="text" class="form-control" name="nombrePaciente" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="apellidoPaciente" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" name="apellidoPaciente">
+                                    <input type="text" class="form-control" name="apellidoPaciente" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
@@ -82,8 +82,8 @@
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="tipoDocumento" class="form-label">Tipo de documento</label>
-                                    <select name="tipoDocumento" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                    <select name="tipoDocumento" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for tipoDoc in data.tipoDocumento %}
                                         <option value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
                                         {% endfor %}
@@ -92,20 +92,20 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
-                                    <input type="text" class="form-control" name="nroDocumento">
+                                    <input type="text" class="form-control" name="nroDocumento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-4">
                                     <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento">
+                                    <input type="date" class="form-control" name="fechaNacimiento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="pais" class="form-label">País</label>
-                                    <select name="pais" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                    <select name="pais" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for paises in data.pais %}
                                         <option value={{paises[0]}}>{{paises[1]}}</option>
                                         {% endfor %}
@@ -114,8 +114,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="provincia" class="form-label">Provincia</label>
-                                    <select name="provincia" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                    <select name="provincia" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for provincias in data.provincia %}
                                         <option value={{provincias[0]}}>{{provincias[1]}}</option>
                                         {% endfor %}
@@ -124,8 +124,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="localidad" class="form-label">Localidad</label>
-                                    <select name="localidad" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                    <select name="localidad" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for localidades in data.localidad %}
                                         <option value={{localidades[0]}}>{{localidades[1]}}</option>
                                         {% endfor %}
@@ -135,15 +135,15 @@
                             <div class="row mt-3">
                                 <div class="col-sm-4">
                                     <label for="calle" class="form-label">Calle</label>
-                                    <input type="text" class="form-control" name="calle">
+                                    <input type="text" class="form-control" name="calle" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="altura" class="form-label">Altura</label>
-                                    <input type="text" class="form-control" name="altura">
+                                    <input type="text" class="form-control" name="altura" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
-                                    <input type="text" class="form-control" name="piso">
+                                    <input type="text" class="form-control" name="piso" barrio>
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="dpto" class="form-label">Dpto</label>
@@ -152,7 +152,7 @@
                                 <div class="col-md-4">
                                     <label for="barrio" class="form-label">Barrio</label>
                                     <select name="barrio" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for barrios in data.barrio %}
                                         <option value={{barrios[0]}}>{{barrios[1]}}</option>
                                         {% endfor %}
@@ -203,7 +203,7 @@
                                 <div class="col-md-4">
                                     <label for="financiador" class="form-label">Financiador</label>
                                     <select name="financiador" class="form-select">
-                                        <option selected disabled>Seleccionar...</option>
+                                        <option value="" selected disabled>Seleccionar...</option>
                                         {% for financiadores in data.financiador %}
                                         <option value={{financiadores[0]}}>{{financiadores[1]}}</option>
                                         {% endfor %}
@@ -218,14 +218,14 @@
                         </div>
                     </div>
                 </div>
-                    <div class="row mt-3">
-                        <div class="col-md-6 justify-content-md-start">
-                            <a class="btn btn-primary" href="/pacientes" role="button">Atrás</a>
-                        </div>
-                        <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                            <button type="submit" id="buttonAgregarPaciente" class="btn btn-success">Guardar</button>
-                        </div>
+                <div class="row mt-3">
+                    <div class="col-md-6 justify-content-md-start">
+                        <a class="btn btn-primary" href="/pacientes" role="button">Atrás</a>
                     </div>
+                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="buttonAgregarPaciente" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
 
             </form>
         </div>
