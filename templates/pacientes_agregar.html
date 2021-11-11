@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
-                                    <input type="text" class="form-control" name="nroDocumento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="number" class="form-control" name="nroDocumento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-4">
@@ -143,7 +143,7 @@
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
-                                    <input type="text" class="form-control" name="piso" barrio>
+                                    <input type="text" class="form-control" name="piso">
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="dpto" class="form-label">Dpto</label>
@@ -151,7 +151,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="barrio" class="form-label">Barrio</label>
-                                    <select name="barrio" class="form-select">
+                                    <select name="barrio" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
                                         <option value="" selected disabled>Seleccionar...</option>
                                         {% for barrios in data.barrio %}
                                         <option value={{barrios[0]}}>{{barrios[1]}}</option>
