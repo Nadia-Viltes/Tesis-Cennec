@@ -58,8 +58,8 @@
                             <td>{{ data.paciente[27]}}</td>
                             <td>{{ data.paciente[28]}} </td>
                             <td>{{ data.paciente[20]}}</td>
-                            <td><button type="button" class="btn btn-dark" data-bs-toggle="modal"
-                                    name="botonVerTurnos" data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
+                            <td><button type="button" class="btn btn-dark" data-bs-toggle="modal" name="botonVerTurnos"
+                                    data-bs-target="#ModalVerTurnos" id={{data.paciente[0]}}>
                                     Ver Turnos
                                 </button></td>
                         </tr>
@@ -99,11 +99,13 @@
                     </div>
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" id="idFechaTurno" name="fechaTurno" min="2021-01-01" max="2022-12-31">
+                        <input type="date" class="form-control" id="idFechaTurno" name="fechaTurno" min="2021-01-01"
+                            max="2022-12-31">
                     </div>
                     <div class="col-4">
                         <label for="horaTurno" class="form-label">Hora inicio</label>
-                        <input type="time" class="form-control" id="idhoraInicio" name="nameHoraInicio" min="08:00" max="19:30">
+                        <input type="time" class="form-control" id="idhoraInicio" name="nameHoraInicio" min="08:00"
+                            max="19:30">
                     </div>
                     <div class="col-4">
                         <label for="horaFin" class="form-label">Hora fin</label>
@@ -118,12 +120,12 @@
                     <a class="btn btn-primary" href="/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
+                    <button type="submit" id="guardarButtonAsignar" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
-    </form>
-        
+        </form>
+
     </div>
 
     <!-- Modal -->
@@ -174,7 +176,7 @@
 
 <script>
     //carga el dropdown de profesional por especialidad
-    $("#idEspecialidadDropdown").change(function(){
+    $("#idEspecialidadDropdown").change(function () {
         let idEspecialidad = $(this).val();
         $.ajax({
             url: `/profesionales_dropdown/${idEspecialidad}`,
@@ -187,11 +189,11 @@
     });
 
     //Inteligencia en minutos
-    $("#idhoraInicio").on("input", function(){
+    $("#idhoraInicio").on("input", function () {
         let tiempoCompleto = $(this).val().split(":");
         let hora = tiempoCompleto[0]
         let minutos = tiempoCompleto[1]
-        if(hora.length > 1 && minutos.length > 1){
+        if (hora.length > 1 && minutos.length > 1) {
             let date = new Date()
             date.setHours(hora)
             date.setMinutes(minutos)
@@ -199,7 +201,7 @@
             let horaFinal = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
             let minutoFinal = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
             $("#idhoraFin").val(`${horaFinal}:${minutoFinal}`)
-        }else{
+        } else {
             $("#idhoraFin").val('')
         }
     });

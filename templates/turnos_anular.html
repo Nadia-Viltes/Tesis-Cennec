@@ -1,98 +1,132 @@
-<div class="modal fade" id="modal_anular_turno" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
+{% extends 'base/base.html' %}
 
-      <!-- Cabecera Modal -->
-      <div class="modal-header">
-        <h5 class="modal-title">Anular turno</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-          id="idCerrarModalAnularTurno"></button>
-      </div>
+<!-- ================================================ -->
+<!-- PANTALLA ANULAR TURNOS -->
+<!-- ================================================ -->
+{% block anular_turno %}
 
-      <!-- Body Modal -->
-      <div class="modal-body">
-        <h5>Seleccionar paciente</h5>
-
-        <div class="container">
-          <div class="row">
-            <div class="col-10">
-              <table class="text-primary table">
-                <thead>
-                  <tr>
-                    <th scope="col">Nombre y Apellido</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">HCD</th>
-                    <th scope="col">Financiador</th>
-                    <th scope="col">Nro. afiliado</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+<main class="col-md-9 ms-sm-auto col-lg-10">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class></div>
         </div>
-        <form class="row g-3">
-          <h5 style="padding-top: 30px;">Seleccionar turno</h5>
+        <div class="chartjs-size-monitor-shrink">
+            <div class=""></div>
+        </div>
+    </div>
 
-          <div class=row>
-            <div class=row>
-              <div class="col-md-6">
-                <label for="motivoTurno" class="form-label">Motivo</label>
-                <select id="motivoTurno" class="form-select">
-                  {% for motivoTurno in data.motivoTurno %}
-                  <option value={{motivoTurno[0]}}>{{motivoTurno[1]}}</option>
-                  {% endfor %}
-                </select>
-              </div>
+    <!-- Breadcrumb -->
+    <nav style="
+      --bs-breadcrumb-divider: url(
+        &#34;data:image/svg + xml,
+        %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+      );
+    " aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/turno/">Turnos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{ data.titulo }}
+            </li>
+        </ol>
+    </nav>
+
+    <!-- ================================================ -->
+    <!-- PANTALLA REPROGRAMAR TURNO -->
+    <!-- ================================================ -->
+
+    <div class="card border-success mb-3">
+        <div class="card-header bg-transparent border-success">
+            <div class="
+          d-flex
+          justify-content-between
+          flex-wrap flex-md-nowrap
+          align-items-center
+          pb-0
+        ">
+                <h4 class="h4">{{ data.titulo }}</h4>
             </div>
+        </div>
 
-              <div class= "row pt-3">
-                <div class="col-md-12">
-                <ul class="list-group">
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    First checkbox
-                  </li>
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    Second checkbox
-                  </li>
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    Third checkbox
-                  </li>
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    Fourth checkbox
-                  </li>
-                  <li class="list-group-item">
-                    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
-                    Fifth checkbox
-                  </li>
-                </ul>
-              </div>
+        <div class="card-body text-success">
+            <h5 class="card-title">Paciente seleccionado</h5>
+
+            <div class="container">
+                <table class="table text-secondary">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre y Apellido</th>
+                            <th scope="col">Nro. de documento</th>
+                            <th scope="col">Financiador</th>
+                            <th scope="col">Nro. afiliado</th>
+                            <th scope="col">HCD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ data.paciente[1]}} {{data.paciente[2]}}</td>
+                            <td>{{ data.paciente[6]}}</td>
+                            <td>{{ data.paciente[27]}}</td>
+                            <td>{{ data.paciente[28]}}</td>
+                            <td>{{ data.paciente[20]}}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
-          </div>
-        </form>
-      </div>
+        <div class="card-body border-top">
+            <h5 class="card-title">Anulación de turnos</h5>
+            <form action="/guardar_anular_turnos" method="POST" class="row g-3">
+                <div class="container">
 
-      <!-- footer modal-->
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-          id="idCerrarModalAnularTurno">Cerrar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
-      </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6">
+                            <label for="motivoTurno" class="form-label">Seleccioná el motivo</label>
+                            <select id="motivoTurno" class="form-select">
+                                <option selected disabled>Seleccionar...</option>
+                                {% for motivoTurno in data.motivoTurno %}
+                                <option value={{motivoTurno[0]}}>{{motivoTurno[1]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
 
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <ul class="list-group">
+                                {% for turnosAnular in data.turnos_para_anular %}
+                                <li class="list-group-item">
+                                    <input class="form-check-input me-1" type="checkbox" value={{turnosAnular[0]}} id={{turnosAnular[0]}} name="lista_turnos_para_anular"  checked disabled>
+                                    El turno se encuentra en estado {{turnosAnular[1]}} para el día {{turnosAnular[2]}} desde las {{turnosAnular[3]}} hs. hasta las {{turnosAnular[4]}} hs. para {{turnosAnular[9]}}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6 justify-content-md-start">
+                                <a class="btn btn-primary" href="/turno/" role="button">Atrás</a>
+                            </div>
+                            <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                                <button type="submit" id="guardarButtonReprogramar" class="btn btn-success">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
 
     </div>
-  </div>
-</div>
+
+
+    <!-- ================================================ -->
+    <!-- Config Pantalla -->
+    <!-- ================================================ -->
+
+    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+        style="display: block; height: 514px; width: 1218px">
+    </canvas>
+</main>
+
+
+{% endblock %}

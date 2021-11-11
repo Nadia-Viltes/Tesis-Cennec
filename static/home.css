@@ -18,10 +18,6 @@ header{
     display: flex;
 }
 
-.modal-body{
-    height: 485px;
-    padding: 16px;
-}
 
 .floatingTextarea2{
     height: 200px;

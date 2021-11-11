@@ -39,14 +39,14 @@
 
 
   <!-- Tabla -->
-  <table class="table table-hover p-3 m-2">
+  <table class="table table-hover">
     <thead>
       <tr>
         <th scope="col">#</th>
         <th scope="col">Nombre y Apellido</th>
         <th scope="col">Nro. de documento</th>
         <th scope="col">Nro. de HCD</th>
-        <th scope="col">Acción</th>
+        <th scope="col" style="text-align:center;">Acción</th>
       </tr>
     </thead>
     <tbody>
@@ -56,8 +56,11 @@
         <td>{{hcd[1]}} {{hcd[2]}}</td>
         <td>{{hcd[3]}}</td>
         <td>{{hcd[4]}}</td>
-        <td><a class="btn btn-success" href="/ver_HCD/{{hcd[0]}}" role="button" id={{hcd[0]}}>
-            Ver</td></a>
+        <td style="text-align:center;"><a class="btn btn-info" href="/ver_admision/{{hcd[0]}}" role="button" id={{hcd[0]}}>
+            Ver admisión</a>
+          <a class="btn btn-primary" href="/ver_evoluciones/{{hcd[0]}}" role="button" id={{hcd[0]}}>
+            Ver evolución</a>
+        </td>
       </tr>
       {% endfor %}
     </tbody>

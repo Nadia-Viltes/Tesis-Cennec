@@ -1,3 +1,4 @@
+from re import template
 from controllerPaciente import *
 from controllerUsuario import *
 from controllerRol import *
@@ -9,7 +10,7 @@ from flask import Flask, render_template, render_template_string, redirect, url_
 app = Flask(__name__)
 
 
-# Operación para mostrar la lista
+# MUESTRA LA LISTA DE PACIENTES Y BUSQUEDA
 @app.route('/pacientes/', methods=['GET', 'POST'])
 def pacientes():
     pacientes = None
@@ -26,6 +27,29 @@ def pacientes():
     return render_template('pacientes.html', data=data)
 
 
+#Pantalla de AGREGAR PACIENTE
+@app.route('/agregar_paciente')
+def agregar_paciente():
+    tipoDoc = obtener_tipoDocumento()
+    pais = obtener_pais()
+    provincia = obtener_provincia()
+    localidad = obtener_localidad()
+    barrio = obtener_barrio()
+    financiador = obtener_financiador()
+    data = {
+        'titulo': 'Agregar paciente',
+        'tipoDocumento': tipoDoc,
+        'pais': pais,
+        'provincia': provincia,
+        'localidad': localidad,
+        'barrio': barrio,
+        'financiador': financiador
+    }
+    return render_template('pacientes_agregar.html', data=data)
+
+
+
+#FUNCIÓN PARA QUE GUARDE LOS DATOS DEL PACIENTE NUEVO
 @app.route("/guardar_paciente", methods=["POST"])
 def guardar_paciente():
     nombrePaciente = request.form["nombrePaciente"]
@@ -58,25 +82,9 @@ def guardar_paciente():
     return redirect("/pacientes")
 
 
-@app.route('/datos_modal_agregar')
-def agregar_datos():
-    tipoDoc = obtener_tipoDocumento()
-    pais = obtener_pais()
-    provincia = obtener_provincia()
-    localidad = obtener_localidad()
-    barrio = obtener_barrio()
-    financiador = obtener_financiador()
-    values = {
-        'tipoDocumento': tipoDoc,
-        'pais': pais,
-        'provincia': provincia,
-        'localidad': localidad,
-        'barrio': barrio,
-        'financiador': financiador
-    }
-    return jsonify({'htmlresponse': render_template('agregar_paciente.html', data=values)})
 
-@app.route('/datos_modal_editar/<int:id>')
+# pantalla de EDITAR PACIENTE
+@app.route('/editar_paciente/<int:id>')
 def obtener_paciente_id(id):
     paciente = obtener_paciente_por_id(id)
     tipoDocumento = obtener_tipoDocumento()
@@ -85,7 +93,7 @@ def obtener_paciente_id(id):
     localidad = obtener_localidad()
     barrio = obtener_barrio()
     financiador = obtener_financiador()
-    values = {
+    data = {
             'titulo': 'Editar paciente',
             'pacientes': paciente,
             'tipoDocumento': tipoDocumento,
@@ -95,9 +103,11 @@ def obtener_paciente_id(id):
             'barrio': barrio,
             'financiador': financiador
     }
-    return jsonify({'htmlresponse': render_template('editar_paciente.html', data=values)})
+    return render_template("pacientes_editar.html", data=data)
 
 
+
+# Acción para guardar las actualizaciones del editar PACIENTE
 @app.route("/actualizar_paciente", methods=["POST"])
 def actualizar_pacientes():
     idPaciente = request.form["idPaciente"]
@@ -129,24 +139,25 @@ def actualizar_pacientes():
     return redirect("/pacientes")
 
 
+
 @app.route('/home')
 def index(name='Home'):
     return render_template('index.html', titulo=name)
 
 
 
-@app.route('/HCD/')
-def HCD():
+@app.route('/hcd')
+def hcd():
     hcd = obtener_lista_hcd()
     data={
         'titulo': 'Historia Clínica Dígital',
         'hcd': hcd
     }
-    return render_template('HCD.html', data=data)
+    return render_template('hcd.html', data=data)
 
 
 
-@app.route('/ver_HCD/<int:id>', methods=["GET", "POST"])
+@app.route('/ver_admision/<int:id>', methods=["GET", "POST"])
 def obtener_hcd_idd(id):
     paciente_hcd = obtener_hcd_por_id(id)
     IdEspecialidad = obtener_especialidad(id)
@@ -159,7 +170,7 @@ def obtener_hcd_idd(id):
         'patologia': idPatologia,
         'turnosadm': turnosadm
     }
-    return render_template('ver_HCD.html', data=values)
+    return render_template('hcd_ver_admision.html', data=values)
 
 
 #Carga los turnos admision llenando la tabla con jquery
@@ -191,6 +202,18 @@ def guardar_turnos_admision():
         insertar_turnos_admision(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
         return redirect("/HCD")
     # SI DA OK redireccionar
+
+
+@app.route('/ver_evoluciones/<int:id>', methods=["GET", "POST"])
+def obtener_evolucion_id(id):
+    paciente_hcd = obtener_hcd_por_id(id)
+    values={
+        'titulo': 'Historia clínica digital',
+        'paciente_hcd': paciente_hcd
+    }
+    return render_template('hcd_ver_evolucion.html', data=values)
+
+
 
 
 @app.route('/reportes')
@@ -239,6 +262,8 @@ def asignar_turno(id):
         'turnosadm': turnosadm
     }
     return render_template('turnos_asignar.html', data=values)
+
+
 
 @app.route('/grabar_turno', methods=["POST"])
 def grabar_turno():
@@ -302,44 +327,110 @@ def receptar_turno(id_turno):
     paciente = obtener_paciente_por_id(id_paciente)
     profesionales = obtener_profesionales_especialidad(id_especialidad)
     profesionales_filtrados = [x for x in profesionales if x[0] != id_profesional_actual]
-    values = {
+    data = {
         'titulo': 'Receptar turno',
         'turno': turno,
         'paciente': paciente,
         'profesionales': profesionales_filtrados,
-        'profesional_actual': profesional_actual,
+        'profesional_actual': profesional_actual
     }
-    return render_template('turnos_receptar.html', data=values)
+    return render_template('turnos_receptar.html', data=data)
 
 
 
-# Acción para abrir el modal de REPROGRAMAR turno
-@app.route('/modal_reprogramar_turno/<int:id>')
-def reprogramar_turno(id):
-    turno_por_id = obtener_turno_por_id(id)
-    tipoTurno = obtener_tipoTurno()
-    especialidad = obtener_especialidad_turnos()
-    values = {
+@app.route('/grabar_turno_receptado', methods=["POST"])
+def grabar_turno_receptado():
+    #tomo los datos que vienen del form
+    id_turno_asignado = request.form['idTurnoAsignar']
+    id_tipo_turno = request.form['tipoTurno']
+    id_especialidad = request.form['nameEspecialidadDropdown']
+    id_profesional = request.form['nameProfesionalDropdown']
+    fecha_turno = request.form['fechaTurno']
+    hora_inicio = request.form['nameHoraInicio']
+    hora_fin = request.form['nameHoraFin']
+    id_paciente = request.form['inputPacienteId']
+    #busco el id del turno asignado
+    id_estado = obtener_id_estado_turno_por_estado("Receptado")
+    #inserto los datos en turno
+    update_turno_asignado(id_turno_asignado)
+    insertar_turno_receptado(id_tipo_turno, id_especialidad, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_profesional, id_turno_asignado)
+    return redirect("/turno/")
+
+
+
+# Acción para ver la pantalla de REPROGRAMAR turno
+@app.route('/reprogramar_turno/<int:id_turno>')
+def reprogramar_turno(id_turno):
+    turno = obtener_turno_por_id(id_turno)
+    id_paciente = turno[5]
+    id_especialidad = turno[11]
+    id_profesional_actual = turno[13]
+    profesional_actual = [id_profesional_actual, turno[14], turno[15]]
+    paciente = obtener_paciente_por_id(id_paciente)
+    profesionales = obtener_profesionales_especialidad(id_especialidad)
+    profesionales_filtrados = [x for x in profesionales if x[0] != id_profesional_actual]
+    data = {
         'titulo': 'Reprogramar turno',
-        'turno_por_id': turno_por_id,
-        'tipoTurno': tipoTurno,
-        'especialidad': especialidad
+        'turno': turno,
+        'paciente': paciente,
+        'profesionales': profesionales_filtrados,
+        'profesional_actual': profesional_actual
     }
-    return jsonify({'htmlresponse': render_template('turnos_reprogramar.html', data=values)})
+    return render_template('turnos_reprogramar.html', data=data)
+
+
+@app.route('/grabar_turno_reprogramado', methods=["POST"])
+def grabar_turno_reprogramado():
+    #tomo los datos que vienen del form
+    id_turno_asignado = request.form['idTurnoAsignar']
+    id_tipo_turno = request.form['tipoTurno']
+    id_especialidad = request.form['nameEspecialidadDropdown']
+    id_profesional = request.form['nameProfesionalDropdown']
+    fecha_turno = request.form['fechaTurno']
+    hora_inicio = request.form['nameHoraInicio']
+    hora_fin = request.form['nameHoraFin']
+    id_paciente = request.form['inputPacienteId']
+    #busco el id del estado del turno en asignado
+    id_estado = obtener_id_estado_turno_por_estado("Asignado")
+    #inserto los datos en turno
+    update_turno_reasignado(id_turno_asignado)
+    insertar_turno_reasignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_turno_asignado)
+    return redirect("/turno/")
 
 
 
 # Acción para abrir el modal de ANULAR turno
-@app.route('/modal_anular_turno/<int:id>')
-def anular_turno(id):
-    turno_por_id = obtener_turno_por_id(id)
-    motivoTurno = obtener_motivoTurno()
-    values = {
-        'titulo': 'Anular turno',
-        'turno_por_id': turno_por_id,
-        'motivoTurno': motivoTurno
+@app.route('/anular_turno/<int:id_turno>')
+def anular_turno(id_turno):
+    turno = obtener_turno_por_id(id_turno)
+    id_paciente = turno[5]
+    paciente = obtener_paciente_por_id(id_paciente)
+    turnos_para_anular = obtener_lista_de_turnos_para_anular(id_paciente)
+    motivo_turno = obtener_motivoTurno()
+    data = {
+        'titulo': 'Reprogramar turno',
+        'turno': turno,
+        'paciente': paciente,
+        'turnos_para_anular': turnos_para_anular,
+        'motivoTurno': motivo_turno
     }
-    return jsonify({'htmlresponse': render_template('turnos_anular.html', data=values)})
+    return render_template('turnos_anular.html', data=data)
+
+
+@app.route('/guardar_anular_turnos', methods=["POST"])
+def guardar_anular_turnos():
+    motivoTurnosAnulados = request.form["motivoTurno"]
+    ListaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
+    #busco el id del estado del turno en asignado
+    id_estado = obtener_id_estado_turno_por_estado("Anulado")
+    for idTurnosAnulados in ListaTurnosAnulados:
+        datos_turnos_para_anular = obtener_turno_por_id_asignado_anulado(idTurnosAnulados)
+        insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4], datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, idTurnosAnulados)
+        update_turno_asignado(idTurnosAnulados)
+    print("estos son los turnos para anular checkeados {}".format(request.form.getlist('lista_turnos_para_anular')))
+    # SI DA OK redireccionar
+    return redirect("/turnos")
+
 
 @app.route('/setear_privilegios_rol_seleccionado', methods=["POST"])
 def setear_privilegios():
@@ -349,6 +440,8 @@ def setear_privilegios():
     print("estos son los privilegios -> {}".format(privilegios))
     return jsonify({'privilegios': privilegios})
 
+
+
 @app.route('/rol')
 def configuracion_roles():
     rol = obtener_lista_roles()
@@ -356,17 +449,19 @@ def configuracion_roles():
         'titulo': 'Configuración de roles',
         'rol': rol
     }
-    return render_template('roles.html', data=data)
+    return render_template('rol.html', data=data)
 
 
-@app.route('/modal_agregar_rol')
+
+@app.route('/agregar_rol')
 def agregar_rol():
     privilegios = obtener_lista_privilegios()
     data = {
-        'titulo': 'agregar_rol',
+        'titulo': 'Agregar rol',
         'privilegios': privilegios
     }
-    return jsonify({'htmlresponse': render_template('agregar_rol.html', data=data)})
+    return render_template('rol_agregar.html', data=data)
+
 
 
 @app.route('/guardar_rol', methods=["POST"])
@@ -381,6 +476,34 @@ def guardar_rol():
     # SI DA OK redireccionar
     return redirect("/rol")
 
+
+
+@app.route('/editar_rol/<int:id>')
+def editar_rol(id):
+    IdRol = obtener_id_rol(id),
+    privilegios = obtener_lista_privilegios()
+    data = {
+        'titulo': 'Editar rol',
+        'IdRol': IdRol,
+        'privilegios': privilegios
+    }
+    return render_template('rol_editar.html', data=data)
+
+
+
+@app.route('/modal_eliminar_rol/<int:id>')
+def eliminar_rol_id(id):
+    IdRol = obtener_id_rol(id),
+    privilegios = obtener_lista_privilegios()
+    values = {
+            'titulo': 'Editar paciente',
+            'IdRol': IdRol,
+            'privilegios': privilegios
+    }
+    return jsonify({'htmlresponse': render_template('rol_eliminar.html', data=values)})
+
+
+
 @app.route('/usuario')
 def configuracion_usuarios():
     usuario = obtener_lista_usuarios()
@@ -389,6 +512,7 @@ def configuracion_usuarios():
         'usuario': usuario
     }
     return render_template('usuarios.html', data=data)
+
 
 
 @app.route('/seleccionar_recurso', methods=['GET', 'POST'])
@@ -422,6 +546,8 @@ def agregar_usuario(id):
         'privilegios': privilegios
     }
     return render_template('usuario_agregar.html', data=data)
+
+
 
 @app.route('/login')
 def login():

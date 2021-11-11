@@ -60,7 +60,6 @@
                             <th scope="col">Financiador</th>
                             <th scope="col">Nro. afiliado</th>
                             <th scope="col">HCD</th>
-                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,12 +69,6 @@
                             <td>{{ data.paciente[27]}}</td>
                             <td>{{ data.paciente[28]}}</td>
                             <td>{{ data.paciente[20]}}</td>
-                            <td>
-                                <button type="button" class="btn btn-dark" data-bs-toggle="modal" name="botonVerTurnos"
-                                    data-bs-target="#ModalVerTurnos" id="{{data.paciente[0]}}">
-                                    Ver Turnos
-                                </button>
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -85,96 +78,69 @@
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
-                <form class="row g-3">
+                <form action="/grabar_turno_receptado" method="POST" class="row g-3">
+                    <input type="hidden" value={{data.paciente[0]}} name="inputPacienteId">
+                    <input type="hidden" name="idTurnoAsignar" value="{{data.turno[16]}}">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                        <input type="text" class="form-control" value="{{data.turno[10]}}" disabled />
+                        <input type="hidden" name="tipoTurno" value="{{data.turno[9]}}">
+                        <input type="text" class="form-control" name="inputTipoTurno" value="{{data.turno[10]}}"
+                            disabled>
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <input type="text" class="form-control" value="{{data.turno[12]}}" disabled />
+                        <input type="hidden" name="nameEspecialidadDropdown" value="{{data.turno[11]}}">
+                        <input type="text" class="form-control" name="InputNameEspecialidadDropdown"
+                            value="{{data.turno[12]}}" disabled>
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
                         <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select">
-                            <option value="{{data.profesional_actual[0]}}" selected >{{data.profesional_actual[1]}} {{data.profesional_actual[2]}}</option>
+                            <option value="{{data.profesional_actual[0]}}" selected>{{data.profesional_actual[1]}}
+                                {{data.profesional_actual[2]}}</option>
                             {% for profesional in data.profesionales %}
-                                <option value={{profesional[0]}}>{{profesional[1]}} {{profesional[2]}}</option>
+                            <option value={{profesional[0]}}>{{profesional[1]}} {{profesional[2]}}</option>
                             {% endfor %}
                         </select>
-                    </div> 
+                    </div>
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
-                        <input type="date" class="form-control" name="fechaTurno" value="{{data.turno[2]}}" disabled />
+                        <input type="hidden" name="fechaTurno" value="{{data.turno[2]}}">
+                        <input type="date" class="form-control" name="InputFechaTurno" value="{{data.turno[2]}}" disabled>
                     </div>
                     <div class="col-4">
-                        <label for="horaInicio" class="form-label">Hora inicio</label>
-                        <input type="time" class="form-control" name="horaTurno" value="{{data.turno[3]}}" disabled />
+                        <label for="nameHoraInicio" class="form-label">Hora inicio</label>
+                        <input type="hidden" name="nameHoraInicio" value="{{data.turno[3]}}">
+                        <input type="time" class="form-control" name="InputHoraInicio" value="{{data.turno[3]}}" disabled>
                     </div>
                     <div class="col-4">
-                        <label for="horaFin" class="form-label">Hora fin</label>
-                        <input type="time" class="form-control" value="{{data.turno[4]}}" name="nameHoraFin" disabled>
+                        <label for="nameHoraFin" class="form-label">Hora fin</label>
+                        <input type="hidden" name="nameHoraFin" value="{{data.turno[4]}}">
+                        <input type="time" class="form-control" name="InputHoraFin" value="{{data.turno[4]}}" disabled>
                     </div>
-                </form>
             </div>
         </div>
-
-        <div class="card-footer bg-transparent border-success">
-            <div class="row">
-                <div class="col-6 justify-content-md-start">
-                    <a class="btn btn-primary" href="/turno/" role="button">Atrás</a>
-                </div>
-                <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-success">Guardar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="ModalVerTurnos" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ModalVerTurnos">Ver turnos</h5>
-                </div>
-                <div>
-                    <div class="modal-body">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Cantidad</th>
-                                    <th scope="col">Turnos computados</th>
-                                    <th scope="col">Especialidad</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tablaTurnosAdmision">
-                                {% for turnosadm in data.turnosadm %}
-                                <tr>
-                                    <td>{{turnosadm[1]}}</td>
-                                    <td>{{turnosadm[2]}}</td>
-                                    <td>{{turnosadm[4]}}</td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
+            <div class="card-footer bg-transparent border-success">
+                <div class="row">
+                    <div class="col-6 justify-content-md-start">
+                        <a class="btn btn-primary" href="/turno/" role="button">Atrás</a>
+                    </div>
+                    <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="guardarButtonReceptar" class="btn btn-success">Guardar</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-                        Aceptar
-                    </button>
-                </div>
             </div>
+            </form>
         </div>
-    </div>
-    <!-- ================================================ -->
-    <!-- Config Pantalla -->
-    <!-- ================================================ -->
 
-    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
-        style="display: block; height: 514px; width: 1218px">
-    </canvas>
+
+        <!-- ================================================ -->
+        <!-- Config Pantalla -->
+        <!-- ================================================ -->
+
+        <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+            style="display: block; height: 514px; width: 1218px">
+        </canvas>
 </main>
 
 <div id="idSeccionModalBuscarPaciente"></div>

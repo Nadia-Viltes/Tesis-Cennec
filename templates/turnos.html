@@ -66,7 +66,7 @@
           <a type="button" class="btn btn-warning openBtn" href="/reprogramar_turno/{{turno[0]}}" name="button_reprogramar_turno">
             Reprogramar
           </a>
-          <a type="button" class="btn btn-danger openBtn" data-bs-toggle="modal" name="button_anular_turno"  id="{{turno[0]}}">
+          <a type="button" class="btn btn-danger openBtn" href="/anular_turno/{{turno[0]}}" name="button_anular_turno">
             Anular
           </a>
         </td>
@@ -84,14 +84,6 @@
   </div>
 
 
-  <div id="idSeccionModalReprogramarTurno">
-
-  </div>
-
-  <div id="idSeccionModalAnularTurno">
-
-  </div>
-
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -101,63 +93,6 @@
   </canvas>
 
 </main>
-
-<script>
- 
-    //boton REPROGRAMAR
-    $(document).on('click', "[name='button_reprogramar_turno']", function () {
-    let id_turno = $(this).attr("id");
-    $.ajax({
-      url: `/modal_reprogramar_turno/${id_turno}`,
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#idSeccionModalReprogramarTurno').append(data.htmlresponse)
-        $('#modal_reprogramar_turno').modal('show');
-      }
-    });
-  });
-  $(document).on('click', '#idCerrarModalReprogramarTurno', function () {
-    $.ajax({
-      success: function (data) {
-        $('#modal_reprogramar_turno').modal('hide');
-        {
-          $('#idSeccionModalReprogramarTurno').empty()
-        }
-      }
-    });
-  });
-
-
-   //boton ANULAR
-   $(document).on('click', "[name='button_anular_turno']", function () {
-    let id_turno = $(this).attr("id");
-    $.ajax({
-      url: `/modal_anular_turno/${id_turno}`,
-      method: "GET",
-      data: {},
-      success: function (data) {
-        $('#idSeccionModalAnularTurno').append(data.htmlresponse)
-        $('#modal_anular_turno').modal('show');
-      }
-    });
-  });
-  $(document).on('click', '#idCerrarModalAnularTurno', function () {
-    $.ajax({
-      success: function (data) {
-        $('#modal_anular_turno').modal('hide');
-        {
-          $('#idSeccionModalAnularTurno').empty()
-        }
-      }
-    });
-  });
-
-</script>
-
-
-
-
 
 
 

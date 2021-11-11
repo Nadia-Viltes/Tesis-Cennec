@@ -4,7 +4,7 @@ from config_bd import get_conexion
 def obtener_lista_roles():
     query = """
            SELECT IdRol, Nombre, Descripcion FROM rol 
-           WHERE FechaBaja is null              
+           WHERE FechaBaja is null;              
             """
     conexion = get_conexion()
     rol = []
@@ -60,3 +60,17 @@ def insertar_rol_privilegio (idRol, idPrivilegio):
     conexion.close()
     return rol_privilegio
 
+# query para obtener rol por ID
+def obtener_id_rol(idRol):
+    query = """
+           SELECT IdRol, Nombre, Descripcion FROM rol 
+           WHERE IdRol = {} 
+           AND FechaBaja is null;              
+            """.format(idRol)
+    conexion = get_conexion()
+    rol_id = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    rol_id = cur.fetchone()
+    conexion.close()
+    return rol_id

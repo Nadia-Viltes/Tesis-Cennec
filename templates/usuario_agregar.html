@@ -26,7 +26,7 @@
     </nav>
 
     <!-- ================================================ -->
-    <!-- PANTALLA ASIGNAR NUEVO TURNO -->
+    <!-- PANTALLA AGREGAR NUEVO USUARIO -->
     <!-- ================================================ -->
 
     <div class="card border-success mb-3">
@@ -59,88 +59,88 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <div class="card-body border-top">
-            <h5 class="card-title">Seleccionar turno</h5>
-            <div class="container">
-                <form action="/grabar_turno" method="POST">
-                    <div class="row g-3">
-                        <input type="hidden" value={{data.recurso[0]}} name="inputRecursoId">
-                        <div class="col-md-6 mb-3">
-                            <label for="NombreUsuarioInput1" class="form-label">Nombre de usuario</label>
-                            <input type="text" class="form-control" name="NombreUsuarioInput1">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="inputPasswordUsuario" class="form-label">Contraseña</label>
-                            <input type="password" name="inputPasswordUsuario" class="form-control"
-                                aria-describedby="passwordHelpBlock">
-                            <div id="passwordHelpBlock" class="form-text">
-                                La clave debe contener hasta 8 dígitos. Debe ser alfanúmerico y no debe contener
-                                caracteres especiales.
+            <form action="/grabar_turno" method="POST">
+                <div class="card-body border-top">
+                    <h5 class="card-title">Seleccionar turno</h5>
+                    <div class="container">
+                        <div class="row g-3">
+                            <input type="hidden" value={{data.recurso[0]}} name="inputRecursoId">
+                            <div class="col-md-6 mb-3">
+                                <label for="NombreUsuarioInput1" class="form-label">Nombre de usuario</label>
+                                <input type="text" class="form-control" name="NombreUsuarioInput1">
                             </div>
                         </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="inputPasswordRepetir" class="form-label">Repetir contraseña</label>
-                            <input type="password" class="form-control" name="inputPasswordRepetir">
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-        <div class="card-body border-top">
-            <h5 class="card-title">Seleccionar roles y privilegios</h5>
-            <div class="container">
-                <form action="/grabar_turno" method="POST">
-                    <div class="row">
-                        <div class="col-6">
-                            <div><h6>Roles</h6></div>
-                            <ul class="list-group">
-                                {% for rol in data.rol %}
-                                <li class="list-group-item">
-                                <div class="form-check">
-                                  <input class="form-check-input me-1" type="radio" value={{rol[0]}} id={{rol[0]}} name="checkRol">
-                                  <label class="form-check-label" for="flexRadioDefault1">
-                                  {{rol[1]}}
-                                </label>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="inputPasswordUsuario" class="form-label">Contraseña</label>
+                                <input type="password" name="inputPasswordUsuario" class="form-control"
+                                    aria-describedby="passwordHelpBlock">
+                                <div id="passwordHelpBlock" class="form-text">
+                                    La clave debe contener hasta 8 dígitos. Debe ser alfanúmerico y no debe contener
+                                    caracteres especiales.
                                 </div>
-                            </li>
-                                {% endfor %}
-                              </ul>
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="inputPasswordRepetir" class="form-label">Repetir contraseña</label>
+                                <input type="password" class="form-control" name="inputPasswordRepetir">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-body border-top">
+                    <h5 class="card-title">Seleccionar roles y privilegios</h5>
+                    <div class="container">
+                        <div class="row">
                             <div class="col-6">
-                                <div><h6>Privilegios</h6></div>
-                                <ul class="list-group">   
-                                    {% for privilegios in data.privilegios %}
+                                <div>
+                                    <h6>Roles</h6>
+                                </div>
+                                <ul class="list-group">
+                                    {% for rol in data.rol %}
                                     <li class="list-group-item">
-                                      <input class="form-check-input me-1" type="checkbox" value={{privilegios[0]}} id={{privilegios[0]}} disabled>
-                                      {{privilegios[1]}}
+                                        <div class="form-check">
+                                            <input class="form-check-input me-1" type="radio" value={{rol[0]}}
+                                                id={{rol[0]}} name="checkRol">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                {{rol[1]}}
+                                            </label>
+                                        </div>
                                     </li>
                                     {% endfor %}
-                                  </ul>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <h6>Privilegios</h6>
                                 </div>
+                                <ul class="list-group">
+                                    {% for privilegios in data.privilegios %}
+                                    <li class="list-group-item">
+                                        <input class="form-check-input me-1" type="checkbox" value={{privilegios[0]}}
+                                            id={{privilegios[0]}} disabled>
+                                        {{privilegios[1]}}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
                         </div>
                     </div>
-                </form>
-            </div>
-        </div>
-
-
-        <div class="card-footer bg-transparent border-success">
-            <div class="row">
-                <div class="col-6 justify-content-md-start">
-                    <a class="btn btn-primary" href="/seleccionar_recurso" role="button">Atrás</a>
                 </div>
-                <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
-                </div>
-            </div>
-        </div>
-        </form>
 
+                <div class="row mt-3">
+                    <div class="col-6 justify-content-md-start">
+                        <a class="btn btn-primary" href="/seleccionar_recurso" role="button">Atrás</a>
+                    </div>
+                    <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
+
 
     <!-- ================================================ -->
     <!-- Config Pantalla -->
@@ -153,7 +153,7 @@
 </main>
 
 <script>
-    $("[name='checkRol']").change(function(){
+    $("[name='checkRol']").change(function () {
         const idRol = $(this).val();
         $.ajax({
             url: "/setear_privilegios_rol_seleccionado",
@@ -163,10 +163,10 @@
             },
             success: function (response) {
                 const privilegios = response.privilegios
-                $(`[type='checkbox']`).prop('checked',false)
+                $(`[type='checkbox']`).prop('checked', false)
                 for (const privilegio of privilegios) {
-                    $(`[type='checkbox'][value='${privilegio}']`).prop('checked',true)
-                }  
+                    $(`[type='checkbox'][value='${privilegio}']`).prop('checked', true)
+                }
             }
         });
     });

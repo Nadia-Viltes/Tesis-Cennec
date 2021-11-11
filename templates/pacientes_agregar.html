@@ -1,0 +1,244 @@
+{% extends 'base/base.html' %}
+
+<!-- ================================================ -->
+<!-- PANTALLA AGREGAR USUARIO -->
+<!-- ================================================ -->
+{% block agregar_paciente %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class></div>
+        </div>
+        <div class="chartjs-size-monitor-shrink">
+            <div class=""></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+        aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/pacientes">Pacientes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} </li>
+        </ol>
+    </nav>
+
+    <!-- ================================================ -->
+    <!-- PANTALLA AGREGAR NUEVO PACIENTE -->
+    <!-- ================================================ -->
+
+    <div class="card">
+        <div class="card-header bg-transparent border-success">
+            <h5 class="h4">{{ data.titulo }}</h5>
+        </div>
+        <div class="card-body">
+            <form action="/guardar_paciente" method="POST">
+                <div class="container" style="height: 472px;">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                                data-bs-target="#datos_personales" type="button" role="tab"
+                                aria-controls="datos_personales" aria-selected="true">Datos personales</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tutor"
+                                type="button" role="tab" aria-controls="tutor" aria-selected="false">Datos
+                                tutor</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="messages-tab" data-bs-toggle="tab"
+                                data-bs-target="#financiador" type="button" role="tab" aria-controls="financiador"
+                                aria-selected="false">Financiador</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="datos_personales" role="tabpanel"
+                            aria-labelledby="datos_personales-tab">
+
+                            <!-- Datos paciente -->
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label for="nombrePaciente" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" name="nombrePaciente">
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="apellidoPaciente" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" name="apellidoPaciente">
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="genero" class="form-label">Genero</label>
+                                    <input type="text" class="form-control" name="genero">
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="tipoDocumento" class="form-label">Tipo de documento</label>
+                                    <select name="tipoDocumento" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for tipoDoc in data.tipoDocumento %}
+                                        <option value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-4">
+                                    <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
+                                    <input type="text" class="form-control" name="nroDocumento">
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-4">
+                                    <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                                    <input type="date" class="form-control" name="fechaNacimiento">
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="pais" class="form-label">País</label>
+                                    <select name="pais" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for paises in data.pais %}
+                                        <option value={{paises[0]}}>{{paises[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="provincia" class="form-label">Provincia</label>
+                                    <select name="provincia" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for provincias in data.provincia %}
+                                        <option value={{provincias[0]}}>{{provincias[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                    <div class="invalid-feedback">Campo requerido</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="localidad" class="form-label">Localidad</label>
+                                    <select name="localidad" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for localidades in data.localidad %}
+                                        <option value={{localidades[0]}}>{{localidades[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-4">
+                                    <label for="calle" class="form-label">Calle</label>
+                                    <input type="text" class="form-control" name="calle">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="altura" class="form-label">Altura</label>
+                                    <input type="text" class="form-control" name="altura">
+                                </div>
+                                <div class="col-sm-1">
+                                    <label for="piso" class="form-label">Piso</label>
+                                    <input type="text" class="form-control" name="piso">
+                                </div>
+                                <div class="col-sm-1">
+                                    <label for="dpto" class="form-label">Dpto</label>
+                                    <input type="text" class="form-control" name="dpto">
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="barrio" class="form-label">Barrio</label>
+                                    <select name="barrio" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for barrios in data.barrio %}
+                                        <option value={{barrios[0]}}>{{barrios[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="HCD" class="form-label">Número de HCD</label>
+                                    <input class="form-control" type="text" name="hcdPantallaPaciente" disabled>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB tutor -->
+                        <div class="tab-pane" id="tutor" role="tabpanel" aria-labelledby="tutor-tab">
+                            <!-- Datos tutor -->
+                            <div class="row mt-3">
+                                <div class="col-4">
+                                    <label for="nombreTutor" class="form-label">Nombre</label>
+                                    <input type="text" class="form-control" name="nombreTutor">
+                                </div>
+                                <div class="col-4">
+                                    <label for="apellidoTutor" class="form-label">Apellido</label>
+                                    <input type="text" class="form-control" name="apellidoTutor">
+                                </div>
+                                <div class="col-4">
+                                    <label for="ocupacion" class="form-label">Ocupación</label>
+                                    <input type="text" class="form-control" name="ocupacion">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">
+                                    <label for="nroCelular" class="form-label">Teléfono celular</label>
+                                    <input type="text" class="form-control" name="nroCelular">
+                                </div>
+                                <div class="col-4">
+                                    <label for="nroFijo" class="form-label">Teléfono fijo</label>
+                                    <input type="text" class="form-control" name="nroFijo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB financiador -->
+                        <div class="tab-pane" id="financiador" role="tabpanel" aria-labelledby="financiador-tab">
+                            <!-- TAB financiador -->
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <label for="financiador" class="form-label">Financiador</label>
+                                    <select name="financiador" class="form-select">
+                                        <option selected disabled>Seleccionar...</option>
+                                        {% for financiadores in data.financiador %}
+                                        <option value={{financiadores[0]}}>{{financiadores[1]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-4">
+                                    <label for="nroAfiliado" class="form-label">Nro. Afiliado</label>
+                                    <input type="text" class="form-control" name="nroAfiliado">
+                                </div>
+                            </div>
+                            <!-- fin de los datos-->
+                        </div>
+                    </div>
+                </div>
+                    <div class="row mt-3">
+                        <div class="col-md-6 justify-content-md-start">
+                            <a class="btn btn-primary" href="/pacientes" role="button">Atrás</a>
+                        </div>
+                        <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                            <button type="submit" id="buttonAgregarPaciente" class="btn btn-success">Guardar</button>
+                        </div>
+                    </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- ================================================ -->
+    <!-- Config Pantalla -->
+    <!-- ================================================ -->
+
+    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
+        style="display: block; height: 514px; width: 1218px;">
+    </canvas>
+
+</main>
+
+{% endblock %}
