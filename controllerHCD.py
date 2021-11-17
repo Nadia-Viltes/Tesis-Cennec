@@ -18,11 +18,20 @@ def obtener_lista_hcd():
 
 def obtener_hcd_por_id(idPaciente):
     query = """
-            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0'), fi.Nombre, afi.NumeroAfiliado
-			FROM PACIENTE AS pa, afiliacion as afi, financiador as fi, historiaclinica as hcd
+            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0'), fi.Nombre, 
+            afi.NumeroAfiliado, e.IdEvolucion, de.IdDetalleEvolucion, de.IdProfesional,  rec.Nombre, pro.IdEspecialidad,
+            esp.Nombre
+			FROM PACIENTE AS pa, afiliacion as afi, financiador as fi, historiaclinica as hcd, Evolucion as e, DetalleEvolucion as de, 
+            Profesional as pro, Recurso as rec, Turno as t, especialidad as esp
 			WHERE pa.IdPaciente = afi.IdPaciente
 			AND fi.IdFinanciador = afi.IdFinanciador
 			AND pa.IdPaciente = hcd.IdPaciente
+            AND hcd.IdHistoriaClinica = e.IdHistoriaClinica
+            AND e.IdEvolucion = de.IdEvolucion
+            AND de.IdProfesional = pro.IdProfesional
+			AND pro.IdEspecialidad = esp.IdEspecialidad
+            AND pro.IdRecurso = rec.IdRecurso
+            AND de.IdTurno = t.IdTurno
             AND pa.idPaciente = {}""".format(idPaciente)
     conexion = get_conexion()
     paciente_hcd = None
@@ -89,3 +98,5 @@ def insertar_turnos_admision (idPaciente_HCD, IdEspecialidad, idPatologia, canti
     conexion.commit()
     conexion.close()
     return idconfiguracion_turno
+
+

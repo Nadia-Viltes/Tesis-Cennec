@@ -200,7 +200,7 @@ def guardar_turnos_admision():
         idPatologia = request.form["tipoPatologia"]
         cantidad = request.form["cantidad"]
         insertar_turnos_admision(idPaciente_HCD, IdEspecialidad, idPatologia, cantidad)
-        return redirect("/HCD")
+        return redirect("/hcd")
     # SI DA OK redireccionar
 
 
@@ -480,7 +480,7 @@ def guardar_rol():
 
 @app.route('/editar_rol/<int:id>')
 def editar_rol(id):
-    IdRol = obtener_id_rol(id),
+    IdRol = obtener_id_rol(id)
     privilegios = obtener_lista_privilegios()
     data = {
         'titulo': 'Editar rol',
@@ -488,6 +488,9 @@ def editar_rol(id):
         'privilegios': privilegios
     }
     return render_template('rol_editar.html', data=data)
+
+
+
 
 
 
@@ -546,6 +549,40 @@ def agregar_usuario(id):
         'privilegios': privilegios
     }
     return render_template('usuario_agregar.html', data=data)
+
+
+
+# Acción para guardar el usuario
+@app.route('/grabar_usuario', methods=["POST"])
+def grabar_usuario():
+    idRecurso = request.form["inputRecursoId"]
+    nombreUsuario = request.form["NombreUsuarioInput1"]
+    contrasena = request.form["inputPasswordUsuario"]
+    rolSeleccionado = request.form["checkRol"]
+    guardar_usuario(idRecurso, nombreUsuario, contrasena, rolSeleccionado)
+    # SI DA OK redireccionar
+    return redirect("/usuario")
+
+
+
+@app.route('/editar_usuario/<int:id>')
+def editar_usuario(id):
+    IdUsuario = obtener_usuario_por_id(id)
+    recurso = obtener_recurso_por_id(id)
+    rol = obtener_lista_roles()
+    privilegios = obtener_lista_privilegios()
+    data = {
+        'titulo': 'Editar usuario',
+        'IdUsuario': IdUsuario,
+        'recurso': recurso,
+        'rol': rol,
+        'privilegios': privilegios
+
+    }
+    return render_template('usuario_editar.html', data=data)
+
+
+
 
 
 

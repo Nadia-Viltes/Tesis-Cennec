@@ -61,7 +61,8 @@ def obtener_recurso_por_id(idRecurso):
     conexion.close()
     return recurso_id
 
-# query para obtener recurso por ID
+
+# query para obtener los privilegios por el id rol
 def obtener_privilegio_por_id_rol(id_rol):
     query = """SELECT idprivilegio FROM ROLPRIVILEGIO
                WHERE idrol = {}
@@ -73,3 +74,30 @@ def obtener_privilegio_por_id_rol(id_rol):
     privilegios = cur.fetchall()
     conexion.close()
     return privilegios
+
+
+#query para agregar un usuario
+def guardar_usuario(idRecurso, nombreUsuario, contrasena, idRol):
+    conexion = get_conexion()
+    query = """INSERT INTO usuario (IdRecurso, Nombre, Contraseña, IdRol, FechaAlta) 
+                VALUES({},'{}','{}',{},NOW())""".format(idRecurso, nombreUsuario, contrasena, idRol)
+    nuevo_usuario = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        nuevo_usuario = cur.lastrowid
+    conexion.commit()
+    conexion.close()
+    return nuevo_usuario
+
+
+# query para obtener USUARIO por ID
+def obtener_usuario_por_id(idRecurso):
+    query = """SELECT IdUsuario, IdRecurso, Nombre, Contraseña, IdRol FROM usuario 
+                WHERE IdUsuario = {};""".format(idRecurso)
+    conexion = get_conexion()
+    usuario_id = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    usuario_id = cur.fetchone()
+    conexion.close()
+    return usuario_id

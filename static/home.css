@@ -19,7 +19,9 @@ header{
 }
 
 
-.floatingTextarea2{
-    height: 200px;
+#listaHistorial {
+    overflow:scroll;
+    height:240px;
+    width:798px;
 }
 

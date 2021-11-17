@@ -64,11 +64,9 @@ def insertar_rol_privilegio (idRol, idPrivilegio):
 def obtener_id_rol(idRol):
     query = """
            SELECT IdRol, Nombre, Descripcion FROM rol 
-           WHERE IdRol = {} 
-           AND FechaBaja is null;              
-            """.format(idRol)
+           WHERE FechaBaja is null
+           AND IdRol = {}""".format(idRol)
     conexion = get_conexion()
-    rol_id = None
     with conexion.cursor() as cur:
         cur.execute(query)
     rol_id = cur.fetchone()
