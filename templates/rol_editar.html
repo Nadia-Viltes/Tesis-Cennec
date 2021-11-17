@@ -19,7 +19,7 @@
     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
         aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item"><a href="/rol">Configuración de roles</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} </li>
         </ol>
@@ -39,7 +39,6 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="hidden" name="IdRol" value="{{data.IdRol[0]}}">
                             <label for="nombreRol" class="form-label">Nombre del rol</label>
                             <input type="text" class="form-control" name="nombreRol" value="{{data.IdRol[1]}}">
                         </div>
@@ -50,7 +49,7 @@
                             <div class="col-md-6">
                                 <label for="descripcionRol" class="form-label">Descripción</label>
                                 <textarea class="form-control" name="descripcionRol"
-                                    style="height: 250px; resize: none;"></textarea>
+                                    style="height: 250px; resize: none;" >{{data.IdRol[2]}}</textarea>
                             </div>
 
                             <div class="col-md-6">

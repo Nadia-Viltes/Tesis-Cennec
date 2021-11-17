@@ -19,9 +19,9 @@
     <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
         aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
-            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item"><a href="/usuario">Configuración de usuarios</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} / {{ data.subtitulo }}</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
         </ol>
     </nav>
 
@@ -32,7 +32,7 @@
     <div class="card border-success mb-3">
         <div class="card-header bg-transparent border-success">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-0">
-                <h4 class="h4">{{ data.titulo }} / {{ data.subtitulo }}</h4>
+                <h4 class="h4">{{ data.titulo }}</h4>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
                 </table>
             </div>
 
-            <form action="/grabar_usuario" method="POST">
+            <form action="/editar_usuario" method="POST">
                 <div class="card-body border-top">
                     <h5 class="card-title">Datos de autenticación</h5>
                     <div class="container">
@@ -68,7 +68,7 @@
                             <input type="hidden" value={{data.recurso[0]}} name="inputRecursoId">
                             <div class="col-md-6 mb-3">
                                 <label for="NombreUsuarioInput1" class="form-label">Nombre de usuario</label>
-                                <input type="text" class="form-control" name="NombreUsuarioInput1">
+                                <input type="text" class="form-control" name="NombreUsuarioInput1" value={{data.IdUsuario[2]}}>
                             </div>
                         </div>
                         <div class="row">
@@ -130,7 +130,7 @@
 
                 <div class="row mt-3">
                     <div class="col-6 justify-content-md-start">
-                        <a class="btn btn-primary" href="/seleccionar_recurso" role="button">Atrás</a>
+                        <a class="btn btn-primary" href="/usuario" role="button">Atrás</a>
                     </div>
                     <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonAgregarUsuario" class="btn btn-success">Guardar</button>
