@@ -11,7 +11,7 @@
             <div class></div>
         </div>
         <div class="chartjs-size-monitor-shrink">
-            <div class=""></div>
+            <div class=></div>
         </div>
     </div>
 
@@ -31,26 +31,26 @@
 
     <div class="card">
         <div class="card-header bg-transparent border-success">
-            <h5 class="h4">{{ data.titulo }}</h5>
+            <h5 class="h4" name="tituloPantalla">{{ data.titulo }}</h5>
         </div>
         <div class="card-body">
-            <form action="/guardar_paciente" method="POST">
+            <form id="guardarPacienteForm" action="/guardar_paciente" method="POST">
                 <div class="container" style="height: 472px;">
 
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                            <button class="nav-link active" id="home-tab" name="datosPersonalesTab" data-bs-toggle="tab"
                                 data-bs-target="#datos_personales" type="button" role="tab"
                                 aria-controls="datos_personales" aria-selected="true">Datos personales</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tutor"
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" name="tutorTab" data-bs-target="#tutor"
                                 type="button" role="tab" aria-controls="tutor" aria-selected="false">Datos
                                 tutor</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="messages-tab" data-bs-toggle="tab"
+                            <button class="nav-link" id="messages-tab" name="financiadorTab" data-bs-toggle="tab"
                                 data-bs-target="#financiador" type="button" role="tab" aria-controls="financiador"
                                 aria-selected="false">Financiador</button>
                         </li>
@@ -65,12 +65,12 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <label for="nombrePaciente" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="nombrePaciente" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="text" class="form-control" name="nombrePaciente" validation-tab-paciente="true">
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="apellidoPaciente" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" name="apellidoPaciente" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="text" class="form-control" validation-tab-paciente="true" name="apellidoPaciente">
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
@@ -82,7 +82,7 @@
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="tipoDocumento" class="form-label">Tipo de documento</label>
-                                    <select name="tipoDocumento" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <select name="tipoDocumento" class="form-select" validation-tab-paciente="true">
                                         <option value="" selected disabled>Seleccionar...</option>
                                         {% for tipoDoc in data.tipoDocumento %}
                                         <option value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
@@ -92,54 +92,46 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
-                                    <input type="number" class="form-control" name="nroDocumento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="number" class="form-control" validation-tab-paciente="true" name="nroDocumento">
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-4">
                                     <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                                    <input type="date" class="form-control" name="fechaNacimiento" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="date" class="form-control" validation-tab-paciente="true" name="fechaNacimiento">
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="pais" class="form-label">País</label>
-                                    <select name="pais" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <select name="pais" class="form-select" validation-tab-paciente="true">
                                         <option value="" selected disabled>Seleccionar...</option>
-                                        {% for paises in data.pais %}
-                                        <option value={{paises[0]}}>{{paises[1]}}</option>
-                                        {% endfor %}
+                                        <option value={{data.pais[0]}}>{{data.pais[1]}}</option>
                                     </select>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="provincia" class="form-label">Provincia</label>
-                                    <select name="provincia" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <select name="provincia" class="form-select" validation-tab-paciente="true">
                                         <option value="" selected disabled>Seleccionar...</option>
-                                        {% for provincias in data.provincia %}
-                                        <option value={{provincias[0]}}>{{provincias[1]}}</option>
-                                        {% endfor %}
                                     </select>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="localidad" class="form-label">Localidad</label>
-                                    <select name="localidad" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <select name="localidad" class="form-select" validation-tab-paciente="true">
                                         <option value="" selected disabled>Seleccionar...</option>
-                                        {% for localidades in data.localidad %}
-                                        <option value={{localidades[0]}}>{{localidades[1]}}</option>
-                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-4">
                                     <label for="calle" class="form-label">Calle</label>
-                                    <input type="text" class="form-control" name="calle" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="text" class="form-control" validation-tab-paciente="true" name="calle">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="altura" class="form-label">Altura</label>
-                                    <input type="text" class="form-control" name="altura" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <input type="text" class="form-control" validation-tab-paciente="true" name="altura">
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
@@ -151,11 +143,8 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="barrio" class="form-label">Barrio</label>
-                                    <select name="barrio" class="form-select" oninvalid="this.setCustomValidity('Este campo es obligatorio')" oninput="setCustomValidity('')" title="" required>
+                                    <select name="barrio" class="form-select" validation-tab-paciente="true">
                                         <option value="" selected disabled>Seleccionar...</option>
-                                        {% for barrios in data.barrio %}
-                                        <option value={{barrios[0]}}>{{barrios[1]}}</option>
-                                        {% endfor %}
                                     </select>
                                 </div>
                             </div>
@@ -173,11 +162,11 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nombreTutor" class="form-label">Nombre</label>
-                                    <input type="text" class="form-control" name="nombreTutor">
+                                    <input type="text" class="form-control" name="nombreTutor" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="apellidoTutor" class="form-label">Apellido</label>
-                                    <input type="text" class="form-control" name="apellidoTutor">
+                                    <input type="text" class="form-control" name="apellidoTutor" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="ocupacion" class="form-label">Ocupación</label>
@@ -187,7 +176,7 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nroCelular" class="form-label">Teléfono celular</label>
-                                    <input type="text" class="form-control" name="nroCelular">
+                                    <input type="text" class="form-control" name="nroCelular" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="nroFijo" class="form-label">Teléfono fijo</label>
@@ -202,7 +191,7 @@
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="financiador" class="form-label">Financiador</label>
-                                    <select name="financiador" class="form-select">
+                                    <select name="financiador" class="form-select" validation-tab-financiador="true">
                                         <option value="" selected disabled>Seleccionar...</option>
                                         {% for financiadores in data.financiador %}
                                         <option value={{financiadores[0]}}>{{financiadores[1]}}</option>
@@ -211,7 +200,7 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroAfiliado" class="form-label">Nro. Afiliado</label>
-                                    <input type="text" class="form-control" name="nroAfiliado">
+                                    <input type="text" class="form-control" name="nroAfiliado" validation-tab-financiador="true">
                                 </div>
                             </div>
                             <!-- fin de los datos-->
@@ -223,7 +212,7 @@
                         <a class="btn btn-primary" href="/pacientes" role="button">Atrás</a>
                     </div>
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonAgregarPaciente" class="btn btn-success">Guardar</button>
+                        <button type="submit" id="buttonGuardarFormulario" class="btn btn-success">Guardar</button>
                     </div>
                 </div>
 
@@ -238,7 +227,6 @@
     <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
         style="display: block; height: 514px; width: 1218px;">
     </canvas>
-
 </main>
-
+<script type="text/javascript" src="/static/validations/validacion_pacientes_formulario.js"></script>
 {% endblock %}

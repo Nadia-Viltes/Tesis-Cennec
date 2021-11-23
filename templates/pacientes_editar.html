@@ -26,12 +26,12 @@
     </nav>
 
     <!-- ================================================ -->
-    <!-- PANTALLA AGREGAR NUEVO PACIENTE -->
+    <!-- PANTALLA EDITAR PACIENTE -->
     <!-- ================================================ -->
 
     <div class="card">
         <div class="card-header bg-transparent border-success">
-            <h5 class="h4">{{ data.titulo }}</h5>
+            <h5 class="h4" name="tituloPantalla">{{ data.titulo }}</h5>
         </div>
         <div class="card-body">
             <form action="/actualizar_pacientes" method="POST">
@@ -40,17 +40,17 @@
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                            <button class="nav-link active" id="home-tab" name="datosPersonalesTab" data-bs-toggle="tab"
                                 data-bs-target="#datos_personales" type="button" role="tab"
                                 aria-controls="datos_personales" aria-selected="true">Datos personales</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#tutor"
+                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" name="tutorTab" data-bs-target="#tutor"
                                 type="button" role="tab" aria-controls="tutor" aria-selected="false">Datos
                                 tutor</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="messages-tab" data-bs-toggle="tab"
+                            <button class="nav-link" id="messages-tab" name="financiadorTab" data-bs-toggle="tab"
                                 data-bs-target="#financiador" type="button" role="tab" aria-controls="financiador"
                                 aria-selected="false">Financiador</button>
                         </li>
@@ -66,11 +66,11 @@
                                 <div class="col-4">
                                     <input type="hidden" name="idPaciente" value="{{data.pacientes[0]}}">
                                     <label for="nombrePaciente" class="form-label">Nombre</label>
-                                    <input value="{{data.pacientes[1]}}" type="text" class="form-control" name="nombrePaciente">
+                                    <input value="{{data.pacientes[1]}}" type="text" class="form-control" name="nombrePaciente" validation-tab-paciente="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="apellidoPaciente" class="form-label">Apellido</label>
-                                    <input value="{{data.pacientes[2]}}" type="text" class="form-control" name="apellidoPaciente">
+                                    <input value="{{data.pacientes[2]}}" type="text" class="form-control" name="apellidoPaciente" validation-tab-paciente="true">
                                 </div>
                                 <div class="col-md-4">
                                     <label for="genero" class="form-label">Genero</label>
@@ -80,7 +80,7 @@
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="tipoDocumento" class="form-label">Tipo de documento</label>
-                                    <select name="tipoDocumento" class="form-select">
+                                    <select name="tipoDocumento" class="form-select" validation-tab-paciente="true">
                                         {% for tipoDoc in data.tipoDocumento %}
                                         {% if tipoDoc[0] == data.pacientes[4] %}
                                         <option selected value={{tipoDoc[0]}}>{{tipoDoc[1]}}</option>
@@ -92,46 +92,44 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroDocumentoPaciente" class="form-label">Nro. documento</label>
-                                    <input value="{{data.pacientes[6]}}" type="text" class="form-control" name="nroDocumento">
+                                    <input value="{{data.pacientes[6]}}" type="text" class="form-control" validation-tab-paciente="true" name="nroDocumento">
                                 </div>
                                 <div class="col-4">
                                     <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
-                                    <input value="{{data.pacientes[7]}}" type="date" class="form-control" name="fechaNacimiento">
+                                    <input value="{{data.pacientes[7]}}" type="date" class="form-control" validation-tab-paciente="true" name="fechaNacimiento">
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="pais" class="form-label">País</label>
-                                    <select name="pais" class="form-select">
-                                        {% for paises in data.pais %}
-                                        {% if paises[0] == data.pacientes[8] %}
-                                        <option selected value={{paises[0]}}>{{paises[1]}}</option>
+                                    <select name="pais" class="form-select" validation-tab-paciente="true">
+                                        {% if data.pais[0] == data.pacientes[8] %}
+                                        <option selected value={{data.pais[0]}}>{{data.pais[1]}}</option>
                                         {% else %}
-                                        <option value={{paises[0]}}>{{paises[1]}}</option>
+                                        <option value={{data.pais[0]}}>{{data.pais[1]}}</option>
                                         {% endif %}
-                                        {% endfor %}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="provincia" class="form-label">Provincia</label>
-                                    <select name="provincia" class="form-select">
-                                        {% for provincias in data.provincia %}
-                                        {% if provincias[0] == data.provincia[10] %}
-                                        <option selected value={{provincias[0]}}>{{provincias[1]}}</option>
+                                    <select name="provincia" class="form-select" validation-tab-paciente="true">
+                                        {% for provincia in data.provincias %}
+                                        {% if provincia[0] == data.pacientes[10] %}
+                                        <option selected value={{provincia[0]}}>{{provincia[1]}}</option>
                                         {% else %}
-                                        <option value={{provincias[0]}}>{{provincias[1]}}</option>
+                                        <option value={{provincia[0]}}>{{provincia[1]}}</option>
                                         {% endif %}
                                         {% endfor %}
                                     </select>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="localidad" class="form-label">Localidad</label>
-                                    <select name="localidad" class="form-select">
-                                        {% for localidades in data.localidad %}
-                                        {% if localidades[0] == data.pacientes[12] %}
-                                        <option selected value={{localidades[0]}}>{{localidades[1]}}</option>
+                                    <select name="localidad" class="form-select" validation-tab-paciente="true">
+                                        {% for localidad in data.localidades %}
+                                        {% if localidad[0] == data.pacientes[12] %}
+                                        <option selected value={{localidad[0]}}>{{localidad[1]}}</option>
                                         {% else %}
-                                        <option value={{localidades[0]}}>{{localidades[1]}}</option>
+                                        <option value={{localidad[0]}}>{{localidad[1]}}</option>
                                         {% endif %}
                                         {% endfor %}
                                     </select>
@@ -140,11 +138,11 @@
                             <div class="row mt-3">
                                 <div class="col-sm-4">
                                     <label for="calle" class="form-label">Calle</label>
-                                    <input value="{{data.pacientes[14]}}" type="text" class="form-control" name="calle">
+                                    <input value="{{data.pacientes[14]}}" type="text" class="form-control" validation-tab-paciente="true" name="calle">
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="altura" class="form-label">Altura</label>
-                                    <input value="{{data.pacientes[15]}}" type="text" class="form-control" name="altura">
+                                    <input value="{{data.pacientes[15]}}" type="text" class="form-control" validation-tab-paciente="true" name="altura">
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
@@ -156,12 +154,12 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="barrio" class="form-label">Barrio</label>
-                                    <select name="barrio" class="form-select">
-                                        {% for barrios in data.barrio %}
-                                        {% if barrios[0] == data.pacientes[18] %}
-                                        <option selected value={{barrios[0]}}>{{barrios[1]}}</option>
+                                    <select name="barrio" class="form-select" validation-tab-paciente="true">
+                                        {% for barrio in data.barrios %}
+                                        {% if barrio[0] == data.pacientes[18] %}
+                                        <option selected value={{barrio[0]}}>{{barrio[1]}}</option>
                                         {% else %}
-                                        <option value={{barrios[0]}}>{{barrios[1]}}</option>
+                                        <option value={{barrio[0]}}>{{barrio[1]}}</option>
                                         {% endif %}
                                         {% endfor %}
                                     </select>
@@ -181,11 +179,11 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nombreTutor" class="form-label">Nombre</label>
-                                    <input value="{{data.pacientes[21]}}" type="text" class="form-control" name="nombreTutor">
+                                    <input value="{{data.pacientes[21]}}" type="text" class="form-control" name="nombreTutor" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="apellidoTutor" class="form-label">Apellido</label>
-                                    <input value="{{data.pacientes[22]}}" type="text" class="form-control" name="apellidoTutor">
+                                    <input value="{{data.pacientes[22]}}" type="text" class="form-control" name="apellidoTutor" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="ocupacion" class="form-label">Ocupación</label>
@@ -195,7 +193,7 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nroCelular" class="form-label">Teléfono celular</label>
-                                    <input value="{{data.pacientes[25]}}" type="text" class="form-control" name="nroCelular">
+                                    <input value="{{data.pacientes[25]}}" type="text" class="form-control" name="nroCelular" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="nroFijo" class="form-label">Teléfono fijo</label>
@@ -210,7 +208,7 @@
                             <div class="row mt-3">
                                 <div class="col-md-4">
                                     <label for="financiador" class="form-label">Financiador</label>
-                                    <select name="financiador" class="form-select">
+                                    <select name="financiador" class="form-select" validation-tab-financiador="true">
                                         {% for financiadores in data.financiador %}
                                         {% if financiadores[0] == data.pacientes[26] %}
                                         <option selected value={{financiadores[0]}}>{{financiadores[1]}}</option>
@@ -222,7 +220,7 @@
                                 </div>
                                 <div class="col-4">
                                     <label for="nroAfiliado" class="form-label">Nro. Afiliado</label>
-                                    <input value="{{data.pacientes[28]}}" type="text" class="form-control" name="nroAfiliado">
+                                    <input value="{{data.pacientes[28]}}" type="text" class="form-control" name="nroAfiliado" validation-tab-financiador="true">
                                 </div>
                             </div>
                             <!-- fin de los datos-->
@@ -234,7 +232,7 @@
                             <a class="btn btn-primary" href="/pacientes" role="button">Atrás</a>
                         </div>
                         <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                            <button type="submit" id="buttonEditarPaciente" class="btn btn-success">Guardar</button>
+                            <button type="submit" id="buttonGuardarFormulario" class="btn btn-success">Guardar</button>
                         </div>
                     </div>
 
@@ -251,5 +249,5 @@
     </canvas>
 
 </main>
-
+<script type="text/javascript" src="/static/validations/validacion_pacientes_formulario.js"></script>
 {% endblock %}

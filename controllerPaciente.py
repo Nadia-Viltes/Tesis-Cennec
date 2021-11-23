@@ -70,45 +70,45 @@ def obtener_tipoDocumento():
 def obtener_pais(): 
     query = "select IdPais, Nombre from pais where FechaBaja is null"
     conexion = get_conexion()
-    pais = []
+    pais = None
     with conexion.cursor() as cur:
         cur.execute(query)
-    pais = cur.fetchall()
+    pais = cur.fetchone()
     conexion.close()
     return pais
 
 ## Select provincia - Lista de valores
-def obtener_provincia(): 
-    query = "select IdProvincia, Nombre from provincia where IdPais = 1 and FechaBaja is null;"
+def obtener_provincias_by_id_pais(id_pais): 
+    query = "select IdProvincia, Nombre from provincia where IdPais = {} and FechaBaja is null;".format(id_pais)
     conexion = get_conexion()
-    provincia = []
+    provincias = []
     with conexion.cursor() as cur:
         cur.execute(query)
-    provincia = cur.fetchall()
+    provincias = cur.fetchall()
     conexion.close()
-    return provincia
+    return provincias
 
 ## Select Localidad - Lista de valores
-def obtener_localidad(): 
-    query = "select IdLocalidad, Nombre from localidad where IdProvincia = 1 and FechaBaja is null;"
+def obtener_localidades_by_id_provincia(id_provincia): 
+    query = "select IdLocalidad, Nombre from localidad where IdProvincia = {} and FechaBaja is null;".format(id_provincia)
     conexion = get_conexion()
-    localidad = []
+    localidades = []
     with conexion.cursor() as cur:
         cur.execute(query)
-    localidad = cur.fetchall()
+    localidades = cur.fetchall()
     conexion.close()
-    return localidad
+    return localidades
 
 ## Select Barrio - Lista de valores
-def obtener_barrio(): 
-    query = "select IdBarrio, Nombre from barrio where IdLocalidad = 1 and FechaBaja is null;"
+def obtener_barrios_by_id_localidad(id_localidad): 
+    query = "select IdBarrio, Nombre from barrio where IdLocalidad = {} and FechaBaja is null;".format(id_localidad)
     conexion = get_conexion()
-    barrio = []
+    barrios = []
     with conexion.cursor() as cur:
         cur.execute(query)
-    barrio = cur.fetchall()
+    barrios = cur.fetchall()
     conexion.close()
-    return barrio
+    return barrios
 
 ## Select Financiador - Lista de valores
 def obtener_financiador(): 
