@@ -1,4 +1,5 @@
 from re import template
+from loguru import logger
 from controllerPaciente import *
 from controllerUsuario import *
 from controllerRol import *
@@ -8,7 +9,6 @@ from controllerMiAgenda import *
 from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify
 
 app = Flask(__name__)
-
 
 # MUESTRA LA LISTA DE PACIENTES Y BUSQUEDA
 @app.route('/pacientes/', methods=['GET', 'POST'])
@@ -26,28 +26,45 @@ def pacientes():
     }
     return render_template('pacientes.html', data=data)
 
-
 #Pantalla de AGREGAR PACIENTE
 @app.route('/agregar_paciente')
 def agregar_paciente():
     tipoDoc = obtener_tipoDocumento()
     pais = obtener_pais()
-    provincia = obtener_provincia()
-    localidad = obtener_localidad()
-    barrio = obtener_barrio()
     financiador = obtener_financiador()
     data = {
         'titulo': 'Agregar paciente',
         'tipoDocumento': tipoDoc,
         'pais': pais,
-        'provincia': provincia,
-        'localidad': localidad,
-        'barrio': barrio,
         'financiador': financiador
     }
     return render_template('pacientes_agregar.html', data=data)
 
+#Acción para cargar las provincias en dropdown una vez seleccionado el país
+@app.route('/provincias_dropdown/<int:id>')
+def provincias_pais_dropdown(id):
+    provincias = obtener_provincias_by_id_pais(id)
+    options = "<option value='' selected disabled>Seleccionar...</option>"
+    for provincia in provincias:
+        options+= "<option value={}>{}</option>".format(provincia[0], provincia[1])       
+    return jsonify({'htmlresponse': render_template_string(options)})
 
+#Acción para cargar las localidades en dropdown una vez seleccionado la provincia
+@app.route('/localidades_dropdown/<int:id>')
+def localidades_provincia_dropdown(id):
+    localidades = obtener_localidades_by_id_provincia(id)
+    options = "<option value='' selected disabled>Seleccionar...</option>"
+    for localidad in localidades:
+        options+= "<option value={}>{}</option>".format(localidad[0], localidad[1])
+    return jsonify({'htmlresponse': render_template_string(options)})
+
+@app.route('/barrios_dropdown/<int:id>')
+def barrios_localidad_dropdown(id):
+    barrios = obtener_barrios_by_id_localidad(id)
+    options = "<option value='' selected disabled>Seleccionar...</option>"
+    for barrio in barrios:
+        options+= "<option value={}>{}</option>".format(barrio[0], barrio[1])
+    return jsonify({'htmlresponse': render_template_string(options)})
 
 #FUNCIÓN PARA QUE GUARDE LOS DATOS DEL PACIENTE NUEVO
 @app.route("/guardar_paciente", methods=["POST"])
@@ -81,31 +98,30 @@ def guardar_paciente():
     # SI DA OK redireccionar
     return redirect("/pacientes")
 
-
-
 # pantalla de EDITAR PACIENTE
 @app.route('/editar_paciente/<int:id>')
 def obtener_paciente_id(id):
     paciente = obtener_paciente_por_id(id)
     tipoDocumento = obtener_tipoDocumento()
     pais = obtener_pais()
-    provincia = obtener_provincia()
-    localidad = obtener_localidad()
-    barrio = obtener_barrio()
+    provincias = obtener_provincias_by_id_pais(pais[0])
+    logger.info("provincias -> {}".format(provincias))
+    localidades = obtener_localidades_by_id_provincia(paciente[10])
+    logger.info("localidades -> {}".format(localidades))
+    barrios = obtener_barrios_by_id_localidad(paciente[12])
+    logger.info("barrios -> {}".format(barrios))
     financiador = obtener_financiador()
     data = {
             'titulo': 'Editar paciente',
             'pacientes': paciente,
             'tipoDocumento': tipoDocumento,
             'pais': pais,
-            'provincia': provincia,
-            'localidad': localidad,
-            'barrio': barrio,
+            'provincias': provincias,
+            'localidades': localidades,
+            'barrios': barrios,
             'financiador': financiador
     }
     return render_template("pacientes_editar.html", data=data)
-
-
 
 # Acción para guardar las actualizaciones del editar PACIENTE
 @app.route("/actualizar_paciente", methods=["POST"])
@@ -138,13 +154,9 @@ def actualizar_pacientes():
     actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente)
     return redirect("/pacientes")
 
-
-
 @app.route('/home')
 def index(name='Home'):
     return render_template('index.html', titulo=name)
-
-
 
 @app.route('/hcd')
 def hcd():
@@ -154,8 +166,6 @@ def hcd():
         'hcd': hcd
     }
     return render_template('hcd.html', data=data)
-
-
 
 @app.route('/ver_admision/<int:id>', methods=["GET", "POST"])
 def obtener_hcd_idd(id):
@@ -171,7 +181,6 @@ def obtener_hcd_idd(id):
         'turnosadm': turnosadm
     }
     return render_template('hcd_ver_admision.html', data=values)
-
 
 #Carga los turnos admision llenando la tabla con jquery
 @app.route('/agrega_turnos_admision', methods=["POST"])
@@ -203,7 +212,6 @@ def guardar_turnos_admision():
         return redirect("/hcd")
     # SI DA OK redireccionar
 
-
 @app.route('/ver_evoluciones/<int:id>', methods=["GET", "POST"])
 def obtener_evolucion_id(id):
     paciente_hcd = obtener_hcd_por_id(id)
@@ -213,16 +221,12 @@ def obtener_evolucion_id(id):
     }
     return render_template('hcd_ver_evolucion.html', data=values)
 
-
-
-
 @app.route('/reportes')
 def reportes():
     data = {
         'titulo': 'Reportes',
     }
     return render_template('reportes.html', data=data)
-
 
 @app.route('/agenda')
 def agenda():
@@ -232,7 +236,6 @@ def agenda():
         'turnoprof': mi_agenda
     }
     return render_template('mi_agenda.html', data=data)
-
 
 # Operación para mostrar la lista de turnos
 @app.route('/turno/')
@@ -262,8 +265,6 @@ def asignar_turno(id):
         'turnosadm': turnosadm
     }
     return render_template('turnos_asignar.html', data=values)
-
-
 
 @app.route('/grabar_turno', methods=["POST"])
 def grabar_turno():
@@ -314,8 +315,6 @@ def buscar_paciente():
     }
     return render_template('turnos_seleccionar_paciente.html', data=values)
 
-
-
 # Acción para ver la pantalla de RECEPTAR turno
 @app.route('/receptar_turno/<int:id_turno>')
 def receptar_turno(id_turno):
@@ -335,8 +334,6 @@ def receptar_turno(id_turno):
         'profesional_actual': profesional_actual
     }
     return render_template('turnos_receptar.html', data=data)
-
-
 
 @app.route('/grabar_turno_receptado', methods=["POST"])
 def grabar_turno_receptado():
