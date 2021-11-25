@@ -71,7 +71,7 @@
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
-                <form action="/grabar_turno" method="POST" class="row g-3">
+                <form action="/turnos/grabar_turno" method="POST" class="row g-3">
                     <input type="hidden" value={{data.paciente[0]}} name="inputPacienteId">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
@@ -117,7 +117,7 @@
         <div class="card-footer bg-transparent border-success">
             <div class="row">
                 <div class="col-6 justify-content-md-start">
-                    <a class="btn btn-primary" href="/seleccionar_paciente" role="button">Atrás</a>
+                    <a class="btn btn-primary" href="/turnos/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
                     <button type="submit" id="guardarButtonAsignar" class="btn btn-success">Guardar</button>
@@ -179,7 +179,7 @@
     $("#idEspecialidadDropdown").change(function () {
         let idEspecialidad = $(this).val();
         $.ajax({
-            url: `/profesionales_dropdown/${idEspecialidad}`,
+            url: `/turnos/profesionales_dropdown/${idEspecialidad}`,
             method: "GET",
             success: function (response) {
                 $("#idProfesionalDropdown option").remove();

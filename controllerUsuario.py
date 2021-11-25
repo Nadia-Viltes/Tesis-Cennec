@@ -1,3 +1,4 @@
+from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de USUARIOS
@@ -17,6 +18,27 @@ def obtener_lista_usuarios():
     conexion.close()
     return usuario
 
+#obtener usuario y contraseña
+def obtener_datos_usuario_by_user_password(usuario, password):
+    query = """
+            SELECT us.idusuario, us.nombre, re.nombre, re.apellido 
+            FROM USUARIO AS us, RECURSO AS re
+            WHERE us.idrecurso = re.idrecurso
+            AND us.nombre = '{}'
+            AND us.contraseña = '{}';
+            """.format(usuario, password)
+    conexion = get_conexion()
+    nombre_usuario = None
+    try:
+        with conexion.cursor() as cur:
+            cur.execute(query)
+        nombre_usuario = cur.fetchone()
+    except:
+        logger.info("Ocurrio un error al obtener los datos del usuario")
+    finally:        
+        conexion.close()
+        return nombre_usuario
+    
 # query para que me muestre los datos del recurso a seleccionar
 def obtener_lista_recursos():
     query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo 
@@ -61,6 +83,23 @@ def obtener_recurso_por_id(idRecurso):
     conexion.close()
     return recurso_id
 
+#obtener privilegios por id usuario
+def obtener_privilegios_por_id_usuario(id_usuario):
+    query = """
+            select us.IdUsuario, us.Nombre, rol.idrol, rol.Nombre as nombre_rol, pri.IdPrivilegio, pri.Nombre as nombre_privilegio 
+            from usuario as us, rol, rolprivilegio as rolpri, privilegio as pri
+            where us.IdRol = rol.IdRol
+            and rolpri.IdRol = rol.IdRol
+            and pri.IdPrivilegio = rolpri.IdPrivilegio
+            and us.IdUsuario = {};
+            """.format(id_usuario)
+    conexion = get_conexion()
+    privilegios = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    privilegios = cur.fetchall()
+    conexion.close()
+    return privilegios
 
 # query para obtener los privilegios por el id rol
 def obtener_privilegio_por_id_rol(id_rol):

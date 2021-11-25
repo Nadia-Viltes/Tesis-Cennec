@@ -78,7 +78,7 @@
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
-                <form action="/grabar_turno_receptado" method="POST" class="row g-3">
+                <form action="/turnos/grabar_turno_receptado" method="POST" class="row g-3">
                     <input type="hidden" value={{data.paciente[0]}} name="inputPacienteId">
                     <input type="hidden" name="idTurnoAsignar" value="{{data.turno[16]}}">
                     <div class="col-md-4">

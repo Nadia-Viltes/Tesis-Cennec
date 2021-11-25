@@ -24,7 +24,7 @@
     " aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
-            <li class="breadcrumb-item"><a href="/usuario">Configuración de usuarios</a></li>
+            <li class="breadcrumb-item"><a href="/configuracion/usuarios">Configuración de usuarios</a></li>
             <li class="breadcrumb-item active" aria-current="page">
                 {{ data.titulo }} / {{ data.subtitulo }}
             </li>
@@ -93,7 +93,7 @@
                             <td>{{recurso[5]}}</td>
                             <td>{{recurso[6]}}</td>
                             <td>
-                                <a role="button" class="btn btn-success" href="/agregar_usuario/{{recurso[0]}}"
+                                <a role="button" class="btn btn-success" href="/configuracion/usuarios/agregar_usuario/{{recurso[0]}}"
                                     name="botonSeleccionarRecurso">
                                     Seleccionar
                                 </a>

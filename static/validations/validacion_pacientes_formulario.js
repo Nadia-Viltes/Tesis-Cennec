@@ -14,7 +14,7 @@ $("[name='nroDocumento']").change(function(){
 $("[name='pais']").change(function () {
     let idPais = $(this).val();
     $.ajax({
-        url: `/provincias_dropdown/${idPais}`, 
+        url: `/pacientes/provincias_dropdown/${idPais}`, 
         method: "GET",
         success: function (response) {
             $("[name='provincia'] option").remove();
@@ -27,7 +27,7 @@ $("[name='pais']").change(function () {
 $("[name='provincia']").change(function () {
     let idProvincia = $(this).val();
     $.ajax({
-        url: `/localidades_dropdown/${idProvincia}`, 
+        url: `/pacientes/localidades_dropdown/${idProvincia}`, 
         method: "GET",
         success: function (response) {
             $("[name='localidad'] option").remove();
@@ -42,7 +42,7 @@ $("[name='provincia']").change(function () {
 $("[name='localidad']").change(function () {
     let idLocalidad = $(this).val();
     $.ajax({
-        url: `/barrios_dropdown/${idLocalidad}`, 
+        url: `pacientes/barrios_dropdown/${idLocalidad}`, 
         method: "GET",
         success: function (response) {
             $("[name='barrio'] option").remove();
