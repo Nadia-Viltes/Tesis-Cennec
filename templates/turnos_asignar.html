@@ -109,7 +109,7 @@
                     </div>
                     <div class="col-4">
                         <label for="horaFin" class="form-label">Hora fin</label>
-                        <input type="time" class="form-control" id="idhoraFin" name="nameHoraFin">
+                        <input type="time" class="form-control" id="idhoraFin" name="nameHoraFin" disabled>
                     </div>
             </div>
         </div>
@@ -175,6 +175,8 @@
 </main>
 
 <script>
+
+
     //carga el dropdown de profesional por especialidad
     $("#idEspecialidadDropdown").change(function () {
         let idEspecialidad = $(this).val();

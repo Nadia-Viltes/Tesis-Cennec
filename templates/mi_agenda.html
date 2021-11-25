@@ -56,14 +56,14 @@
         <td>{{turnoprof[1]}}</td>
         <td>{{turnoprof[6]}} {{turnoprof[7]}}</td>
         <td>{{turnoprof[8]}}</td>
-        <td style="text-align: right;"><button type="button" class="btn btn-primary openBtn" data-bs-toggle="modal" name="button_iniciar_atencion" value="{{turnoprof[0]}}">
+        <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
+            id="{{turnoprof[0]}}">
             Iniciar atención
           </button>
-          <button type="button" class="btn btn-warning openBtn" data-bs-toggle="modal" id="button_finalizar_atencion"
-            data-bs-target="#modal_asignar_turno">
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}">
             Finalizar atención
           </button>
-          <a class="btn btn-success" href="/hcd/ver_evoluciones/{{turnoprof[5]}}" role="button" id={{turnoprof[5]}}>
+          <a class="btn btn-success" href="/agenda/ver_hcd/{{turnoprof[9]}}" role="button" id={{turnoprof[9]}}>
             Ver HCD
           </a>
         </td>
@@ -72,6 +72,11 @@
     </tbody>
   </table>
 
+  <div id="idSeccionModalIniciarAtencion">
+  </div>
+
+  <div id="idSeccionModalFinalizarAtencion">
+  </div>
 
   <!-- ================================================ -->
   <!-- Config Pantalla -->
@@ -83,4 +88,53 @@
 
 </main>
 
+<script>
+  //boton Iniciar atención
+
+  $(document).on('click', "[name='button_iniciar_atencion']", function () {
+    let IdTurno = $(this).attr("id");
+    $.ajax({
+      url: `/agenda/modal_iniciar_turno/${IdTurno}`,
+      method: "GET",
+      success: function (data) {
+        $('#idSeccionModalIniciarAtencion').append(data.htmlresponse)
+        $('#InicioAtencion').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalEliminar', function () {
+    $.ajax({
+      success: function (data) {
+        $('#InicioAtencion').modal('hide');
+        {
+          $('#idSeccionModalIniciarAtencion').empty()
+        }
+      }
+    });
+  });
+
+
+//boton Finalizar atención
+$(document).on('click', "[name='button_finalizar_atencion']", function () {
+    let IdTurno = $(this).attr("id");
+    $.ajax({
+      url: `/agenda/modal_finalizar_turno/${IdTurno}`,
+      method: "GET",
+      success: function (data) {
+        $('#idSeccionModalFinalizarAtencion').append(data.htmlresponse)
+        $('#FinalizarAtencion').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalEliminar', function () {
+    $.ajax({
+      success: function (data) {
+        $('#FinalizarAtencion').modal('hide');
+        {
+          $('#idSeccionModalFinalizarAtencion').empty()
+        }
+      }
+    });
+  });
+</script>
 {% endblock %}

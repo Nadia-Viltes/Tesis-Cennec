@@ -1,9 +1,9 @@
 {% extends 'base/base.html' %}
 
 <!-- ================================================ -->
-<!-- PANTALLA HCD EVOLUCIONES -->
+<!-- PANTALLA HCD EVOLUCIONES DESDE MI AGENDA -->
 <!-- ================================================ -->
-{% block hcd_evoluciones %}
+{% block mi_agenda_hcd_evoluciones %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10">
     <div class="chartjs-size-monitor">
@@ -20,7 +20,7 @@
         aria-label="breadcrumb">
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
-            <li class="breadcrumb-item"><a href="/hcd">Historia clínica digital</a></li>
+            <li class="breadcrumb-item"><a href="/agenda">Mi agenda</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.paciente_hcd[1]}}
                 {{data.paciente_hcd[2]}}</li>
         </ol>
@@ -64,10 +64,10 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-            <form>
+            <form action="/guardar_detalle" method="POST">>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <input type="hidden" class="form-control" id="inputIdEvolucion" value = {{data.paciente_hcd[7]}}>
+                        <input type="hidden" class="form-control" id="inputIdHCD" value = {{data.paciente_hcd[7]}}>
                         <label for="inputProfesional" class="form-label">Profesional</label>
                         <input type="text" class="form-control" id="inputProfesional"  value = {{data.paciente_hcd[10]}}>
                     </div>
@@ -86,20 +86,22 @@
                     <div class="col-md-4">
                         <div class="list-group" name="listaHistorial">
                             <label for="historialEvolucion" class="form-label">Historial</label>
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
+                            {% for historial in data.historial %}
+                            <a href="/ver_historial/{{historial[4]}}" class="list-group-item list-group-item-action" aria-current="true">
                                 <div class="d-flex w-100 justify-content-between">
-                                    <div class="fw-bold">Especialidad</div>
-                                    <small>Fecha</small>
+                                    <div class="fw-bold">{{historial[11]}}</div>
+                                    <small>{{historial[12]}}</small>
                                 </div>
-                                <small>Profesional</small>
+                                <small>{{historial[9]}} {{historial[10]}}</small>
                             </a>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-md-6 justify-content-md-start">
-                        <a class="btn btn-primary" href="/hcd" role="button">Atrás</a>
+                        <a class="btn btn-primary" href="/agenda" role="button">Atrás</a>
                     </div>
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>

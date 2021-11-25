@@ -1,0 +1,25 @@
+<!-- Modal -->
+<div class="modal fade" id="FinalizarAtencion" tabindex="-1" aria-labelledby="FinalizarAtencion" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{{url_for('finalizar_atencion')}}" method="POST">
+                <input type="hidden" value={{data.IdTurno[0]}} name="dataTurnoId">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="FinalizarAtencionLabel">{{data.titulo}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="idCerrarModalEliminar"></button>
+            </div>
+            <div class="modal-body">
+                        <h5>¡IMPORTANTE!</h5>
+                        <p>Estás por finalizar la atención. El turno cambiará de estado a "Atendido".</p>
+                        <p>¿Estás de acuerdo?</p>
+            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                        id="idCerrarModalEliminar">Cerrar</button>
+                    <button type="submit" class="btn btn-warning">Aceptar</button>
+                </div>
+            </form>
+            </div>
+        </div>
+</div>

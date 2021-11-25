@@ -105,19 +105,19 @@
                             </select>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-3">
                         <div class="col-4">
                             <label for="fechaTurno" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" name="fechaTurno" value="{{data.turno[2]}}">
+                            <input type="date" class="form-control" id="idFechaTurno" name="fechaTurno" value="{{data.turno[2]}}">
                         </div>
                         <div class="col-4">
                             <label for="nameHoraInicio" class="form-label">Hora inicio</label>
-                            <input type="time" class="form-control" name="nameHoraInicio" value="{{data.turno[3]}}">
+                            <input type="time" class="form-control" id="idhoraInicio" name="nameHoraInicio" value="{{data.turno[3]}}">
                         </div>
                         <div class="col-4">
                             <label for="nameHoraFin" class="form-label">Hora fin</label>
                             <input type="hidden" name="nameHoraFin" value="{{data.turno[4]}}">
-                            <input type="time" class="form-control" name="InputHoraFin" value="{{data.turno[4]}}"
+                            <input type="time" class="form-control" id="idhoraFin" name="InputHoraFin" value="{{data.turno[4]}}"
                                 disabled>
                         </div>
                     </div>
@@ -150,27 +150,39 @@
 <div id="idSeccionModalBuscarPaciente"></div>
 
 <script>
-    $(document).on("click", "#button_buscar_paciente", function () {
+
+
+    //carga el dropdown de profesional por especialidad
+    $("#idEspecialidadDropdown").change(function () {
+        let idEspecialidad = $(this).val();
         $.ajax({
-            url: "/modal_buscar_paciente",
+            url: `/profesionales_dropdown/${idEspecialidad}`,
             method: "GET",
-            data: {},
-            success: function (data) {
-                $("#idSeccionModalBuscarPaciente").append(data.htmlresponse);
-                $("#modal_buscar_paciente").modal("show");
-            },
+            success: function (response) {
+                $("#idProfesionalDropdown option").remove();
+                $("#idProfesionalDropdown").append(response.htmlresponse);
+            }
         });
     });
-    $(document).on("click", "#idCerrarModalAsignarTurno", function () {
-        $.ajax({
-            success: function (data) {
-                $("#modal_buscar_paciente").modal("hide");
-                {
-                    $("#idSeccionModalBuscarPaciente").empty();
-                }
-            },
-        });
+
+    //Inteligencia en minutos
+    $("#idhoraInicio").on("input", function () {
+        let tiempoCompleto = $(this).val().split(":");
+        let hora = tiempoCompleto[0]
+        let minutos = tiempoCompleto[1]
+        if (hora.length > 1 && minutos.length > 1) {
+            let date = new Date()
+            date.setHours(hora)
+            date.setMinutes(minutos)
+            date.setMinutes(date.getMinutes() + 30)
+            let horaFinal = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+            let minutoFinal = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+            $("#idhoraFin").val(`${horaFinal}:${minutoFinal}`)
+        } else {
+            $("#idhoraFin").val('')
+        }
     });
+
 </script>
 
 {% endblock %}

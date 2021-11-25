@@ -3,12 +3,12 @@ from config_bd import get_conexion
 # query para que me muestre los datos en la lista de turnos
 def obtener_lista_turno():
     query = """
-           	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento
+           	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
 				FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp
 				WHERE tur.IdEstadoTurno = est.IdEstadoTurno
 				AND tur.IdPaciente = pac.IdPaciente
 				AND tur.IdEspecialidad = esp.IdEspecialidad
-				AND tur.FechaBaja is null             
+				AND tur.FechaBaja is null;          
             """
     conexion = get_conexion()
     turno = []

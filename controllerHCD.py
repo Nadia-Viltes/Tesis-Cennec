@@ -16,27 +16,19 @@ def obtener_lista_hcd():
     conexion.close()
     return hcd
 
-def obtener_hcd_por_id(idPaciente):
+def obtener_hcd_por_id(idHcd):
     query = """
             SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0'), fi.Nombre, 
-            afi.NumeroAfiliado, e.IdEvolucion, de.IdDetalleEvolucion, de.IdProfesional,  rec.Nombre, pro.IdEspecialidad,
-            esp.Nombre
-			FROM PACIENTE AS pa, afiliacion as afi, financiador as fi, historiaclinica as hcd, Evolucion as e, DetalleEvolucion as de, 
-            Profesional as pro, Recurso as rec, Turno as t, especialidad as esp
+            afi.NumeroAfiliado
+			FROM PACIENTE AS pa, historiaclinica as hcd, afiliacion as afi, financiador as fi
 			WHERE pa.IdPaciente = afi.IdPaciente
 			AND fi.IdFinanciador = afi.IdFinanciador
 			AND pa.IdPaciente = hcd.IdPaciente
-            AND hcd.IdHistoriaClinica = e.IdHistoriaClinica
-            AND e.IdEvolucion = de.IdEvolucion
-            AND de.IdProfesional = pro.IdProfesional
-			AND pro.IdEspecialidad = esp.IdEspecialidad
-            AND pro.IdRecurso = rec.IdRecurso
-            AND de.IdTurno = t.IdTurno
-            AND pa.idPaciente = {}""".format(idPaciente)
+            AND hcd.IdHistoriaClinica = {}""".format(idHcd)
     conexion = get_conexion()
     paciente_hcd = None
     with conexion.cursor() as cur:
-        cur.execute(query),(idPaciente,)
+        cur.execute(query),(idHcd,)
     paciente_hcd = cur.fetchone()
     conexion.close()
     return paciente_hcd

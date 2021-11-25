@@ -72,9 +72,10 @@ def obtener_recursos_nombre_apellido_dni(valor):
 # query para obtener recurso por ID
 def obtener_recurso_por_id(idRecurso):
     query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo 
-            FROM recurso as re, tiporecurso as tre 
+            FROM recurso as re, tiporecurso as tre, usuario as u
             WHERE re.IdTipoRecurso = tre.IdTipoRecurso
-            AND re.IdRecurso = {}""".format(idRecurso)
+            AND re.IdRecurso = u.IdRecurso
+            AND u.IdUsuario = {}""".format(idRecurso)
     conexion = get_conexion()
     recurso_id = None
     with conexion.cursor() as cur:
@@ -140,3 +141,14 @@ def obtener_usuario_por_id(idRecurso):
     usuario_id = cur.fetchone()
     conexion.close()
     return usuario_id
+
+
+
+# Le asigno fecha de baja al usuario
+def update_eliminar_usuario(id_usuario):
+    conexion = get_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""UPDATE usuario SET FechaBaja = now() WHERE IdUsuario = {}""".format
+                       (id_usuario))
+    conexion.commit()
+    conexion.close()
