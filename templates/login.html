@@ -62,18 +62,22 @@
                     <h4>Iniciar sesión</h4>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="/login" method="POST">
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label">Usuario</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1"
-                                aria-describedby="emailHelp">
+                            <input type="text" class="form-control" name="usuario" aria-describedby="emailHelp">
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label">Contraseña</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1">
+                            <input type="password" class="form-control" name="password">
                         </div>
+                        {% if data == "invalid" %}
+                        <div id="failLogin" class="alert alert-danger" role="alert">
+                            El usuario o la contraseña no son correctos.
+                        </div>
+                        {% endif %}
                         <div class="d-grid col-6 mx-auto">
-                            <button class="btn btn-primary" type="button">Iniciar sesión</button>
+                            <button class="btn btn-primary" type="submit">Iniciar sesión</button>
                           </div>
                     </form>
                 </div>
