@@ -42,7 +42,7 @@ $("[name='provincia']").change(function () {
 $("[name='localidad']").change(function () {
     let idLocalidad = $(this).val();
     $.ajax({
-        url: `pacientes/barrios_dropdown/${idLocalidad}`, 
+        url: `/pacientes/barrios_dropdown/${idLocalidad}`, 
         method: "GET",
         success: function (response) {
             $("[name='barrio'] option").remove();
