@@ -406,7 +406,7 @@ def grabar_turno():
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
     id_configturno = obtener_id_configuracion_turno(id_paciente,id_especialidad)
     actualizar_turnos_computados(id_paciente,id_especialidad,id_configturno)
-    return redirect("/turno/")
+    return redirect("/turnos")
 
 #Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad
 @app.route('/turnos/profesionales_dropdown/<int:id>')
@@ -470,7 +470,7 @@ def grabar_turno_receptado():
     #inserto los datos en turno
     update_turno_asignado(id_turno_asignado)
     insertar_turno_receptado(id_tipo_turno, id_especialidad, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_profesional, id_turno_asignado)
-    return redirect("/turno/")
+    return redirect("/turnos")
 
 # Acción para ver la pantalla de REPROGRAMAR turno
 @app.route('/turnos/reprogramar_turno/<int:id_turno>')
@@ -508,7 +508,7 @@ def grabar_turno_reprogramado():
     #inserto los datos en turno
     update_turno_reasignado(id_turno_asignado)
     insertar_turno_reasignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_turno_asignado)
-    return redirect("/turno/")
+    return redirect("/turnos")
 
 # Acción para abrir el modal de ANULAR turno
 @app.route('/turnos/anular_turno/<int:id_turno>')
@@ -661,7 +661,7 @@ def grabar_usuario():
     rolSeleccionado = request.form["checkRol"]
     guardar_usuario(idRecurso, nombreUsuario, contrasena, rolSeleccionado)
     # SI DA OK redireccionar
-    return redirect("/usuario")
+    return redirect("/configuracion/usuarios")
 
 @app.route('/configuracion/usuarios/editar_usuario/<int:id>')
 def editar_usuario(id):
