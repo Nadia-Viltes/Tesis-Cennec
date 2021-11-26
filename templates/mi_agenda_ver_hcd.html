@@ -64,7 +64,7 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-            <form action="/guardar_detalle" method="POST">>
+            <form action="/guardar_detalle" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <input type="hidden" class="form-control" id="inputIdHCD" value = {{data.paciente_hcd[7]}}>
@@ -87,7 +87,7 @@
                         <div class="list-group" name="listaHistorial">
                             <label for="historialEvolucion" class="form-label">Historial</label>
                             {% for historial in data.historial %}
-                            <a href="/ver_historial/{{historial[4]}}" class="list-group-item list-group-item-action" aria-current="true">
+                            <a href="/agenda/ver_historial/{{historial[4]}}" class="list-group-item list-group-item-action" aria-current="true">
                                 <div class="d-flex w-100 justify-content-between">
                                     <div class="fw-bold">{{historial[11]}}</div>
                                     <small>{{historial[12]}}</small>

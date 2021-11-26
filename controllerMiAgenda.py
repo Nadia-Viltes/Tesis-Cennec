@@ -45,7 +45,7 @@ def obtener_historial_evoluciones(id):
             AND de.IdProfesional = p.IdProfesional
             AND p.IdEspecialidad = esp.IdEspecialidad
             AND p.IdRecurso = r.IdRecurso
-            AND hcd.IdHistoriaClinica = {};               
+            AND hcd.IdPaciente = {};               
             """.format(id)
     conexion = get_conexion()
     historial = []

@@ -24,7 +24,7 @@ def obtener_hcd_por_id(idHcd):
 			WHERE pa.IdPaciente = afi.IdPaciente
 			AND fi.IdFinanciador = afi.IdFinanciador
 			AND pa.IdPaciente = hcd.IdPaciente
-            AND hcd.IdHistoriaClinica = {}""".format(idHcd)
+            AND pa.IdPaciente = {}""".format(idHcd)
     conexion = get_conexion()
     paciente_hcd = None
     with conexion.cursor() as cur:

@@ -8,6 +8,7 @@ def obtener_lista_usuarios():
             FROM usuario as us, recurso as rec, rol as rol
             WHERE us.IdRecurso = rec.IdRecurso
             AND us.IdRol = rol.IdRol
+            AND us.Nombre != lower('admin')
             AND us.fechaBaja is null;              
             """
     conexion = get_conexion()
