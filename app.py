@@ -79,7 +79,7 @@ def index(name='Home'):
     return render_template('index.html')
 
 # MUESTRA LA LISTA DE PACIENTES Y BUSQUEDA
-@app.route('/pacientes/', methods=['GET', 'POST'])
+@app.route('/pacientes', methods=['GET', 'POST'])
 def pacientes():
     pacientes = None
     if request.method == 'POST':
