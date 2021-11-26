@@ -34,7 +34,7 @@
   <!-- ================================================ -->
   <!-- TURNERO -->
   <!-- ================================================ -->
-
+<div>
   <table class="table table-hover">
     <thead class="table-info">
       <tr>
@@ -45,7 +45,6 @@
         <th scope="col">Nombre y Apellido</th>
         <th scope="col">Nro. documento</th>
         <th scope="col">Especialidad</th>
-        <th scope="col">Profesional</th>
         <th class="text-center" scope="col">Acción</th>
       </tr>
     </thead>
@@ -59,7 +58,6 @@
         <td>{{turno[6]}} {{turno[7]}}</td>
         <td>{{turno[8]}}</td>
         <td>{{turno[9]}}</td>
-        <td>{{turno[10]}}</td>
         <td><a type="button" class="btn btn-primary openBtn" href="/turnos/receptar_turno/{{turno[0]}}" name="button_receptar_turno">
             Receptar
         </a>
@@ -74,7 +72,7 @@
       {% endfor %}
     </tbody>
   </table>
-
+</div>
 
   <!-- Button trigger modal -->
   <div class="form-row text-center">

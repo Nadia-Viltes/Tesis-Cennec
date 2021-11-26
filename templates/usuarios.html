@@ -71,6 +71,11 @@
       </div>
     </div>
 
+
+    <div id="idSeccionModalEliminar">
+    </div>
+
+
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -80,6 +85,32 @@
   </canvas>
 
 </main>
+
+<script>
+//boton Eliminar
+$(document).on('click', "[name='botonEliminarUsuario']", function(){
+            let IdUsuario = $(this).attr("id");
+            $.ajax({
+            url:`/configuracion/usuarios/modal_eliminar_usuario/${IdUsuario}`,
+            method:"GET",
+            data:{},
+            success:function(data){
+                $('#idSeccionModalEliminar').append(data.htmlresponse)
+                $('#EliminarUsuario').modal('show');
+            }
+            });
+        });
+        $(document).on('click', '#idCerrarModalEliminar', function(){
+            $.ajax({
+            success:function(data){
+            $('#EliminarUsuario').modal('hide');
+            {
+                $('#idSeccionModalEliminar').empty()
+            }
+            }
+            });
+        });
+</script>
 
 
 {% endblock %}

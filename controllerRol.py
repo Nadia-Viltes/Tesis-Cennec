@@ -4,8 +4,8 @@ from config_bd import get_conexion
 def obtener_lista_roles():
     query = """
            SELECT IdRol, Nombre, Descripcion FROM rol 
-           WHERE FechaBaja is null;              
-            """
+           WHERE FechaBaja is null
+           AND Nombre != lower('Administrador')"""
     conexion = get_conexion()
     rol = []
     with conexion.cursor() as cur:
@@ -72,3 +72,23 @@ def obtener_id_rol(idRol):
     rol_id = cur.fetchone()
     conexion.close()
     return rol_id
+
+
+# Le asigno fecha de baja al rol
+def update_eliminar_rol(id_rol):
+    conexion = get_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""UPDATE rol SET FechaBaja = now() WHERE IdRol = {}""".format
+                       (id_rol))
+    conexion.commit()
+    conexion.close()
+
+
+# Le asigno fecha de baja a los privilegios del rol que se dio de baja
+def update_eliminar_rolprivilegio(id_rol):
+    conexion = get_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""UPDATE rolprivilegio SET FechaBaja = now() WHERE IdRol = {}""".format
+                       (id_rol))
+    conexion.commit()
+    conexion.close()

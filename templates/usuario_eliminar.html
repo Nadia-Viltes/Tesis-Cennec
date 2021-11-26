@@ -1,19 +1,18 @@
 <!-- Modal -->
-<div class="modal fade" id="EliminarRol" tabindex="-1" aria-labelledby="EliminarRol" aria-hidden="true">
+<div class="modal fade" id="EliminarUsuario" tabindex="-1" aria-labelledby="EliminarUsuario" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <form action="{{url_for('delete_rol')}}" method="POST">
-                <input type="hidden" value={{data.IdRol[0]}} name="dataRolId">
+            <form action="{{url_for('delete_usuario')}}" method="POST">
+                <input type="hidden" value={{data.IdUsuario[0]}} name="dataUsuarioId">
             <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title" id="EliminarRolLabel">{{data.titulo}}</h5>
+                <h5 class="modal-title" id="EliminarUsuarioLabel">{{data.titulo}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                     id="idCerrarModalEliminar"></button>
             </div>
             <div class="modal-body">
                         <h5>¡IMPORTANTE!</h5>
-                        <p>Estás por eliminar un rol. Recordá que si existen usuarios vinculados a este rol se perderán
-                            los privilegios asociados.</p>
-                        <p>¿Deseas eliminar este rol de todos modos?</p>
+                        <p>Estás por eliminar un usuario.</p>
+                        <p>¿Deseas eliminarlo de todos modos?</p>
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
