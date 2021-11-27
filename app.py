@@ -62,6 +62,7 @@ def login():
             session["usuario"] = datos_usuario[1]
             session["nombre"] = datos_usuario[2]
             session["apellido"] = datos_usuario[3]
+            session["nombre_rol"] = datos_usuario[4]
             asignar_modulo_a_la_session(session["usuario_id"])
             return redirect(url_for("index"))
         else:   
@@ -281,10 +282,12 @@ def reportes():
         'titulo': 'Reportes',
     }
     return render_template('reportes.html', data=data)
-
+    
 @app.route('/agenda')
 def agenda():
-    mi_agenda = obtener_lista_turno_mi_agenda()
+    usuario = session["usuario_id"]
+    usuario_rol = session["nombre_rol"]
+    mi_agenda = obtener_lista_turno_mi_agenda(usuario, usuario_rol)
     data = {
         'titulo': 'Mi Agenda',
         'turnoprof': mi_agenda
