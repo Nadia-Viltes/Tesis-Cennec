@@ -34,45 +34,64 @@
   <!-- ================================================ -->
   <!-- TURNERO -->
   <!-- ================================================ -->
-<div>
-  <table class="table table-hover">
-    <thead class="table-info">
-      <tr>
-        <th scope="col">Estado</th>
-        <th scope="col">Fecha</th>
-        <th scope="col">Hora desde</th>
-        <th scope="col">Hora hasta</th>
-        <th scope="col">Nombre y Apellido</th>
-        <th scope="col">Nro. documento</th>
-        <th scope="col">Especialidad</th>
-        <th class="text-center" scope="col">Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for turno in data.turno %}
-      <tr>
-        <td>{{turno[1]}}</td>
-        <td>{{turno[2]}}</td>
-        <td>{{turno[3]}}</td>
-        <td>{{turno[4]}}</td>
-        <td>{{turno[6]}} {{turno[7]}}</td>
-        <td>{{turno[8]}}</td>
-        <td>{{turno[9]}}</td>
-        <td><a type="button" class="btn btn-primary openBtn" href="/turnos/receptar_turno/{{turno[0]}}" name="button_receptar_turno">
-            Receptar
-        </a>
-          <a type="button" class="btn btn-warning openBtn" href="/turnos/reprogramar_turno/{{turno[0]}}" name="button_reprogramar_turno">
-            Reprogramar
-          </a>
-          <a type="button" class="btn btn-danger openBtn" href="/turnos/anular_turno/{{turno[0]}}" name="button_anular_turno">
-            Anular
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+  <div>
+    <table class="table table-hover">
+      <thead class="table-info">
+        <tr>
+          <th scope="col">Estado</th>
+          <th scope="col">Fecha</th>
+          <th scope="col">Hora desde</th>
+          <th scope="col">Hora hasta</th>
+          <th scope="col">Nombre y Apellido</th>
+          <th scope="col">Nro. documento</th>
+          <th scope="col">Especialidad</th>
+          <th class="text-center" scope="col">Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for turno in data.turno %}
+        <tr>
+          <td>{{turno[1]}}</td>
+          <td>{{turno[2]}}</td>
+          <td>{{turno[3]}}</td>
+          <td>{{turno[4]}}</td>
+          <td>{{turno[6]}} {{turno[7]}}</td>
+          <td>{{turno[8]}}</td>
+          <td>{{turno[9]}}</td>
+          {% if turno[1].lower() == "receptado"  %}
+          <td><a type="button" class="btn btn-primary openBtn disabled" href="/turnos/receptar_turno/{{turno[0]}}"
+              name="button_receptar_turno">
+              Receptar
+            </a>
+            <a type="button" class="btn btn-warning openBtn disabled" href="/turnos/reprogramar_turno/{{turno[0]}}"
+              name="button_reprogramar_turno">
+              Reprogramar
+            </a>
+            <a type="button" class="btn btn-danger openBtn disabled" href="/turnos/anular_turno/{{turno[0]}}"
+              name="button_anular_turno">
+              Anular
+            </a>
+          </td>
+          {% else %}
+          <td><a type="button" class="btn btn-primary openBtn" href="/turnos/receptar_turno/{{turno[0]}}"
+              name="button_receptar_turno">
+              Receptar
+            </a>
+            <a type="button" class="btn btn-warning openBtn" href="/turnos/reprogramar_turno/{{turno[0]}}"
+              name="button_reprogramar_turno">
+              Reprogramar
+            </a>
+            <a type="button" class="btn btn-danger openBtn" href="/turnos/anular_turno/{{turno[0]}}"
+              name="button_anular_turno">
+              Anular
+            </a>
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
   <!-- Button trigger modal -->
   <div class="form-row text-center">

@@ -22,11 +22,13 @@ def obtener_lista_usuarios():
 #obtener usuario y contraseña
 def obtener_datos_usuario_by_user_password(usuario, password):
     query = """
-            SELECT us.idusuario, us.nombre, re.nombre, re.apellido 
-            FROM USUARIO AS us, RECURSO AS re
+            SELECT us.idusuario, us.nombre, re.nombre, re.apellido, r.nombre
+            FROM USUARIO AS us, RECURSO AS re, rol as r
             WHERE us.idrecurso = re.idrecurso
+            AND r.IdRol = us.IdRol
             AND us.nombre = '{}'
-            AND us.contraseña = '{}';
+            AND us.contraseña = '{}'
+            and us.FechaBaja is null;
             """.format(usuario, password)
     conexion = get_conexion()
     nombre_usuario = None
