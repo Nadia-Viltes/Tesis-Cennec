@@ -451,6 +451,19 @@ def asignar_turno(id):
     }
     return render_template('turnos_asignar.html', data=values)
 
+@app.route('/turnos/chequear_disponibilidad', methods=["POST"])
+def chequear_disponibilidad_turno():
+    logger.info("ingreso a chequear disponibilidad")
+    logger.info("request profesionalId -> {}".format(request.form['profesionalId']))
+    logger.info("request fechaTurno -> {}".format(request.form['fechaTurno']))
+    logger.info("request horaInicio -> {}".format(request.form['horaInicio']))
+    id_profesional = request.form['profesionalId']
+    fecha_turno = request.form['fechaTurno']
+    hora_inicio = request.form['horaInicio']
+    chequea = chequear_turno_existente(id_profesional, fecha_turno, hora_inicio)
+    logger.info("chequea -> {}".format(chequea))
+    return jsonify({'chequea': chequea})  
+
 @app.route('/turnos/grabar_turno', methods=["POST"])
 def grabar_turno():
     usuario = session["usuario_id"]
@@ -463,8 +476,13 @@ def grabar_turno():
     id_paciente = request.form['inputPacienteId']
     #busco el id del turno asignado
     id_estado = obtener_id_estado_turno_por_estado("asignado")
+<<<<<<< HEAD
     #inserto los datos en turno
     insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado,usuario)
+=======
+    #inserto los datos en turno        
+    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado)
+>>>>>>> b97ec86cb60f4bf5f9abdcac7a7033fc072ddaa6
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
     id_configturno = obtener_id_configuracion_turno(id_paciente,id_especialidad)
     actualizar_turnos_computados(id_paciente,id_especialidad,id_configturno)
@@ -474,7 +492,7 @@ def grabar_turno():
 @app.route('/turnos/profesionales_dropdown/<int:id>')
 def profesionales_especialidad_dropdown(id):
     profesionales = obtener_profesionales_especialidad(id)
-    options = "<option selected disabled>Seleccionar...</option>"
+    options = "<option value='' selected disabled>Seleccionar...</option>"
     for profesional in profesionales:
         options+= "<option value={}>{} {}</option>".format(profesional[0], profesional[1], profesional[2])
     return jsonify({'htmlresponse': render_template_string(options)})
@@ -595,10 +613,10 @@ def anular_turno(id_turno):
 def guardar_anular_turnos():
     usuario = session["usuario_id"]
     motivoTurnosAnulados = request.form["motivoTurno"]
-    ListaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
+    listaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
     #busco el id del estado del turno en asignado
     id_estado = obtener_id_estado_turno_por_estado("Anulado")
-    for idTurnosAnulados in ListaTurnosAnulados:
+    for idTurnosAnulados in listaTurnosAnulados:
         datos_turnos_para_anular = obtener_turno_por_id_asignado_anulado(idTurnosAnulados)
         insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4], datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
         update_turno_asignado(idTurnosAnulados)
@@ -632,8 +650,7 @@ def agregar_rol():
     }
     return render_template('rol_agregar.html', data=data)
 
-'''
-@app.route('/guardar_rol', methods=["POST"])
+@app.route('/configuracion/rol/guardar_rol', methods=["POST"])
 def guardar_rol():
     nombreRol = request.form["nombreRol"]
     descripcionRol = request.form["descripcionRol"]
@@ -641,11 +658,10 @@ def guardar_rol():
     idRol = insertar_rol(nombreRol, descripcionRol)
     for idPrivilegio in idPrivilegios:
         insertar_rol_privilegio(idRol, idPrivilegio)
-    print("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
+    logger.info("estos son los privilegios checkeados {}".format(request.form.getlist('privilegio_nombre')))
     # SI DA OK redireccionar
-    return redirect("/rol")
-'''    
-
+    return redirect("/configuracion/rol")
+   
 @app.route('/configuracion/rol/editar_rol/<int:id>')
 def editar_rol(id):
     IdRol = obtener_id_rol(id)

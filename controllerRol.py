@@ -1,3 +1,4 @@
+from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de ROLES
@@ -36,7 +37,7 @@ def insertar_rol (nombreRol,descripcionRol):
         INSERT INTO rol(Nombre, Descripcion, FechaAlta) 
         VALUES ('{}','{}', NOW());""".format(nombreRol,descripcionRol)  
     rol_id = None
-    print("ESTE ES MI INSERTAR ROL -> {}".format(query))
+    logger.info("Inserta rol -> {}".format(query))
     with conexion.cursor() as cur:
         cur.execute(query)
         rol_id = cur.lastrowid
@@ -52,7 +53,7 @@ def insertar_rol_privilegio (idRol, idPrivilegio):
         INSERT INTO rolprivilegio (IdRol, IdPrivilegio, FechaAlta) 
         VALUES ({},{},NOW());""".format(idRol, idPrivilegio)
     rol_privilegio = None
-    print("ESTE ES MI INSERTAR ROL/PRIVILEGIO -> {}".format(query))
+    logger.info("Inserta rolprivilegio -> {}".format(query))
     with conexion.cursor() as cur:
         cur.execute(query)
         rol_privilegio = cur.lastrowid

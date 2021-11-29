@@ -87,6 +87,8 @@
             </div>
         </div>
         {%else%}
+            <div id="mensajeAlerta" class="container">
+            </div>    
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
@@ -94,8 +96,8 @@
                     <input type="hidden" value={{data.paciente[0]}} name="inputPacienteId">
                     <div class="col-md-4">
                         <label for="tipoTurno" class="form-label">Tipo de turno</label>
-                        <select id="idTipoTurnoDropdown" name="tipoTurno" class="form-select">
-                            <option selected disabled>Seleccionar...</option>
+                        <select id="idTipoTurnoDropdown" name="tipoTurno" class="form-select" validation="true">
+                            <option value="" selected disabled>Seleccionar...</option>
                             {% for tipoTurno in data.tipoTurno %}
                             <option value={{tipoTurno[0]}}>{{tipoTurno[1]}}</option>
                             {% endfor %}
@@ -103,8 +105,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select id="idEspecialidadDropdown" name="nameEspecialidadDropdown" class="form-select">
-                            <option selected disabled>Seleccionar...</option>
+                        <select id="idEspecialidadDropdown" name="nameEspecialidadDropdown" class="form-select" validation="true">
+                            <option value="" selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
                             {% endfor %}
@@ -112,19 +114,19 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select">
-                            <option selected disabled>Seleccionar...</option>
+                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select" validation="true">
+                            <option value="" selected disabled>Seleccionar...</option>
                         </select>
                     </div>
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
                         <input type="date" class="form-control" id="idFechaTurno" name="fechaTurno" min="2021-01-01"
-                            max="2022-12-31">
-                        <div class="invalid-feedback">La fecha es anterior al día de hoy o vacía.</div>
+                            max="2022-12-31" validation="true">
+                        <div class="invalid-feedback">La fecha es anterior al día de hoy</div>
                     </div>
                     <div class="col-4">
                         <label for="horaTurno" class="form-label">Hora inicio</label>
-                        <select id="idEspecialidadDropdown" id="idhoraInicio" name="nameHoraInicio" class="form-select">
+                        <select id="idhoraInicio" name="nameHoraInicio" class="form-select" validation="true">
                             <option value="" selected disabled>--:--</option>
                             {% for hora in range(12) %}
                             {% if (hora + 8) < 10 %} <option value=0{{ hora + 8 }}:00>0{{hora + 8}}:00</option>
@@ -139,7 +141,8 @@
                     </div>
                     <div class="col-4">
                         <label for="horaFin" class="form-label">Hora fin</label>
-                        <input type="time" class="form-control" id="idhoraFin" name="nameHoraFin" disabled>
+                        <input type="hidden" name="nameHoraFin">
+                        <input type="time" class="form-control" id="idhoraFin" disabled>
                     </div>
             </div>
         </div>
@@ -163,7 +166,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalVerTurnos">Ver turnos</h5>
+                    <h5 class="modal-title" id="tituloModal">Ver turnos</h5>
                 </div>
                 <div>
                     <div class="modal-body">
@@ -203,86 +206,10 @@
     </canvas>
 
 </main>
-
+<script type="text/javascript" src="/static/validations/validacion_turnos_formulario.js"></script>
 <script>
-    //seteo fecha de turno por defecto
-    let fechaTurnoCampo = $("[name='fechaTurno']")
-    let horaInicioCampo = $("[name='nameHoraInicio']")
-    let horaFinCampo = $("#idhoraFin")
-
-    const obtenerFechaActual = function () {
-        fecha_actual = new Date()
-        let dia = fecha_actual.getDate()
-        let mes = fecha_actual.getMonth() + 1
-        let anio = fecha_actual.getFullYear()
-        return `${anio}-${mes}-${dia}`
-    }
-
     //la fecha por defecto es la de hoy
-    fechaTurnoCampo.val(obtenerFechaActual())
-
-    //carga el dropdown de profesional por especialidad
-    $("#idEspecialidadDropdown").change(function () {
-        let idEspecialidad = $(this).val();
-        $.ajax({
-            url: `/turnos/profesionales_dropdown/${idEspecialidad}`,
-            method: "GET",
-            success: function (response) {
-                $("#idProfesionalDropdown option").remove();
-                $("#idProfesionalDropdown").append(response.htmlresponse);
-            }
-        });
-    });
-
-    //Inteligencia en minutos
-    horaInicioCampo.change(function () {
-        let horaInicio = horaInicioCampo.val()
-        if (horaInicio != null) {
-            horaInicio = horaInicio.split(":")
-            let hora = horaInicio[0]
-            let minutos = horaInicio[1]
-            let date = new Date()
-            date.setHours(hora)
-            date.setMinutes(minutos)
-            date.setMinutes(date.getMinutes() + 30)
-            let horaFinal = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-            let minutoFinal = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-            horaFinCampo.val(`${horaFinal}:${minutoFinal}`)
-        } else {
-            horaFinCampo.val('')
-        }
-    });
-
-    $("#formularioDeTurno").on("submit", function () {
-        let valorDeFecha = fechaTurnoCampo.val()
-        let fechaCampo = new Date(valorDeFecha.replace('-', '/'))
-        let fechaActual = new Date(obtenerFechaActual().replace('-', '/'))
-        if (fechaCampo < fechaActual || valorDeFecha == '') {
-            fechaTurnoCampo.addClass("is-invalid")
-            return false;
-        }
-        if (fechaCampo.getTime() == fechaActual.getTime()) {
-            //hora que viene del campo inicio
-            let flag = false
-            let tiempoCompleto = horaInicioCampo.val().split(":");
-            let hora = tiempoCompleto[0]
-            let minutos = tiempoCompleto[1]
-            let fechaActual = new Date()
-            let horaActual = fechaActual.getHours()
-            let minutosActuales = fechaActual.getMinutes()
-            if (hora > horaActual) {
-                flag = true
-            }
-            if (hora == hora && minutos > minutosActuales) {
-                flag = true
-            }
-            if (!flag) {
-                horaInicio.addClass("is-invalid")
-                return flag;
-            }
-        }
-    })
-
+    $("[name='fechaTurno']").val(obtenerFechaActual())
 </script>
 
 
