@@ -325,8 +325,7 @@ def reportes():
 @app.route('/agenda')
 def agenda():
     usuario = session["usuario_id"]
-    usuario2 = session["usuario_id"]
-    mi_agenda = obtener_lista_turno_mi_agenda(usuario, usuario2)
+    mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
         'turnoprof': mi_agenda,

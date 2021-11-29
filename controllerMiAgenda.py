@@ -2,7 +2,7 @@ from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de turnos
-def obtener_lista_turno_mi_agenda(usuario,usuario2):
+def obtener_lista_turno_mi_agenda(usuario):
     query = """
             SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
             DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica, u.Nombre	
@@ -17,7 +17,7 @@ def obtener_lista_turno_mi_agenda(usuario,usuario2):
             AND rec.IdRecurso = u.IdRecurso
             AND tur.FechaBaja is null
             AND (tur.IdProfesionalAsignado = {} OR tur.IdProfesionalReceptado = {});
-            """.format(usuario,usuario2)
+            """.format(usuario,usuario)
     conexion = get_conexion()
     turnoProfesional = []
     with conexion.cursor() as cur:
