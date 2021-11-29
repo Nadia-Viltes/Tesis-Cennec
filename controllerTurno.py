@@ -274,13 +274,8 @@ def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, Id
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 
         IdEstadoTurno, FechaAnulado, IdMotivoAnulado, IdUsuarioAnulado, IdTurnoOriginal, FechaAlta, FechaBaja) 
-<<<<<<< HEAD
-        VALUES({},{},{},{},'{}','{}','{}'{},NOW(),{},{},{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario,IdTurno)
-    print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
-=======
         VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno)
     logger.info("Este es mi insertar turno anulado -> {}".format(query))    
->>>>>>> b97ec86cb60f4bf5f9abdcac7a7033fc072ddaa6
     idTurno_anulado = None    
     with conexion.cursor() as cur:
         cur.execute(query)
