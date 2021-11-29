@@ -1,3 +1,4 @@
+from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de turnos
@@ -121,6 +122,27 @@ def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDrop
     conexion.close()
     return idTurno_asignado
 
+def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
+    query = """
+            SELECT *
+            FROM turno as t
+            WHERE (IdProfesionalAsignado = {0} OR IdProfesionalReceptado = {0})
+            AND t.FechaTurno = '{1}'
+            AND DATE_FORMAT(t.HoraDesde, '%H:%i') = '{2}'
+            AND t.FechaBaja is null;
+            """.format(id_profesional, fecha_turno, hora_desde)
+    logger.info("chequar_turno_existente -> {}".format(query))        
+    conexion = get_conexion()
+    turno_existente = None 
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        turno_existente = cur.fetchall()
+    conexion.close()
+    if turno_existente != ():
+        turno_existente = True
+    else:
+        turno_existente = False     
+    return turno_existente        
 
 ## Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
 def obtener_id_configuracion_turno(id_paciente, id_especialidad):
@@ -242,12 +264,9 @@ def obtener_turno_por_id_asignado_anulado(idTurnosAnulados):
     conexion = get_conexion()
     with conexion.cursor() as cur:
         cur.execute(query)
-    turnoAnular = cur.fetchall()
+    turnoAnular = cur.fetchone()
     conexion.close()
     return turnoAnular
-
-
-
 
 ## Agregar un nuevo registro en estado ANULADO:
 def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno):
@@ -255,8 +274,8 @@ def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, Id
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 
         IdEstadoTurno, FechaAnulado, IdMotivoAnulado, IdUsuarioAnulado, IdTurnoOriginal, FechaAlta, FechaBaja) 
-        VALUES({},{},{},{},'{}','{}','{}'{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno)
-    print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
+        VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno)
+    logger.info("Este es mi insertar turno anulado -> {}".format(query))    
     idTurno_anulado = None    
     with conexion.cursor() as cur:
         cur.execute(query)

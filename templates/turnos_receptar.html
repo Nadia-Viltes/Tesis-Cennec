@@ -95,13 +95,9 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select">
-                            <option value="{{data.profesional_actual[0]}}" selected>{{data.profesional_actual[1]}}
-                                {{data.profesional_actual[2]}}</option>
-                            {% for profesional in data.profesionales %}
-                            <option value={{profesional[0]}}>{{profesional[1]}} {{profesional[2]}}</option>
-                            {% endfor %}
-                        </select>
+                        <input type="hidden" name="nameProfesionalDropdown" value="{{data.profesional_actual[0]}}">
+                        <input type="text" class="form-control" name="InputNameProfesionalDropdown"
+                            value="{{data.profesional_actual[1]}} {{data.profesional_actual[2]}}" disabled>
                     </div>
                     <div class="col-4">
                         <label for="fechaTurno" class="form-label">Fecha</label>
