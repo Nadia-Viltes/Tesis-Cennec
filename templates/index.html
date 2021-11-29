@@ -1,32 +1,81 @@
 {% extends 'base/base.html' %}
 {% block content %}
 
-            <!-- ================================================ -->
-            <!-- Config Pantalla -->
-            <!-- ================================================ -->
-            <main class="col-md-9 ms-sm-auto col-lg-10">
-                <div class="chartjs-size-monitor">
-                    <div class="chartjs-size-monitor-expand">
-                        <div class></div>
-                    </div>
-                    <div class="chartjs-size-monitor-shrink">
-                        <div class=""></div>
+<!-- ================================================ -->
+<!-- Config Pantalla -->
+<!-- ================================================ -->
+<main class="col-md-9 ms-sm-auto col-lg-10">
+    <div class="chartjs-size-monitor">
+        <div class="chartjs-size-monitor-expand">
+            <div class></div>
+        </div>
+        <div class="chartjs-size-monitor-shrink">
+            <div class=""></div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+        aria-label="breadcrumb">
+        <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+            <li class="breadcrumb-item"><a href="/home">Home</a></li>
+        </ol>
+    </nav>
+
+    <!-- Titulo de la pantalla -->
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
+        <div>
+            <p class="fs-1 fw-bold text-primary">¡Te damos la bienvenida {{data.nombreSession}}
+                {{data.apellidoSession}}!</p>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card">
+                    <img src="/static/Images/noticias.jpg" class="card-img-top" alt="imagen_noticias" style="height:250px;">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Noticias!</h5>
+                        <p class="card-text">Enterate de las noticias de hoy.</p>
+                        <a href="https://www.lavoz.com.ar/" target="_blank" class="card-link">Noticias: "La Voz"</a> 
                     </div>
                 </div>
-
-            <!-- Breadcrumb -->
-                <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
-                <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
-                  <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                </ol>
-                </nav>
-
-            <!-- Titulo de la pantalla -->
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
-                <h1 class="h2">{{ titulo }}</h1>
             </div>
-
-                <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="auto" style="display: block; height: auto; width: 1218px;"></canvas>
-            </main>
-
- {% endblock %}
+            <div class="col">
+                <div class="card">
+                    <img src="/static/Images/clima.jpg" class="card-img-top" alt="imagen_clima" style="height:250px;">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Clima!</h5>
+                        <p class="card-text">¿Cómo estará el clima? ¡Aquí podrás verlo!</p>
+                        <a href="https://www.meteored.com.ar/tiempo-en_Cordoba-America+Sur-Argentina-Cordoba-SACO-1-13585.html" target="_blank" class="card-link">Tiempo en Córdoba</a> 
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="/static/Images/covid2.jpg" class="card-img-top" alt="imagen_salud" style="height:250px;">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Salud!</h5>
+                        <p class="card-text">Mirá las últimas noticias sobre la salud mundial.</p>
+                        <a href="https://www.who.int/es" target="_blank" class="card-link">Orfanización mundial de la salud</a> 
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <img src="/static/Images/feliz.jpg" class="card-img-top" alt="imagen_cumple" style="height:250px;">
+                    <div class="card-body">
+                        <h5 class="card-title">¡Cumpleaños!</h5>
+                        <p class="card-text">Hoy es el cumple de:</p>
+                        <ul class="list-group">
+                            {% for cumple in data.cumple %}
+                            <li class="list-group-item">{{cumple[0]}} {{cumple[1]}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" height="auto"
+                style="display: block; height: auto; width: 1218px;"></canvas>
+</main>
+{% endblock %}

@@ -58,7 +58,7 @@
           <td>{{turno[6]}} {{turno[7]}}</td>
           <td>{{turno[8]}}</td>
           <td>{{turno[9]}}</td>
-          {% if turno[1].lower() == "receptado"  %}
+          {% if turno[1].lower() == "receptado" or turno[1].lower() == "atendiendo" or turno[1].lower() == "atendido" or turno[1].lower() == "ausente" %}
           <td><a type="button" class="btn btn-primary openBtn disabled" href="/turnos/receptar_turno/{{turno[0]}}"
               name="button_receptar_turno">
               Receptar

@@ -56,17 +56,37 @@
         <td>{{turnoprof[1]}}</td>
         <td>{{turnoprof[6]}} {{turnoprof[7]}}</td>
         <td>{{turnoprof[8]}}</td>
+        {% if turnoprof[1].lower() == "receptado"  %}
         <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
             id="{{turnoprof[0]}}">
             Iniciar atención
           </button>
-          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}">
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" disabled>
             Finalizar atención
           </button>
-          <a class="btn btn-success" href="/agenda/ver_hcd/{{turnoprof[5]}}" role="button" id={{turnoprof[5]}}>
+          <a class="btn btn-success" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button">
             Ver HCD
           </a>
         </td>
+        {% else %}
+        <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
+            id="{{turnoprof[0]}}" disabled>
+            Iniciar atención
+          </button>
+          {% if turnoprof[1].lower() == "atendiendo"  %}
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" disabled>
+            Finalizar atención
+          </button>
+          {% else %}
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" >
+            Finalizar atención
+          </button>
+          {% endif %}
+          <a class="btn btn-success" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button" id={{turnoprof[5]}}>
+            Ver HCD
+          </a>
+        </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

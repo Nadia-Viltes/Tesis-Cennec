@@ -67,13 +67,14 @@
             <form>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <input type="hidden" class="form-control" id="inputIdEvolucion" value = {{data.paciente_hcd[7]}}>
+                        <input type="hidden" class="form-control" name="inputIdHCD" value = {{data.paciente_hcd[7]}}>
                         <label for="inputProfesional" class="form-label">Profesional</label>
-                        <input type="text" class="form-control" id="inputProfesional"  value = {{data.paciente_hcd[10]}}>
+                        <input type="hidden" class="form-control" name="inputProfesional"  value={{data.usuarioProfesional[4]}}>
+                        <input type="text" class="form-control" id="inputProfesional"  value= "{{data.usuarioProfesional[1]}} {{data.usuarioProfesional[2]}}" disabled>
                     </div>
                     <div class="col-md-4">
                         <label for="inputEspecialidad" class="form-label">Especialidad</label>
-                        <input type="text" class="form-control" id="inputEspecialidad" value = {{data.paciente_hcd[12]}}>
+                        <input type="text" class="form-control" name="inputEspecialidad" value = {{data.usuarioProfesional[3]}} disabled>
                     </div>
                 </div>
 
@@ -81,18 +82,24 @@
                     <div class="col-md-8">
                         <label for="TextareaEvoluciones" class="form-label">Evolución</label>
                         <textarea class="form-control" id="TextareaEvoluciones" rows="10"
-                            name="InputTextareaEvoluciones" style="resize: none;"></textarea>
+                            name="InputTextareaEvoluciones" style="resize: none;" disabled>
+                        </textarea>
                     </div>
                     <div class="col-md-4">
-                        <div class="list-group" name="listaHistorial">
-                            <label for="historialEvolucion" class="form-label">Historial</label>
-                            <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <div class="fw-bold">Especialidad</div>
-                                    <small>Fecha</small>
-                                </div>
-                                <small>Profesional</small>
-                            </a>
+                        <label for="historialEvolucion" class="form-label">Historial</label>
+                        <div style="height:250px; overflow: auto;">
+                            <div class="list-group" name="listaHistorial">
+                                {% for historial in data.historial %}
+                                <a href="/agenda/ver_historial/{{historial[4]}}"
+                                    class="list-group-item list-group-item-action" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="fw-bold">{{historial[11]}}</div>
+                                        <small>{{historial[12]}}</small>
+                                    </div>
+                                    <small>{{historial[9]}} {{historial[10]}}</small>
+                                </a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -101,14 +108,14 @@
                     <div class="col-md-6 justify-content-md-start">
                         <a class="btn btn-primary" href="/hcd" role="button">Atrás</a>
                     </div>
-                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
-                    </div>
                 </div>
 
             </form>
         </div>
 
+    </div>
+
+    <div id="idSeccionModalHistorial">
     </div>
 
     <!-- ================================================ -->
@@ -120,5 +127,32 @@
     </canvas>
 
 </main>
+
+<script>
+    //link para ver historiales
+  
+    $(document).on('click', "[name='historial_hcd']", function () {
+      let id = $(this).attr("id");
+      $.ajax({
+        url: `/hcd/modal/ver_historial/${id}`,
+        method: "GET",
+        success: function (data) {
+          $('#idSeccionModalHistorial').append(data.htmlresponse)
+          $('#verHistorialHCD').modal('show');
+        }
+      });
+    });
+    $(document).on('click', '#idCerrarModalEliminar', function () {
+      $.ajax({
+        success: function (data) {
+          $('#verHistorialHCD').modal('hide');
+          {
+            $('#idSeccionModalHistorial').empty()
+          }
+        }
+      });
+    });
+  
+  </script>
 
 {% endblock %}

@@ -21,7 +21,7 @@
         <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
             <li class="breadcrumb-item"><a href="/home">Home</a></li>
             <li class="breadcrumb-item"><a href="/agenda">Mi agenda</a></li>
-            <li class="breadcrumb-item"><a href="/agenda/ver_hcd/{{data.detalle_historial[1]}}">Historia clínica dígital</a></li>
+            <li class="breadcrumb-item"><a href="/agenda/ver_hcd/paciente/{{data.detalle_historial[1]}}/turno/{{data.detalle_historial[6]}}">Historia clínica dígital</a></li>
             <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.detalle_historial[12]}}
                 {{data.detalle_historial[13]}}</li>   
         </ol>
@@ -64,11 +64,14 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Detalle de evolución</h5>
-            <form>
+            <form action="/agenda/editar_detalle" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <input type="hidden" class="form-control" id="inputIdEvolucion">
+                        <input type="hidden" class="form-control" name="inputIdDetEvo" value={{data.detalle_historial[4]}}>
+                        <input type="hidden" class="form-control" name="inputIdTurnoHis" value={{data.detalle_historial[6]}}>
+                        <input type="hidden" class="form-control" name="inputIdEvolucion" value={{data.detalle_historial[2]}}>
                         <label for="inputProfesional" class="form-label">Profesional</label>
+                        <input type="hidden" class="form-control" name="inputProfesionalHis" value={{data.detalle_historial[7]}}>
                         <input type="text" class="form-control" id="inputProfesional" value='{{data.detalle_historial[9]}} {{data.detalle_historial[10]}}' disabled>
                     </div>
                     <div class="col-md-4">
@@ -89,17 +92,23 @@
                     <div class="col-md-12">
                         <label for="TextareaEvoluciones" class="form-label">Evolución</label>
                         <textarea class="form-control" id="TextareaEvoluciones" rows="10"
-                            name="InputTextareaEvoluciones" style="resize: none;">{{data.detalle_historial[8]}}</textarea>
+                            name="InputTextareaEvolucionesHis" style="resize: none;">{{data.detalle_historial[8]}}</textarea>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-md-6 justify-content-md-start">
-                        <a class="btn btn-primary" href="/agenda/ver_hcd/{{data.detalle_historial[1]}}" role="button">Atrás</a>
+                        <a class="btn btn-primary" href="/agenda/ver_hcd/paciente/{{data.detalle_historial[1]}}/turno/{{data.detalle_historial[6]}}" role="button">Atrás</a>
                     </div>
+                    {% if data.detalle_historial[7] == data.usuarioprof %}
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
+                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Editar</button>
                     </div>
+                    {% else %}
+                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success" disabled>Editar</button>
+                    </div>
+                    {% endif %}
                 </div>
 
             </form>
