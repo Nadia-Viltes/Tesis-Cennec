@@ -1,4 +1,5 @@
 from loguru import logger
+from controllerHome import obtener_lista_cumple
 from controllerPaciente import *
 from controllerUsuario import *
 from controllerRol import *
@@ -77,7 +78,15 @@ def logout():
 
 @app.route('/home')
 def index(name='Home'):
-    return render_template('index.html')
+    nombreSession = session["nombre"]
+    apellidoSession = session["apellido"]
+    cumple = obtener_lista_cumple()
+    data = {
+        'nombreSession': nombreSession,
+        'apellidoSession': apellidoSession,
+        'cumple': cumple
+    }
+    return render_template('index.html', data=data)
 
 # MUESTRA LA LISTA DE PACIENTES Y BUSQUEDA
 @app.route('/pacientes', methods=['GET', 'POST'])
@@ -248,14 +257,43 @@ def obtener_hcd_idd(id):
     }
     return render_template('hcd_ver_admision.html', data=values)
 
+# Acá se abre el modal de eliminar turno de admisión
+@app.route('/hcd/modal_eliminar_turno_admision/<int:id>')
+def modal_eliminar_turno_admision(id):
+    boton = boton_turno_adm(id)
+    values = {
+            'titulo': 'Eliminar turno admisión',
+            'boton': boton
+    }
+    return jsonify({'htmlresponse': render_template('hcd_ver_admision_eliminar_turno.html', data=values)})
+
+# Acá se ejecuta la query para eliminar el turno de admisión
+@app.route("/hcd/eliminar_turno_admision/", methods=["POST"])
+def eliminar_turno_admision():
+    dataTurnoAdmId = request.form["dataTurnoAdmId"]
+    update_baja_turno_admision(dataTurnoAdmId)
+    return redirect("/hcd")
+
 @app.route('/hcd/ver_evoluciones/<int:id>', methods=["GET", "POST"])
 def obtener_evolucion_id(id):
     paciente_hcd = obtener_hcd_por_id(id)
+    historial_hcd = obtener_historial_evoluciones(id)
+    usuario = session["usuario_id"]
+    usuario_profesional = obtener_datos_usuario_profesional(usuario)
     values={
         'titulo': 'Historia clínica digital',
-        'paciente_hcd': paciente_hcd
+        'paciente_hcd': paciente_hcd,
+        'historial': historial_hcd,
+        'usuarioProfesional':usuario_profesional
     }
     return render_template('hcd_ver_evolucion.html', data=values)
+
+@app.route('/hcd/modal/ver_historial/<int:id>', methods=["GET", "POST"])
+def ver_historial_hcd(id):
+    values={
+        'titulo': 'Este es un historial'
+    }
+    return jsonify({'htmlresponse': render_template('hcd_ver_historial.html',data=values)})
 
 #Carga los turnos admision llenando la tabla con jquery
 @app.route('/hcd/agrega_turnos_admision', methods=["POST"])
@@ -269,6 +307,7 @@ def agrega_turnos_admision():
     insertar_turnos_admision(id_paciente, id_especialidad, id_patologia, cantidad)
     #hago la consulta para obtener todos los turnos por id de paciente por especialidad
     lista_turnos = obtener_lista_turnos_admision(id_paciente)
+    logger.info("Esta es la lista de turnos admisión -> {}".format(lista_turnos))
     table = ""
     #creo una tabla con los datos de la lista de turnos y se la envío
     #a ver_HCD.html
@@ -286,11 +325,10 @@ def reportes():
 @app.route('/agenda')
 def agenda():
     usuario = session["usuario_id"]
-    usuario_rol = session["nombre_rol"]
-    mi_agenda = obtener_lista_turno_mi_agenda(usuario, usuario_rol)
+    mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
-        'turnoprof': mi_agenda
+        'turnoprof': mi_agenda,
     }
     return render_template('mi_agenda.html', data=data)
 
@@ -328,39 +366,61 @@ def finalizar_atencion():
     id_estado = obtener_id_estado_turno_por_estado("Atendiendo")
     return redirect("/agenda")
 
-@app.route('/agenda/ver_hcd/<int:id>', methods=["GET", "POST"])
-def ver_hcd(id):
-    paciente_hcd = obtener_hcd_por_id(id)
-    historial_hcd = obtener_historial_evoluciones(id)
+@app.route('/agenda/ver_hcd/paciente/<int:idpaciente>/turno/<int:idturno>', methods=["GET", "POST"])
+def ver_hcd(idpaciente,idturno):
+    paciente_hcd = obtener_hcd_por_id(idpaciente)
+    historial_hcd = obtener_historial_evoluciones(idpaciente)
+    turnoId = obtener_turno_atendiendo(idturno)
+    usuario = session["usuario_id"]
+    usuario_profesional = obtener_datos_usuario_profesional(usuario)
     values={
         'titulo': 'Historia clínica digital',
         'paciente_hcd': paciente_hcd,
-        'historial': historial_hcd
+        'historial': historial_hcd,
+        'usuarioProfesional':usuario_profesional,
+        'turno_id': turnoId
     }
     return render_template('mi_agenda_ver_hcd.html', data=values)
 
 @app.route('/agenda/guardar_detalle', methods=["GET", "POST"])
 def guardar_detalle():
-    inputProfesional = request.form['inputProfesional']
+    usuario = session["usuario_id"]
+    inputProfesional = request.form['inputProfesional'] 
     InputTextareaEvoluciones = request.form['InputTextareaEvoluciones']
     inputIdHCD = request.form['inputIdHCD']
-    existeEvolucion = consulta_existe_evolucion(inputIdHCD)
-    if existeEvolucion == None:
-        idEvolucion = insertar_evolucion(inputIdHCD)
-        insertar_detalle(idEvolucion,inputProfesional,InputTextareaEvoluciones)
+    evolucion = consulta_existe_evolucion(inputIdHCD)
+    inputIdTurno = request.form['inputIdTurno']
+    if evolucion == None:
+        idEvolucion = insertar_evolucion(inputIdHCD, usuario)
+        insertar_detalle(idEvolucion, inputIdTurno, inputProfesional, InputTextareaEvoluciones, usuario)
     else:
-        insertar_detalle(existeEvolucion,inputProfesional,InputTextareaEvoluciones)
+        insertar_detalle(evolucion, inputIdTurno, inputProfesional, InputTextareaEvoluciones, usuario)
     # SI DA OK redireccionar
     return redirect("/agenda")
 
 @app.route('/agenda/ver_historial/<int:id>', methods=["GET", "POST"])
 def ver_historial(id):
     detalle_historial = obtener_detalle_historial(id)
+    usuarioprof = session["usuario_id"]
     values={
         'titulo': 'Detalle de historia clínica',
-        'detalle_historial': detalle_historial
+        'detalle_historial': detalle_historial,
+        'usuarioprof': usuarioprof
     }
     return render_template('mi_agenda_historial.html', data=values)
+
+# Operación para editar el detalle
+@app.route('/agenda/editar_detalle', methods=["GET", "POST"])
+def editar_detalle():
+    usuario = session["usuario_id"]
+    inputIdDetEvo = request.form['inputIdDetEvo']
+    inputIdEvolucion = request.form['inputIdEvolucion']
+    inputIdTurnoHis = request.form['inputIdTurnoHis']
+    inputProfesionalHis = request.form['inputProfesionalHis']
+    InputTextareaEvolucionesHis = request.form['InputTextareaEvolucionesHis']
+    actualizar_detalle(inputIdEvolucion,inputIdTurnoHis,inputProfesionalHis,InputTextareaEvolucionesHis,usuario,inputIdDetEvo)
+    # SI DA OK redireccionar
+    return redirect("/agenda")
 
 # Operación para mostrar la lista de turnos
 @app.route('/turnos')
@@ -405,9 +465,7 @@ def chequear_disponibilidad_turno():
 
 @app.route('/turnos/grabar_turno', methods=["POST"])
 def grabar_turno():
-    #tomo los datos que vienen del form
-    print("este es mi request form")
-    print(request.form)
+    usuario = session["usuario_id"]
     id_tipo_turno = request.form['tipoTurno']
     id_especialidad = request.form['nameEspecialidadDropdown']
     id_profesional = request.form['nameProfesionalDropdown']
@@ -417,8 +475,8 @@ def grabar_turno():
     id_paciente = request.form['inputPacienteId']
     #busco el id del turno asignado
     id_estado = obtener_id_estado_turno_por_estado("asignado")
-    #inserto los datos en turno        
-    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado)
+    #inserto los datos en turno
+    insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado,usuario)
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
     id_configturno = obtener_id_configuracion_turno(id_paciente,id_especialidad)
     actualizar_turnos_computados(id_paciente,id_especialidad,id_configturno)
@@ -473,6 +531,7 @@ def receptar_turno(id_turno):
 @app.route('/turnos/grabar_turno_receptado', methods=["POST"])
 def grabar_turno_receptado():
     #tomo los datos que vienen del form
+    usuario = session["usuario_id"]
     id_turno_asignado = request.form['idTurnoAsignar']
     id_tipo_turno = request.form['tipoTurno']
     id_especialidad = request.form['nameEspecialidadDropdown']
@@ -485,7 +544,7 @@ def grabar_turno_receptado():
     id_estado = obtener_id_estado_turno_por_estado("Receptado")
     #inserto los datos en turno
     update_turno_asignado(id_turno_asignado)
-    insertar_turno_receptado(id_tipo_turno, id_especialidad, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_profesional, id_turno_asignado)
+    insertar_turno_receptado(id_tipo_turno, id_especialidad, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, usuario, id_profesional, id_turno_asignado)
     return redirect("/turnos")
 
 # Acción para ver la pantalla de REPROGRAMAR turno
@@ -511,6 +570,7 @@ def reprogramar_turno(id_turno):
 @app.route('/turnos/grabar_turno_reprogramado', methods=["POST"])
 def grabar_turno_reprogramado():
     #tomo los datos que vienen del form
+    usuario = session["usuario_id"]
     id_turno_asignado = request.form['idTurnoAsignar']
     id_tipo_turno = request.form['tipoTurno']
     id_especialidad = request.form['nameEspecialidadDropdown']
@@ -523,7 +583,7 @@ def grabar_turno_reprogramado():
     id_estado = obtener_id_estado_turno_por_estado("Asignado")
     #inserto los datos en turno
     update_turno_reasignado(id_turno_asignado)
-    insertar_turno_reasignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_turno_asignado)
+    insertar_turno_reasignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado, id_turno_asignado, usuario)
     return redirect("/turnos")
 
 # Acción para abrir el modal de ANULAR turno
@@ -545,13 +605,14 @@ def anular_turno(id_turno):
 
 @app.route('/turnos/guardar_anular_turnos', methods=["POST"])
 def guardar_anular_turnos():
+    usuario = session["usuario_id"]
     motivoTurnosAnulados = request.form["motivoTurno"]
     listaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
     #busco el id del estado del turno en asignado
     id_estado = obtener_id_estado_turno_por_estado("Anulado")
     for idTurnosAnulados in listaTurnosAnulados:
         datos_turnos_para_anular = obtener_turno_por_id_asignado_anulado(idTurnosAnulados)
-        insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4], datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, idTurnosAnulados)
+        insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4], datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
         update_turno_asignado(idTurnosAnulados)
     print("estos son los turnos para anular checkeados {}".format(request.form.getlist('lista_turnos_para_anular')))
     # SI DA OK redireccionar

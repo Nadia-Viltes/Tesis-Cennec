@@ -75,10 +75,9 @@ def obtener_recursos_nombre_apellido_dni(valor):
 # query para obtener recurso por ID
 def obtener_recurso_por_id(idRecurso):
     query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo 
-            FROM recurso as re, tiporecurso as tre, usuario as u
+            FROM recurso as re, tiporecurso as tre
             WHERE re.IdTipoRecurso = tre.IdTipoRecurso
-            AND re.IdRecurso = u.IdRecurso
-            AND u.IdUsuario = {}""".format(idRecurso)
+            AND re.IdRecurso = {};""".format(idRecurso)
     conexion = get_conexion()
     recurso_id = None
     with conexion.cursor() as cur:

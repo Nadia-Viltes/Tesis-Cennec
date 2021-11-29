@@ -108,11 +108,11 @@ def obtener_id_estado_turno_por_estado(estado):
 
 
 ## Agregar un nuevo turno en estado asignado:
-def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno):
+def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno,usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',{},now(),1,now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno)
+        VALUES ({},{},{},{},'{}','{}','{}',{},now(),{},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno,usuario)
     print("Este es mi insertar turno asignado -> {}".format(query))    
     idTurno_asignado = None    
     with conexion.cursor() as cur:
@@ -171,11 +171,11 @@ def actualizar_turnos_computados(id_paciente, id_especialidad,id_configturno):
 
 
 ## Agregar un nuevo turno en estado RECEPTADO:
-def insertar_turno_receptado(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, idProfesionalDropdown, IdTurno):
+def insertar_turno_receptado(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReceptado, IdUsuarioReceptado, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta)
-        VALUES ({},{},{},'{}','{}','{}',{},now(),1,{}, {}, now())""".format(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, idProfesionalDropdown, IdTurno)
+        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now())""".format(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno)
     print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
     idTurno_receptado = None    
     with conexion.cursor() as cur:
@@ -203,11 +203,11 @@ def update_turno_asignado(IdTurno):
 
 
 ## Agregar un nuevo turno en estado REASIGNADO:
-def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno):
+def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReasignado, IdUsuarioReasignado, TurnoReasignado, IdTurnoReasignado ,FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',{},now(), 1, 1, {},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno)
+        VALUES ({},{},{},{},'{}','{}','{}',{},now(), {}, 1, {},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario)
     print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
     idTurno_reasignado = None    
     with conexion.cursor() as cur:
@@ -269,7 +269,7 @@ def obtener_turno_por_id_asignado_anulado(idTurnosAnulados):
     return turnoAnular
 
 ## Agregar un nuevo registro en estado ANULADO:
-def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno):
+def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario,IdTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 

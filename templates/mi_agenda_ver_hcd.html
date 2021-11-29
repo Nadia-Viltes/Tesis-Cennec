@@ -64,37 +64,46 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-            <form action="/guardar_detalle" method="POST">
+            <form action="/agenda/guardar_detalle" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <input type="hidden" class="form-control" id="inputIdHCD" value = {{data.paciente_hcd[7]}}>
+                        <input type="hidden" class="form-control" name="inputIdTurno" value={{data.turno_id[0]}}>
+                        <input type="hidden" class="form-control" name="inputIdHCD" value={{data.paciente_hcd[7]}}>
                         <label for="inputProfesional" class="form-label">Profesional</label>
-                        <input type="text" class="form-control" id="inputProfesional"  value = {{data.paciente_hcd[10]}}>
+                        <input type="hidden" class="form-control" name="inputProfesional"
+                            value={{data.usuarioProfesional[4]}}>
+                        <input type="text" class="form-control" id="inputProfesional"
+                            value="{{data.usuarioProfesional[1]}} {{data.usuarioProfesional[2]}}" disabled>
                     </div>
                     <div class="col-md-4">
                         <label for="inputEspecialidad" class="form-label">Especialidad</label>
-                        <input type="text" class="form-control" id="inputEspecialidad" value = {{data.paciente_hcd[12]}}>
+                        <input type="text" class="form-control" name="inputEspecialidad"
+                            value={{data.usuarioProfesional[3]}} disabled>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-md-8">
                         <label for="TextareaEvoluciones" class="form-label">Evolución</label>
+                        <td><input type="hidden" name=caracteres></td>
                         <textarea class="form-control" id="TextareaEvoluciones" rows="10"
-                            name="InputTextareaEvoluciones" style="resize: none;"></textarea>
+                            name="InputTextareaEvoluciones" style="resize: none;" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"></textarea>
                     </div>
                     <div class="col-md-4">
-                        <div class="list-group" name="listaHistorial">
-                            <label for="historialEvolucion" class="form-label">Historial</label>
-                            {% for historial in data.historial %}
-                            <a href="/agenda/ver_historial/{{historial[4]}}" class="list-group-item list-group-item-action" aria-current="true">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <div class="fw-bold">{{historial[11]}}</div>
-                                    <small>{{historial[12]}}</small>
-                                </div>
-                                <small>{{historial[9]}} {{historial[10]}}</small>
-                            </a>
-                            {% endfor %}
+                        <label for="historialEvolucion" class="form-label">Historial</label>
+                        <div style="height:250px; overflow: auto;">
+                            <div class="list-group" name="listaHistorial">
+                                {% for historial in data.historial %}
+                                <a href="/agenda/ver_historial/{{historial[4]}}"
+                                    class="list-group-item list-group-item-action" aria-current="true">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <div class="fw-bold">{{historial[11]}}</div>
+                                        <small>{{historial[12]}}</small>
+                                    </div>
+                                    <small>{{historial[9]}} {{historial[10]}}</small>
+                                </a>
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -122,5 +131,30 @@
     </canvas>
 
 </main>
+<script>
+    contenido_textarea = ""
+    num_caracteres_permitidos = 5000
+    
+    function valida_longitud(){
+       num_caracteres = document.forms[0].InputTextareaEvoluciones.value.length
+    
+       if (num_caracteres > num_caracteres_permitidos){
+          document.forms[0].InputTextareaEvoluciones.value = contenido_textarea
+       }else{
+          contenido_textarea = document.forms[0].InputTextareaEvoluciones.value
+       }
+    
+       if (num_caracteres >= num_caracteres_permitidos){
+          document.forms[0].caracteres.style.color="#ff0000";
+       }else{
+          document.forms[0].caracteres.style.color="#000000";
+       }
+    
+       cuenta()
+    }
+    function cuenta(){
+       document.forms[0].caracteres.value=document.forms[0].InputTextareaEvoluciones.value.length
+    }
+    </script>
 
 {% endblock %}

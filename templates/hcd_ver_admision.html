@@ -237,6 +237,7 @@
                         </div>
 
                         <!-- NAV TURNOS DE ADMISIÓN -->
+                        
                         <div class="tab-pane fade" id="nav-turnos-adm" role="tabpanel"
                             aria-labelledby="nav-turnos-admision-tab">
                             <h6>Ingresar la cantidad de turnos otorgados en la admisión</h6>
@@ -247,6 +248,7 @@
                                     <label for="inputCantidad" class="form-label">Cantidad</label>
                                     <input type="number" class="form-control" name="cantidad">
                                 </div>
+                                
                                 <div class="col-md-3">
                                     <label for="Especialidad" class="form-label">Especialidad</label>
                                     <select name="tipoEspecialidad" class="form-select">
@@ -279,6 +281,7 @@
                                             <th scope="col">Cantidad</th>
                                             <th scope="col">Turnos computados</th>
                                             <th scope="col">Especialidad</th>
+                                            <th scope="col">Acción</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tablaTurnosAdmision">
@@ -287,6 +290,11 @@
                                             <td>{{turnosadm[1]}}</td>
                                             <td>{{turnosadm[2]}}</td>
                                             <td>{{turnosadm[4]}}</td>
+                                            {% if turnosadm[2] != 0 %}
+                                            <td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id="{{turnosadm[0]}}" disabled>Eliminar</button></td>
+                                            {% else %}
+                                            <td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id="{{turnosadm[0]}}">Eliminar</button></td>
+                                            {% endif %}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
@@ -309,9 +317,14 @@
 
     </div>
 
+    <div id="idSeccionModalEliminarTurnoAdmision">
+    </div>
+  
+
     <!-- ================================================ -->
     <!-- Config Pantalla -->
     <!-- ================================================ -->
+
 
     <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
         style="display: block; height: 514px; width: 1218px;">
@@ -354,5 +367,30 @@
                 }
             });
         });
+
+  //boton Eliminar turno admisión
+
+  $(document).on('click', "[name='button_eliminar_turAdm']", function () {
+    let id = $(this).attr("id");
+    $.ajax({
+      url: `/hcd/modal_eliminar_turno_admision/${id}`,
+      method: "GET",
+      success: function (data) {
+        $('#idSeccionModalEliminarTurnoAdmision').append(data.htmlresponse)
+        $('#EliminarTurnoAdmision').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalEliminar', function () {
+    $.ajax({
+      success: function (data) {
+        $('#EliminarTurnoAdmision').modal('hide');
+        {
+          $('#idSeccionModalEliminarTurnoAdmision').empty()
+        }
+      }
+    });
+  });
+
     </script>
     {% endblock %}
