@@ -1,15 +1,3 @@
-//validacion en nro de documento
-$("[name='nroDocumento']").change(function(){
-    const inputDocumento = $("[name='nroDocumento']");
-    if(inputDocumento.val() <= 0) {
-        inputDocumento.val(1);
-    }
-
-    if(inputDocumento.val().length > 8) {
-        inputDocumento.val(inputDocumento.val().slice(0,8));
-    }
-});
-
 //carga el dropdown de provincias por pais
 $("[name='pais']").change(function () {
     let idPais = $(this).val();
@@ -49,6 +37,172 @@ $("[name='localidad']").change(function () {
             $("[name='barrio']").append(response.htmlresponse);
         }
     });
+});
+
+//Datos personales limitacion de caracteres
+//tab datos personales
+const campoNombrePaciente = $("[name='nombrePaciente']");
+const campoApellidoPaciente = $("[name='apellidoPaciente']");
+const campoDocumento = $("[name='nroDocumento']");
+const campoFechaNacimiento = $("[name='fechaNacimiento']");
+const campoCalle = $("[name='calle']");
+const campoAltura = $("[name='altura']");
+const campoPiso = $("[name='piso']");
+const campoDpto = $("[name='dpto']");
+
+//tab Datos Tutor
+const campoNombreTutor = $("[name='nombreTutor']");
+const campoApellidoTutor = $("[name='apellidoTutor']");
+const campoOcupacion = $("[name='ocupacion']");
+const campoNroCelular = $("[name='nroCelular']");
+const campoNroFijo = $("[name='nroFijo']");
+
+//Tab financiador
+const campoNroAfiliado = $("[name='nroAfiliado']")
+
+//si valor contiene numeros return true
+function removeNumber(element){
+    const REGEXP = /[0-9]/g;
+    element.val(element.val().replace(REGEXP, ""))
+}
+
+//limitar valor
+function cortaValor(elemento, cantidadCaracteres){
+    elemento.val(elemento.val().slice(0,cantidadCaracteres))
+}
+
+//no permite valor negativo
+function valorNegativo(elemento){
+    if(elemento.val() < 0){
+        elemento.val(1)
+    }
+}
+
+//limitacion de caracteres
+campoNombrePaciente.keydown(function(){
+    cortaValor(campoNombrePaciente, 50)
+    removeNumber(campoNombrePaciente)
+});
+
+campoNombrePaciente.keyup(function(){
+    cortaValor(campoNombrePaciente, 50)
+    removeNumber(campoNombrePaciente)
+});
+
+campoApellidoPaciente.keydown(function(){
+    cortaValor(campoApellidoPaciente, 50)
+    removeNumber(campoApellidoPaciente)
+});
+
+campoApellidoPaciente.keyup(function(){
+    cortaValor(campoApellidoPaciente, 50)
+    removeNumber(campoApellidoPaciente)
+});
+
+campoDocumento.keydown(function(){
+    cortaValor(campoDocumento, 8)
+    valorNegativo(campoDocumento)
+});
+
+campoDocumento.keyup(function(){
+    cortaValor(campoDocumento, 8)
+    valorNegativo(campoDocumento)
+});
+
+campoDocumento.change(function(){
+    if(campoDocumento.val() <= 0) {
+        campoDocumento.val(1);
+    }    
+})    
+
+campoCalle.keydown(function(){
+    cortaValor(campoCalle, 50)
+});
+
+campoCalle.keyup(function(){
+    cortaValor(campoCalle, 50)
+});
+
+campoAltura.keydown(function(){
+    cortaValor(campoAltura, 10)
+});
+
+campoAltura.keyup(function(){
+    cortaValor(campoAltura, 10)
+});
+
+campoPiso.keydown(function(){
+    cortaValor(campoPiso, 5)
+});
+
+campoPiso.keyup(function(){
+    cortaValor(campoPiso, 5)
+});
+
+campoDpto.keydown(function(){
+    cortaValor(campoDpto, 5)
+});
+
+campoDpto.keyup(function(){
+    cortaValor(campoDpto, 5)
+});
+
+//limitacion en tab tutor
+campoNombreTutor.keydown(function(){
+    cortaValor(campoNombreTutor, 50)
+    removeNumber(campoNombreTutor)
+});
+
+campoNombreTutor.keyup(function(){
+    cortaValor(campoNombreTutor, 50)
+    removeNumber(campoNombreTutor)
+});
+
+campoApellidoTutor.keydown(function(){
+    cortaValor(campoApellidoTutor, 50)
+    removeNumber(campoNombreTutor)
+});
+
+campoApellidoTutor.keyup(function(){
+    cortaValor(campoApellidoTutor, 50)
+    removeNumber(campoNombreTutor)
+});
+
+campoOcupacion.keydown(function(){
+    cortaValor(campoOcupacion, 50)
+});
+
+campoOcupacion.keyup(function(){
+    cortaValor(campoOcupacion, 50)
+});
+
+campoNroCelular.keydown(function(){
+    cortaValor(campoNroCelular, 15)
+    valorNegativo(campoNroCelular)
+});
+
+campoNroCelular.keyup(function(){
+    cortaValor(campoNroCelular, 15)
+    valorNegativo(campoNroCelular)
+});
+
+campoNroFijo.keydown(function(){
+    cortaValor(campoNroFijo, 15)
+    valorNegativo(campoNroFijo)
+});
+
+campoNroFijo.keyup(function(){
+    cortaValor(campoNroFijo, 15)
+    valorNegativo(campoNroFijo)
+});
+
+//limitacion en financiador tab
+campoNroAfiliado.keydown(function(){
+    cortaValor(campoNroFijo, 20)
+});
+
+campoNroAfiliado.keyup(function(){
+    cortaValor(campoNroFijo, 20)
 });
 
 //Cambia tab on submit
@@ -91,6 +245,7 @@ $("#buttonGuardarFormulario").click(function () {
         }
     }
 
+    //Validacion solo campos vacios en tab datos personales
     if(!validationDatosPersonales){
         $(datosPersonalesTab).click();
         for(let i=0; i < fieldsTabPaciente.length; i++){
@@ -104,6 +259,24 @@ $("#buttonGuardarFormulario").click(function () {
         return;
     }
 
+    //validacion nacimiento futuro
+    const obtenerFechaActual = function () {
+        let fecha_actual = new Date()
+        let dia = fecha_actual.getDate()
+        let mes = fecha_actual.getMonth() + 1
+        let anio = fecha_actual.getFullYear()
+        return `${anio}-${mes}-${dia}`
+    }
+
+    let valorDeFecha = campoFechaNacimiento.val()
+    let fechaCampo = new Date(valorDeFecha.replace('-', '/'))
+    let fechaActual = new Date(obtenerFechaActual().replace('-', '/'))
+    if (fechaCampo > fechaActual) {
+        campoFechaNacimiento.addClass("is-invalid")
+        return false;
+    }
+
+    //Validacion solo campos vacios en tab datos tutor
     if(!validationTutor){
         $(tutorTab).click();
         for(let i=0; i < fieldsTabTutor.length; i++){
@@ -117,6 +290,7 @@ $("#buttonGuardarFormulario").click(function () {
         return;
     }
 
+    //Validacion campos vacios en datos financiador
     if(!validationFinanciador){
         $(financiadorTab).click();
         for(let i=0; i < fieldsTabFinanciador.length; i++){
@@ -129,4 +303,5 @@ $("#buttonGuardarFormulario").click(function () {
         }
         return;
     }
+
 });
