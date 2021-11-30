@@ -66,16 +66,20 @@
                                 <div class="col">
                                     <label for="nombrePaciente" class="form-label">Nombre</label>
                                     <input type="text" class="form-control" name="nombrePaciente" validation-tab-paciente="true">
-                                    <div class="invalid-feedback">Campo requerido</div>
+                                    <div class="invalid-feedback">Caracteres no válidos</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="apellidoPaciente" class="form-label">Apellido</label>
                                     <input type="text" class="form-control" validation-tab-paciente="true" name="apellidoPaciente">
-                                    <div class="invalid-feedback">Campo requerido</div>
+                                    <div class="invalid-feedback">Caracteres no válidos</div>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="genero" class="form-label">Genero</label>
-                                    <input type="text" class="form-control" name="genero">
+                                    <select name="genero" class="form-select" validation-tab-paciente="true">
+                                        <option value="" selected disabled>Seleccionar...</option>
+                                        <option value="Masculino">Masculino</option>
+                                        <option value="Femenino">Femenino</option>
+                                    </select>
                                     <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                             </div>
@@ -98,7 +102,7 @@
                                 <div class="col-4">
                                     <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
                                     <input type="date" class="form-control" validation-tab-paciente="true" name="fechaNacimiento">
-                                    <div class="invalid-feedback">Campo requerido</div>
+                                    <div class="invalid-feedback">Fecha Nacimiento no puede ser mayor a fecha actual</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -131,7 +135,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="altura" class="form-label">Altura</label>
-                                    <input type="text" class="form-control" validation-tab-paciente="true" name="altura">
+                                    <input type="number" class="form-control" validation-tab-paciente="true" name="altura">
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
@@ -176,11 +180,11 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nroCelular" class="form-label">Teléfono celular</label>
-                                    <input type="text" class="form-control" name="nroCelular" validation-tab-tutor="true">
+                                    <input type="number" class="form-control" name="nroCelular" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="nroFijo" class="form-label">Teléfono fijo</label>
-                                    <input type="text" class="form-control" name="nroFijo">
+                                    <input type="number" class="form-control" name="nroFijo">
                                 </div>
                             </div>
                         </div>

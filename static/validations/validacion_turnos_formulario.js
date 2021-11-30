@@ -10,7 +10,7 @@ let horaFinOculta = $("[name='nameHoraFin']")
 let campoRequeridos = $("[validation='true']")
 
 const obtenerFechaActual = function () {
-    fecha_actual = new Date()
+    let fecha_actual = new Date()
     let dia = fecha_actual.getDate()
     let mes = fecha_actual.getMonth() + 1
     let anio = fecha_actual.getFullYear()

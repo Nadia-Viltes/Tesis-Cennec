@@ -74,7 +74,15 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="genero" class="form-label">Genero</label>
-                                    <input value="{{data.pacientes[3]}}" type="text" class="form-control" name="genero">
+                                    <select name="genero" class="form-select" validation-tab-paciente="true">
+                                        <option value={{data.pacientes[3]}} selected>{{data.pacientes[3]}}</option>
+                                        {% if data.pacientes[3] == "Masculino" %}
+                                            <option value="Femenino">Femenino</option>
+                                        {%else%}
+                                            <option value="Masculino">Masculino</option>
+                                        {%endif%}
+                                    </select>
+                                    <div class="invalid-feedback">Campo requerido</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -97,6 +105,7 @@
                                 <div class="col-4">
                                     <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
                                     <input value="{{data.pacientes[7]}}" type="date" class="form-control" validation-tab-paciente="true" name="fechaNacimiento">
+                                    <div class="invalid-feedback">Fecha Nacimiento no puede ser mayor a fecha actual</div>
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -142,7 +151,7 @@
                                 </div>
                                 <div class="col-sm-2">
                                     <label for="altura" class="form-label">Altura</label>
-                                    <input value="{{data.pacientes[15]}}" type="text" class="form-control" validation-tab-paciente="true" name="altura">
+                                    <input value="{{data.pacientes[15]}}" type="number" class="form-control" validation-tab-paciente="true" name="altura">
                                 </div>
                                 <div class="col-sm-1">
                                     <label for="piso" class="form-label">Piso</label>
@@ -193,11 +202,11 @@
                             <div class="row mt-3">
                                 <div class="col-4">
                                     <label for="nroCelular" class="form-label">Teléfono celular</label>
-                                    <input value="{{data.pacientes[25]}}" type="text" class="form-control" name="nroCelular" validation-tab-tutor="true">
+                                    <input value="{{data.pacientes[25]}}" type="number" class="form-control" name="nroCelular" validation-tab-tutor="true">
                                 </div>
                                 <div class="col-4">
                                     <label for="nroFijo" class="form-label">Teléfono fijo</label>
-                                    <input value="{{data.pacientes[24]}}" type="text" class="form-control" name="nroFijo">
+                                    <input value="{{data.pacientes[24]}}" type="number" class="form-control" name="nroFijo">
                                 </div>
                             </div>
                         </div>
