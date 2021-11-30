@@ -479,7 +479,7 @@ def grabar_turno():
     insertar_turno_asignado(id_tipo_turno, id_especialidad, id_profesional, id_paciente, fecha_turno, hora_inicio, hora_fin, id_estado,usuario)
     #Le sumo los turnos computados así continuamos con la logica de los turnos para asignar
     id_configturno = obtener_id_configuracion_turno(id_paciente,id_especialidad)
-    actualizar_turnos_computados(id_paciente,id_especialidad,id_configturno)
+    actualizar_turnos_computados(id_configturno)
     return redirect("/turnos")
 
 #Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad

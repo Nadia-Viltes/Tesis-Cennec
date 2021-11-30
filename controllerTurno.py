@@ -146,7 +146,13 @@ def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
 
 ## Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
 def obtener_id_configuracion_turno(id_paciente, id_especialidad):
-    query = "SELECT IdconfiguracionTurno FROM configuracionTurno WHERE IdPaciente = {} and IdEspecialidad = {} AND FechaBaja is null;".format(id_paciente, id_especialidad)
+    query = """
+            SELECT IdconfiguracionTurno 
+            FROM configuracionTurno 
+            WHERE IdPaciente = {} 
+            and IdEspecialidad = {} 
+            AND FechaBaja is null
+            AND CantidadComputados < CantidadDisponibles;""".format(id_paciente, id_especialidad)
     conexion = get_conexion()
     with conexion.cursor() as cur:
         cur.execute(query)
@@ -155,11 +161,12 @@ def obtener_id_configuracion_turno(id_paciente, id_especialidad):
     return idConfigTurno
 
 
-def actualizar_turnos_computados(id_paciente, id_especialidad,id_configturno):
+def actualizar_turnos_computados(id_configturno):
     conexion = get_conexion()
-    query = """UPDATE configuracionTurno SET CantidadComputados=(SELECT count(IdTurno) from turno WHERE IdPaciente = {} and IdEspecialidad = {} AND FechaBaja is null),
+    query = """UPDATE configuracionTurno 
+                SET CantidadComputados=(CantidadComputados + 1),
                 FechaModificacion=NOW()
-                WHERE IdconfiguracionTurno = {};""".format(id_paciente, id_especialidad, id_configturno)
+                WHERE IdconfiguracionTurno = {0};""".format(id_configturno)
     print("Este es mi insertar turnos computados -> {}".format(query))  
     turnos_computados = None    
     with conexion.cursor() as cur:

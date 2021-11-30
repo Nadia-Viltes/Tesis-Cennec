@@ -76,7 +76,6 @@ def obtener_lista_turnos_admision(idPaciente):
     conexion.close()
     return turnosadm
 
-
  ## SELECT PARA VER LA CANTIDAD DE TURNOS DE ADMINISIÓN ASIGNADOS
 def agrupamos_lista_turnos_admision(idPaciente):
     query = """

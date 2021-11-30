@@ -59,7 +59,7 @@ horaInicioCampo.change(function () {
 });
 
 $("#formularioDeTurno").on("submit", function(event) {
-    let flag = true
+    let flag = false
     //fechaTurno
     let valorDeFecha = fechaTurnoCampo.val()
     let fechaCampo = new Date(valorDeFecha.replace('-', '/'))
@@ -108,6 +108,8 @@ $("#formularioDeTurno").on("submit", function(event) {
                 const componenteDeAlerta = "<div class='alert alert-danger' role='alert'>La fecha y hora del turno ya se encuentran ocupados.</div>";
                 $("#mensajeAlerta").append(componenteDeAlerta);
                 flag = false;
+            }else{
+                flag = true;
             }
         }
     });
