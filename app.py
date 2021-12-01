@@ -743,8 +743,8 @@ def grabar_usuario():
 
 @app.route('/configuracion/usuarios/editar_usuario/<int:id>')
 def editar_usuario(id):
-    IdUsuario = obtener_usuario_por_id(id)
-    recurso = obtener_recurso_por_id(id)
+    IdUsuario = session["usuario"]
+    recurso = obtener_recurso_por_id_usuario(id)
     rol = obtener_lista_roles()
     privilegios = obtener_lista_privilegios()
     data = {

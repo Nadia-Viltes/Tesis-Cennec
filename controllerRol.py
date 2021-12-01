@@ -16,8 +16,37 @@ def obtener_lista_roles():
     conexion.close()
     return rol
 
+# query para que me muestre los datos en la lista de ROLES
+def obtener_rol_by_usuario_id(usuario_id):
+    query = """
+            select r.IdRol, r.Nombre
+            from usuario AS us, rol as r
+            where us.IdRol = r.IdRol
+            and us.IdUsuario = {};""".format(usuario_id)
+    conexion = get_conexion()
+    roles = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    roles = cur.fetchone()
+    conexion.close()
+    return roles
+
 # query para que me muestre los datos en la lista de PRIVILEGIOS
 def obtener_lista_privilegios():
+    query = """
+           SELECT IdPrivilegio, Nombre, Descripcion FROM privilegio 
+           WHERE FechaBaja is null;              
+            """
+    conexion = get_conexion()
+    privilegios = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    privilegios = cur.fetchall()
+    conexion.close()
+    return privilegios
+
+# obtener privilegios por rol
+def obtener_lista_privilegios_by_rol():
     query = """
            SELECT IdPrivilegio, Nombre, Descripcion FROM privilegio 
            WHERE FechaBaja is null;              
