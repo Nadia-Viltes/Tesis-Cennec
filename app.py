@@ -755,15 +755,16 @@ def grabar_usuario():
 def editar_usuario(id):
     IdUsuario = session["usuario"]
     recurso = obtener_recurso_por_id_usuario(id)
-    rol = obtener_lista_roles()
+    roles = obtener_lista_roles()
+    rol_seccionado = obtener_rol_by_usuario_id(id)
     privilegios = obtener_lista_privilegios()
+    privilegios_seleccionados = obtener_lista_privilegios(rol_seccionado[0])
     data = {
         'titulo': 'Editar usuario',
         'IdUsuario': IdUsuario,
         'recurso': recurso,
-        'rol': rol,
+        'rol': roles,
         'privilegios': privilegios
-
     }
     return render_template('usuario_editar.html', data=data)
 
