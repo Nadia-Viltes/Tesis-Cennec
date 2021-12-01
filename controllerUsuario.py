@@ -88,6 +88,21 @@ def obtener_recurso_por_id(idRecurso):
     conexion.close()
     return recurso_id
 
+# query para obtener recurso por ID
+def obtener_recurso_por_id_usuario(id_usuario):
+    query = """SELECT re.IdRecurso, re.Nombre, re.Apellido, re.NumeroDocumento, tre.IdTipoRecurso, tre.Nombre,re.Legajo 
+                FROM recurso as re, tiporecurso as tre, usuario us
+                WHERE re.IdTipoRecurso = tre.IdTipoRecurso
+                AND us.IdRecurso = re.IdRecurso
+                AND us.IdUsuario = {};""".format(id_usuario)
+    conexion = get_conexion()
+    recurso = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    recurso = cur.fetchone()
+    conexion.close()
+    return recurso
+
 #obtener privilegios por id usuario
 def obtener_privilegios_por_id_usuario(id_usuario):
     query = """
