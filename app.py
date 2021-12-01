@@ -753,18 +753,18 @@ def grabar_usuario():
 
 @app.route('/configuracion/usuarios/editar_usuario/<int:id>')
 def editar_usuario(id):
-    IdUsuario = session["usuario"]
+    usuario = obtener_usuario_por_id(id)
     recurso = obtener_recurso_por_id_usuario(id)
     roles = obtener_lista_roles()
     rol_seccionado = obtener_rol_by_usuario_id(id)
     privilegios = obtener_lista_privilegios()
-    privilegios_seleccionados = obtener_lista_privilegios(rol_seccionado[0])
     data = {
         'titulo': 'Editar usuario',
-        'IdUsuario': IdUsuario,
+        'usuario': usuario,
         'recurso': recurso,
-        'rol': roles,
-        'privilegios': privilegios
+        'roles': roles,
+        'privilegios': privilegios,
+        'rol_seleccionado': rol_seccionado
     }
     return render_template('usuario_editar.html', data=data)
 

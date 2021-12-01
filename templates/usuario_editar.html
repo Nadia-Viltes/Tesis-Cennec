@@ -60,7 +60,7 @@
                 </table>
             </div>
 
-            <form action="/editar_usuario" method="POST">
+            <form action="/configuracion/usuarios/editar_usuario" method="POST">
                 <div class="card-body border-top">
                     <h5 class="card-title">Datos de autenticación</h5>
                     <div class="container">
@@ -68,7 +68,7 @@
                             <input type="hidden" value={{data.recurso[0]}} name="inputRecursoId">
                             <div class="col-md-6 mb-3">
                                 <label for="NombreUsuarioInput1" class="form-label">Nombre de usuario</label>
-                                <input type="text" class="form-control" name="NombreUsuarioInput1" value={{data.IdUsuario[2]}}>
+                                <input type="text" class="form-control" name="NombreUsuarioInput1" value={{data.usuario[2]}}>
                             </div>
                         </div>
                         <div class="row">
@@ -97,7 +97,7 @@
                                     <h6>Roles</h6>
                                 </div>
                                 <ul class="list-group">
-                                    {% for rol in data.rol %}
+                                    {% for rol in data.roles %}
                                     <li class="list-group-item">
                                         <div class="form-check">
                                             <input class="form-check-input me-1" type="radio" value={{rol[0]}}
@@ -152,7 +152,7 @@
 </main>
 
 <script>
-    $("[name='checkRol']").change(function () {
+    $("[name='checkRol']").click(function () {
         const idRol = $(this).val();
         $.ajax({
             url: "/configuracion/usuarios/setear_privilegios_rol_seleccionado",
@@ -169,6 +169,13 @@
             }
         });
     });
+
+    let listOfRadioButton = $("[name='checkRol']");
+    for(let i=0; i < listOfRadioButton.length; i++){
+        if(listOfRadioButton[i].getAttribute("id") == "{{data.rol_seleccionado[0]}}"){
+            listOfRadioButton[i].click();
+        }
+    }
 </script>
 
 
