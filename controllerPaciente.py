@@ -17,7 +17,8 @@ def obtener_pacientes():
             AND tu.IdTutoria = pa.idTutoria
             AND pa.IdPaciente = afi.IdPaciente
             AND fi.IdFinanciador = afi.IdFinanciador
-            AND pa.FechaBaja is null;
+            AND pa.FechaBaja is null
+            ORDER BY pa.Nombre asc, pa.Apellido asc;
             """
     conexion = get_conexion()
     pacientes = []
