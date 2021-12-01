@@ -4,7 +4,7 @@ from config_bd import get_conexion
 # query para que me muestre los datos en la lista de turnos
 def obtener_lista_turno_mi_agenda(usuario):
     query = """
-            SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
+             SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
             DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica, u.Nombre	
             FROM turno as tur, paciente as pac, estadoturno as est, historiaclinica as hcd, usuario as u, recurso as rec, 
             profesional as pro, especialidad as esp
@@ -15,10 +15,11 @@ def obtener_lista_turno_mi_agenda(usuario):
             AND esp.IdEspecialidad = pro.IdEspecialidad
             AND pro.IdRecurso = rec.IdRecurso
             AND rec.IdRecurso = u.IdRecurso
+            and u.IdUsuario = {}
             AND tur.FechaBaja is null
-            AND (tur.IdProfesionalAsignado = {} OR tur.IdProfesionalReceptado = {})
+            AND (tur.IdProfesionalAsignado = pro.idProfesional OR tur.IdProfesionalReceptado = pro.idProfesional)
             order by tur.FechaTurno asc, tur.HoraDesde asc;
-            """.format(usuario,usuario)
+            """.format(usuario)
     conexion = get_conexion()
     turnoProfesional = []
     with conexion.cursor() as cur:
