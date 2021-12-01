@@ -348,8 +348,12 @@ def Iniciar_turno(id):
 # Acá se ejecuta la query para agregar un turno en estado atendiendos
 @app.route("/agenda/iniciar_atencion", methods=["POST"])
 def iniciar_atencion():
+    usuario = session["usuario_id"]
     idTurno = request.form["dataTurnoId"]
+    idTurno_receptar = obtener_turno_agenda_receptado(idTurno)
     id_estado = obtener_id_estado_turno_por_estado("Atendiendo")
+    insertar_turno_atendiendo(idTurno_receptar[0],idTurno_receptar[1],idTurno_receptar[2],idTurno_receptar[3],idTurno_receptar[4],idTurno_receptar[5],id_estado,usuario,idTurno_receptar[6],idTurno_receptar[7])
+    update_turno_asignado(idTurno)
     return redirect("/agenda")
 
 # Acá se abre el modal de finalizar atención
@@ -365,8 +369,12 @@ def finalizar_turno(id):
 # Acá se ejecuta la query para agregar un turno en estado atendido
 @app.route("/agenda/finalizar_atencion", methods=["POST"])
 def finalizar_atencion():
+    usuario = session["usuario_id"]
     idTurno = request.form["dataTurnoId"]
-    id_estado = obtener_id_estado_turno_por_estado("Atendiendo")
+    idTurno_atendiendo = obtener_turno_agenda_receptado(idTurno)
+    id_estado = obtener_id_estado_turno_por_estado("Atendido")
+    insertar_turno_atendiendo(idTurno_atendiendo[0],idTurno_atendiendo[1],idTurno_atendiendo[2],idTurno_atendiendo[3],idTurno_atendiendo[4],idTurno_atendiendo[5],id_estado,usuario,idTurno_atendiendo[6],idTurno_atendiendo[7])
+    update_turno_asignado(idTurno)
     return redirect("/agenda")
 
 @app.route('/agenda/ver_hcd/paciente/<int:idpaciente>/turno/<int:idturno>', methods=["GET", "POST"])
@@ -374,6 +382,7 @@ def ver_hcd(idpaciente,idturno):
     paciente_hcd = obtener_hcd_por_id(idpaciente)
     historial_hcd = obtener_historial_evoluciones(idpaciente)
     turnoId = obtener_turno_atendiendo(idturno)
+    detalleTurno = obtener_detalle_con_turno(idturno)
     usuario = session["usuario_id"]
     usuario_profesional = obtener_datos_usuario_profesional(usuario)
     values={
@@ -381,7 +390,8 @@ def ver_hcd(idpaciente,idturno):
         'paciente_hcd': paciente_hcd,
         'historial': historial_hcd,
         'usuarioProfesional':usuario_profesional,
-        'turno_id': turnoId
+        'turno_id': turnoId,
+        'detalleTurno': detalleTurno
     }
     return render_template('mi_agenda_ver_hcd.html', data=values)
 
