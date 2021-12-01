@@ -290,14 +290,13 @@ def obtener_evolucion_id(id):
 
 @app.route('/hcd/modal/ver_historial/<int:id>', methods=["GET", "POST"])
 def ver_historial_hcd(id):
-    logger.info("llego a ver historial hcd {}".format(id))
-    #historial_hcd = obtener_historial_evoluciones(id)
-    #values={
-    #    'titulo': 'Este es un historial',
-    #    'historial': historial_hcd
-    #}
-    #return jsonify({'htmlresponse': render_template('hcd_ver_historial.html', data=values)})
-    return jsonify({'htmlresponse': render_template('hcd_ver_historial.html')})
+    #historial_hcd -> modificarlo para que obtenga el detalle
+    historial_hcd = obtener_historial_evoluciones(id)
+    values={
+        'titulo': 'Este es un historial',
+        'historial': historial_hcd
+    }
+    return jsonify({'htmlresponse': render_template('hcd_ver_historial.html', data=values)})
 
 #Carga los turnos admision llenando la tabla con jquery
 @app.route('/hcd/agrega_turnos_admision', methods=["POST"])

@@ -50,7 +50,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
                     <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
                     <td>{{data.paciente_hcd[3]}}</td>
                     <td>{{data.paciente_hcd[4]}}</td>
@@ -64,7 +63,6 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-            <form>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <label for="inputProfesional" class="form-label">Profesional</label>
@@ -97,7 +95,6 @@
                                     <small>{{historial[9]}} {{historial[10]}}</small>
                                 </button>
                                 {% endfor %}
-
                             </ul>
                         </div>
                     </div>
@@ -109,7 +106,6 @@
                     </div>
                 </div>
 
-            </form>
         </div>
 
     </div>
@@ -141,7 +137,7 @@
         }
       });
     });
-    $(document).on('click', '#idCerrarModalEliminar', function () {
+    $("#idCerrarModalEliminar").on('click', function () {
       $.ajax({
         success: function (data) {
           $('#verHistorialHCD').modal('hide');
