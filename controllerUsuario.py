@@ -9,7 +9,8 @@ def obtener_lista_usuarios():
             WHERE us.IdRecurso = rec.IdRecurso
             AND us.IdRol = rol.IdRol
             AND us.Nombre != lower('admin')
-            AND us.fechaBaja is null;              
+            AND us.fechaBaja is null
+            ORDER BY us.Nombre asc;              
             """
     conexion = get_conexion()
     usuario = []
@@ -48,6 +49,7 @@ def obtener_lista_recursos():
             FROM recurso as re, tiporecurso as tre
             WHERE re.IdTipoRecurso = tre.IdTipoRecurso
             AND re.IdRecurso not in (Select IdRecurso from usuario WHERE fechabaja is null)
+            ORDER BY re.Nombre asc;
             """
     conexion = get_conexion()
     recursos = []

@@ -112,9 +112,15 @@
                     <div class="col-md-6 justify-content-md-start">
                         <a class="btn btn-primary" href="/agenda" role="button">Atrás</a>
                     </div>
+                    {% if data.detalleTurno[0] == data.turno_id[0] %}
+                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success" disabled>Guardar</button>
+                    </div>
+                    {% else %}
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
                     </div>
+                    {% endif %}
                 </div>
 
             </form>
