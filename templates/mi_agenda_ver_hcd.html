@@ -87,16 +87,17 @@
                         <label for="TextareaEvoluciones" class="form-label">Evolución</label>
                         <td><input type="hidden" name=caracteres></td>
                         <textarea class="form-control" id="TextareaEvoluciones" rows="10"
-                            name="InputTextareaEvoluciones" style="resize: none;" onKeyDown="valida_longitud()" onKeyUp="valida_longitud()"></textarea>
+                            name="InputTextareaEvoluciones" style="resize: none;" onKeyDown="valida_longitud()"
+                            onKeyUp="valida_longitud()"></textarea>
                     </div>
                     <div class="col-md-4">
                         <label for="historialEvolucion" class="form-label">Historial</label>
                         <div style="height:250px; overflow: auto;">
                             <div class="list-group" name="listaHistorial">
                                 {% for historial in data.historial %}
-                                <a href="/agenda/ver_historial/{{historial[4]}}" id={{historial[4]}}
+                                <a name="detalle_de_historial_agenda" id={{historial[4]}}
                                     class="list-group-item list-group-item-action" aria-current="true">
-                                    <div class="d-flex w-100 justify-content-between">
+                                    <div class="clase1 d-flex w-100 justify-content-between">
                                         <div class="fw-bold">{{historial[11]}}</div>
                                         <small>{{historial[12]}}</small>
                                     </div>
@@ -112,20 +113,15 @@
                     <div class="col-md-6 justify-content-md-start">
                         <a class="btn btn-primary" href="/agenda" role="button">Atrás</a>
                     </div>
-                    {% if data.detalleTurno[0] == data.turno_id[0] %}
-                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success" disabled>Guardar</button>
-                    </div>
-                    {% else %}
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
                     </div>
-                    {% endif %}
                 </div>
-
             </form>
         </div>
+    </div>
 
+    <div id="idSeccionModalHistorialAgenda">
     </div>
 
     <!-- ================================================ -->
@@ -140,27 +136,53 @@
 <script>
     contenido_textarea = ""
     num_caracteres_permitidos = 5000
-    
-    function valida_longitud(){
-       num_caracteres = document.forms[0].InputTextareaEvoluciones.value.length
-    
-       if (num_caracteres > num_caracteres_permitidos){
-          document.forms[0].InputTextareaEvoluciones.value = contenido_textarea
-       }else{
-          contenido_textarea = document.forms[0].InputTextareaEvoluciones.value
-       }
-    
-       if (num_caracteres >= num_caracteres_permitidos){
-          document.forms[0].caracteres.style.color="#ff0000";
-       }else{
-          document.forms[0].caracteres.style.color="#000000";
-       }
-    
-       cuenta()
-    }
-    function cuenta(){
-       document.forms[0].caracteres.value=document.forms[0].InputTextareaEvoluciones.value.length
-    }
-    </script>
+
+    function valida_longitud() {
+        num_caracteres = document.forms[0].InputTextareaEvoluciones.value.length
+
+        if (num_caracteres > num_caracteres_permitidos) {
+            document.forms[0].InputTextareaEvoluciones.value = contenido_textarea
+        } else {
+            contenido_textarea = document.forms[0].InputTextareaEvoluciones.value
+        }
+
+        if (num_caracteres >= num_caracteres_permitidos) {
+            document.forms[0].caracteres.style.color = "#ff0000";
+        } else {
+            document.forms[0].caracteres.style.color = "#000000";
+        }
+
+        cuenta()
+    };
+    function cuenta() {
+        document.forms[0].caracteres.value = document.forms[0].InputTextareaEvoluciones.value.length
+    };
+
+    // modal
+    //link para ver historiales
+
+    $(document).on('click',"[name='detalle_de_historial_agenda']", function () {
+        let id_dhcd = $(this).attr("id");
+        $.ajax({
+            url: `/agenda/ver_historial/${id_dhcd}`,
+            method: "GET",
+            success: function (response) {
+                $('#idSeccionModalHistorialAgenda').append(response.htmlresponse)
+                $('#verHistorialAgenda').modal('show');
+            }
+        });
+    });
+    $(document).on('click', '#idCerrarModalEliminar', function () {
+        $.ajax({
+            success: function (data) {
+                $('#verHistorialHCD').modal('hide');
+                {
+                    $('#idSeccionModalHistorialAgenda').empty()
+                }
+            }
+        });
+    });
+
+</script>
 
 {% endblock %}

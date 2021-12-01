@@ -63,48 +63,50 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label for="inputProfesional" class="form-label">Profesional</label>
-                        <input type="text" class="form-control" id="inputProfesional"  value= "{{data.usuarioProfesional[1]}} {{data.usuarioProfesional[2]}}" disabled>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="inputEspecialidad" class="form-label">Especialidad</label>
-                        <input type="text" class="form-control" name="inputEspecialidad" value = {{data.usuarioProfesional[3]}} disabled>
-                    </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="inputProfesional" class="form-label">Profesional</label>
+                    <input type="text" class="form-control" id="inputProfesional"
+                        value="{{data.usuarioProfesional[1]}} {{data.usuarioProfesional[2]}}" disabled>
                 </div>
+                <div class="col-md-4">
+                    <label for="inputEspecialidad" class="form-label">Especialidad</label>
+                    <input type="text" class="form-control" name="inputEspecialidad"
+                        value={{data.usuarioProfesional[3]}} disabled>
+                </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-8">
-                        <label for="TextareaEvoluciones" class="form-label">Evolución</label>
-                        <textarea class="form-control" id="TextareaEvoluciones" rows="10"
-                            name="InputTextareaEvoluciones" style="resize: none;" disabled>
+            <div class="row mt-3">
+                <div class="col-md-8">
+                    <label for="TextareaEvoluciones" class="form-label">Evolución</label>
+                    <textarea class="form-control" id="TextareaEvoluciones" rows="10" name="InputTextareaEvoluciones"
+                        style="resize: none;" disabled>
                         </textarea>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="historialEvolucion" class="form-label">Historial</label>
-                        <div style="height:250px; overflow: auto;">
-                            <ul class="list-group" name="lista_historial">
-                                {% for historial in data.historial %}
-                                <button name="detalle_de_historial" id={{historial[4]}}
-                                    class="list-group-item list-group-item-action" aria-current="true">
-                                    <div class="clase1 d-flex w-100 justify-content-between">
-                                        <div class="fw-bold">{{historial[11]}}</div>
-                                        <small>{{historial[12]}}</small>
-                                    </div>
-                                    <small>{{historial[9]}} {{historial[10]}}</small>
-                                </button>
-                                {% endfor %}
-                            </ul>
-                        </div>
+                </div>
+                <div class="col-md-4">
+                    <label for="historialEvolucion" class="form-label">Historial</label>
+                    <div style="height:250px; overflow: auto;">
+                        <ul class="list-group" name="lista_historial">
+                            {% for historial in data.historial %}
+                            <button name="detalle_de_historial" id={{historial[4]}}
+                                class="list-group-item list-group-item-action" aria-current="true">
+                                <div class="clase1 d-flex w-100 justify-content-between">
+                                    <div class="fw-bold">{{historial[11]}}</div>
+                                    <small>{{historial[12]}}</small>
+                                </div>
+                                <small>{{historial[9]}} {{historial[10]}}</small>
+                            </button>
+                            {% endfor %}
+                        </ul>
                     </div>
                 </div>
+            </div>
 
-                <div class="row mt-3">
-                    <div class="col-md-6 justify-content-md-start">
-                        <a class="btn btn-primary" href="/hcd" role="button">Atrás</a>
-                    </div>
+            <div class="row mt-3">
+                <div class="col-md-6 justify-content-md-start">
+                    <a class="btn btn-primary" href="/hcd" role="button">Atrás</a>
                 </div>
+            </div>
 
         </div>
 
@@ -125,29 +127,29 @@
 
 <script>
     //link para ver historiales
-  
-    $("[name='detalle_de_historial']").on('click',function () {
-      let id_dhcd = $(this).attr("id");
-      $.ajax({
-        url: `/hcd/modal/ver_historial/${id_dhcd}`,
-        method: "POST",
-        success: function(response) {
-          $('#idSeccionModalHistorial').append(response.htmlresponse)
-          $('#verHistorialHCD').modal('show');
-        }
-      });
+
+    $(document).on('click', "[name='detalle_de_historial']", function () {
+        let id_dhcd = $(this).attr("id");
+        $.ajax({
+            url: `/hcd/modal/ver_historial/${id_dhcd}`,
+            method: "GET",
+            success: function (response) {
+                $('#idSeccionModalHistorial').append(response.htmlresponse)
+                $('#verHistorialHCD').modal('show');
+            }
+        });
     });
-    $("#idCerrarModalEliminar").on('click', function () {
-      $.ajax({
-        success: function (data) {
-          $('#verHistorialHCD').modal('hide');
-          {
-            $('#idSeccionModalHistorial').empty()
-          }
-        }
-      });
+
+    $(document).on('click', '#closeModalId', function () {
+        $.ajax({
+            success: function (data) {
+                $('#verHistorialHCD').modal('hide');
+                $('#idSeccionModalHistorial').empty();
+            }
+        });
     });
-  
-  </script>
+
+
+</script>
 
 {% endblock %}

@@ -1,70 +1,14 @@
-{% extends 'base/base.html' %}
-
-<!-- ================================================ -->
-<!-- PANTALLA HCD EVOLUCIONES DESDE MI AGENDA -->
-<!-- ================================================ -->
-{% block mi_agenda_historial_evoluciones %}
-
-<main class="col-md-9 ms-sm-auto col-lg-10">
-    <div class="chartjs-size-monitor">
-        <div class="chartjs-size-monitor-expand">
-            <div class></div>
+<!-- Modal -->
+<div class="modal fade" id="verHistorialAgenda" tabindex="-1" aria-labelledby="verHistorialAgendaLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="verHistorialAgendaLabel">Detalle de {{data.detalle_historial[9]}} {{data.detalle_historial[10]}}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"id="idCerrarModalEliminar" aria-label="Close"></button>
         </div>
-        <div class="chartjs-size-monitor-shrink">
-            <div class=""></div>
-        </div>
-    </div>
-
-    <!-- Breadcrumb -->
-    <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
-        aria-label="breadcrumb">
-        <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
-            <li class="breadcrumb-item"><a href="/home">Home</a></li>
-            <li class="breadcrumb-item"><a href="/agenda">Mi agenda</a></li>
-            <li class="breadcrumb-item"><a href="/agenda/ver_hcd/paciente/{{data.detalle_historial[1]}}/turno/{{data.detalle_historial[6]}}">Historia clínica dígital</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }} de {{data.detalle_historial[12]}}
-                {{data.detalle_historial[13]}}</li>   
-        </ol>
-    </nav>
-
-    <!-- ================================================ -->
-    <!-- PANTALLA HCD / EVOLUCIONES -->
-    <!-- ================================================ -->
-
-    <div class="card border-success mb-3">
-        <div class="card-header bg-transparent border-success">
-            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-0">
-                <h4 class="h4">{{ data.titulo }}</h4>
-            </div>
-        </div>
-
-        <div class="container mt-3">
-            <!-- Tabla -->
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Nombre y Apellido</th>
-                        <th scope="col">Nro. Documento</th>
-                        <th scope="col">HCD</th>
-                        <th scope="col">Financiador</th>
-                        <th scope="col">Nro. Afiliado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <td>{{data.detalle_historial[12]}} {{data.detalle_historial[13]}}</td>
-                    <td>{{data.detalle_historial[14]}}</td>
-                    <td>{{data.detalle_historial[15]}}</td>
-                    <td>{{data.detalle_historial[16]}}</td>
-                    <td>{{data.detalle_historial[17]}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div class="card-body">
-            <hr>
+        <div class="modal-body">
             <h5 class="fw-bolder">Detalle de evolución</h5>
-            <form action="/agenda/editar_detalle" method="POST">
+            <form action="{{url_for('editar_detalle')}}" method="POST">
                 <div class="row g-3">
                     <div class="col-md-4">
                         <input type="hidden" class="form-control" name="inputIdDetEvo" value={{data.detalle_historial[4]}}>
@@ -97,11 +41,8 @@
                 </div>
 
                 <div class="row mt-3">
-                    <div class="col-md-6 justify-content-md-start">
-                        <a class="btn btn-primary" href="/agenda/ver_hcd/paciente/{{data.detalle_historial[1]}}/turno/{{data.detalle_historial[6]}}" role="button">Atrás</a>
-                    </div>
-                    {% if data.detalle_historial[7] == data.usuarioprof %}
-                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                    {% if data.detalle_historial[7] == data.usuarioprof[0] %}
+                    <div class="col-md-12 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Editar</button>
                     </div>
                     {% else %}
@@ -111,19 +52,8 @@
                     {% endif %}
                 </div>
 
-            </form>
-        </div>
-
+              </form> 
+      </div>
     </div>
-
-    <!-- ================================================ -->
-    <!-- Config Pantalla -->
-    <!-- ================================================ -->
-
-    <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
-        style="display: block; height: 514px; width: 1218px;">
-    </canvas>
-
-</main>
-
-{% endblock %}
+  </div>
+</div>

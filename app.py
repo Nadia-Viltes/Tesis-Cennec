@@ -288,13 +288,15 @@ def obtener_evolucion_id(id):
     }
     return render_template('hcd_ver_evolucion.html', data=values)
 
-@app.route('/hcd/modal/ver_historial/<int:id>', methods=["GET", "POST"])
+@app.route('/hcd/modal/ver_historial/<int:id>')
 def ver_historial_hcd(id):
     #historial_hcd -> modificarlo para que obtenga el detalle
-    historial_hcd = obtener_historial_evoluciones(id)
+    detalle_historial = obtener_detalle_historial(id)
+    usuarioprof = session["usuario_id"]
     values={
-        'titulo': 'Este es un historial',
-        'historial': historial_hcd
+        'titulo': 'Detalle de historia clínica',
+        'detalle_historial': detalle_historial,
+        'usuarioprof': usuarioprof
     }
     return jsonify({'htmlresponse': render_template('hcd_ver_historial.html', data=values)})
 
@@ -401,19 +403,20 @@ def guardar_detalle():
     # SI DA OK redireccionar
     return redirect("/agenda")
 
-@app.route('/agenda/ver_historial/<int:id>', methods=["GET", "POST"])
+@app.route('/agenda/ver_historial/<int:id>')
 def ver_historial(id):
     detalle_historial = obtener_detalle_historial(id)
-    usuarioprof = session["usuario_id"]
+    usuario = session["usuario_id"]
+    usuarioprof = obtener_id_profesional(usuario)
     values={
         'titulo': 'Detalle de historia clínica',
         'detalle_historial': detalle_historial,
         'usuarioprof': usuarioprof
     }
-    return render_template('mi_agenda_historial.html', data=values)
+    return jsonify({'htmlresponse': render_template('mi_agenda_historial.html', data=values)})
 
 # Operación para editar el detalle
-@app.route('/agenda/editar_detalle', methods=["GET", "POST"])
+@app.route('/agenda/editar_detalle', methods=["POST"])
 def editar_detalle():
     usuario = session["usuario_id"]
     inputIdDetEvo = request.form['inputIdDetEvo']
