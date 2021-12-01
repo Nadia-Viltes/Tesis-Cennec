@@ -50,7 +50,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <input type="hidden" name="paciente_hcd" value="{{data.paciente_hcd[0]}}">
                     <td>{{data.paciente_hcd[1]}} {{data.paciente_hcd[2]}}</td>
                     <td>{{data.paciente_hcd[3]}}</td>
                     <td>{{data.paciente_hcd[4]}}</td>
@@ -64,12 +63,9 @@
         <div class="card-body">
             <hr>
             <h5 class="fw-bolder">Evoluciones</h5>
-            <form>
                 <div class="row g-3">
                     <div class="col-md-4">
-                        <input type="hidden" class="form-control" name="inputIdHCD" value = {{data.paciente_hcd[7]}}>
                         <label for="inputProfesional" class="form-label">Profesional</label>
-                        <input type="hidden" class="form-control" name="inputProfesional"  value={{data.usuarioProfesional[4]}}>
                         <input type="text" class="form-control" id="inputProfesional"  value= "{{data.usuarioProfesional[1]}} {{data.usuarioProfesional[2]}}" disabled>
                     </div>
                     <div class="col-md-4">
@@ -88,18 +84,24 @@
                     <div class="col-md-4">
                         <label for="historialEvolucion" class="form-label">Historial</label>
                         <div style="height:250px; overflow: auto;">
-                            <div class="list-group" name="listaHistorial">
+                            <ul class="list-group" name="lista_historial">
                                 {% for historial in data.historial %}
-                                <a href="/agenda/ver_historial/{{historial[4]}}"
+<<<<<<< Updated upstream
+                                <button name="detalle_de_historial" id={{historial[4]}}
                                     class="list-group-item list-group-item-action" aria-current="true">
+                                    <div class="clase1 d-flex w-100 justify-content-between">
+=======
+                                <button name="ver_historial" id={{historial[4]}}
+                                 class="list-group-item list-group-item-action" aria-current="true">
                                     <div class="d-flex w-100 justify-content-between">
+>>>>>>> Stashed changes
                                         <div class="fw-bold">{{historial[11]}}</div>
                                         <small>{{historial[12]}}</small>
                                     </div>
                                     <small>{{historial[9]}} {{historial[10]}}</small>
-                                </a>
+                                </button>
                                 {% endfor %}
-                            </div>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -110,7 +112,6 @@
                     </div>
                 </div>
 
-            </form>
         </div>
 
     </div>
@@ -131,18 +132,18 @@
 <script>
     //link para ver historiales
   
-    $(document).on('click', "[name='historial_hcd']", function () {
-      let id = $(this).attr("id");
+    $("[name='detalle_de_historial']").on('click',function () {
+      let id_dhcd = $(this).attr("id");
       $.ajax({
-        url: `/hcd/modal/ver_historial/${id}`,
-        method: "GET",
-        success: function (data) {
-          $('#idSeccionModalHistorial').append(data.htmlresponse)
+        url: `/hcd/modal/ver_historial/${id_dhcd}`,
+        method: "POST",
+        success: function(response) {
+          $('#idSeccionModalHistorial').append(response.htmlresponse)
           $('#verHistorialHCD').modal('show');
         }
       });
     });
-    $(document).on('click', '#idCerrarModalEliminar', function () {
+    $("#idCerrarModalEliminar").on('click', function () {
       $.ajax({
         success: function (data) {
           $('#verHistorialHCD').modal('hide');

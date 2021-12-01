@@ -9,7 +9,8 @@ def obtener_lista_turno():
 				WHERE tur.IdEstadoTurno = est.IdEstadoTurno
 				AND tur.IdPaciente = pac.IdPaciente
 				AND tur.IdEspecialidad = esp.IdEspecialidad
-				AND tur.FechaBaja is null;          
+				AND tur.FechaBaja is null
+                order by tur.FechaTurno asc, tur.HoraDesde asc;          
             """
     conexion = get_conexion()
     turno = []

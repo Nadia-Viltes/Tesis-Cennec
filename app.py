@@ -274,7 +274,7 @@ def eliminar_turno_admision():
     update_baja_turno_admision(dataTurnoAdmId)
     return redirect("/hcd")
 
-@app.route('/hcd/ver_evoluciones/<int:id>', methods=["GET", "POST"])
+@app.route('/hcd/ver_evoluciones/<int:id>', methods=["POST","GET"])
 def obtener_evolucion_id(id):
     paciente_hcd = obtener_hcd_por_id(id)
     historial_hcd = obtener_historial_evoluciones(id)
@@ -290,10 +290,13 @@ def obtener_evolucion_id(id):
 
 @app.route('/hcd/modal/ver_historial/<int:id>', methods=["GET", "POST"])
 def ver_historial_hcd(id):
+    #historial_hcd -> modificarlo para que obtenga el detalle
+    historial_hcd = obtener_historial_evoluciones(id)
     values={
-        'titulo': 'Este es un historial'
+        'titulo': 'Este es un historial',
+        'historial': historial_hcd
     }
-    return jsonify({'htmlresponse': render_template('hcd_ver_historial.html',data=values)})
+    return jsonify({'htmlresponse': render_template('hcd_ver_historial.html', data=values)})
 
 #Carga los turnos admision llenando la tabla con jquery
 @app.route('/hcd/agrega_turnos_admision', methods=["POST"])
@@ -768,7 +771,7 @@ def eliminar_usuario_id(id):
 def delete_usuario():
     idUsuario = request.form["dataUsuarioId"]
     update_eliminar_usuario(idUsuario)
-    return redirect("configuracion/usuarios")
+    return redirect("/configuracion/usuarios")
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

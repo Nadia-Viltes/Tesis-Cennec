@@ -94,7 +94,7 @@
                         <div style="height:250px; overflow: auto;">
                             <div class="list-group" name="listaHistorial">
                                 {% for historial in data.historial %}
-                                <a href="/agenda/ver_historial/{{historial[4]}}"
+                                <a href="/agenda/ver_historial/{{historial[4]}}" id={{historial[4]}}
                                     class="list-group-item list-group-item-action" aria-current="true">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="fw-bold">{{historial[11]}}</div>
@@ -112,9 +112,15 @@
                     <div class="col-md-6 justify-content-md-start">
                         <a class="btn btn-primary" href="/agenda" role="button">Atrás</a>
                     </div>
+                    {% if data.detalleTurno[0] == data.turno_id[0] %}
+                    <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success" disabled>Guardar</button>
+                    </div>
+                    {% else %}
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
                         <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
                     </div>
+                    {% endif %}
                 </div>
 
             </form>

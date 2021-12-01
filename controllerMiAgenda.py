@@ -16,7 +16,8 @@ def obtener_lista_turno_mi_agenda(usuario):
             AND pro.IdRecurso = rec.IdRecurso
             AND rec.IdRecurso = u.IdRecurso
             AND tur.FechaBaja is null
-            AND (tur.IdProfesionalAsignado = {} OR tur.IdProfesionalReceptado = {});
+            AND (tur.IdProfesionalAsignado = {} OR tur.IdProfesionalReceptado = {})
+            order by tur.FechaTurno asc, tur.HoraDesde asc;
             """.format(usuario,usuario)
     conexion = get_conexion()
     turnoProfesional = []
@@ -44,6 +45,20 @@ def obtener_datos_usuario_profesional(usuario):
     conexion.close()
     return usuarioProfesional
 
+## Ver el ID del turno receptado:
+def obtener_turno_agenda_receptado(id_turno):
+    query = """SELECT IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdProfesionalReceptado, IdTurnoOriginal 
+                FROM turno
+                WHERE FechaBaja is null
+                AND IdTurno = {}""".format(id_turno)
+    conexion = get_conexion()
+    agenda_receptado = None
+    with conexion.cursor() as cur:
+        cur.execute(query),(id_turno)
+    agenda_receptado = cur.fetchone()
+    conexion.close()
+    return agenda_receptado
+
 # query para obtener los datos del turno
 def obtener_turno_atendiendo(idTurno):
     query = """
@@ -58,21 +73,46 @@ def obtener_turno_atendiendo(idTurno):
     idTurnoAtendiendo = cur.fetchone()
     conexion.close()
     return idTurnoAtendiendo
+
+# query para si ya existe un detalle con ese turno
+def obtener_detalle_con_turno(idTurno):
+    query = """
+           SELECT IdTurno FROM detalleevolucion WHERE IdTurno = {};""".format(idTurno)
+    conexion = get_conexion()
+    detalleTurno = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    detalleTurno = cur.fetchone()
+    conexion.close()
+    return detalleTurno
     
 ## Agregar un nuevo turno en estado ATENDIENDO:
-def insertar_turno_atendiendo(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, idProfesionalDropdown, IdTurno):
+def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaInicioAtencion, IdUsuarioInicioAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta)
-        VALUES ({},{},{},'{}','{}','{}',{},now(),1,{}, {}, now())""".format(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, idProfesionalDropdown, IdTurno)
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaInicioAtencion, IdUsuarioInicioAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
+        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno,usuario)
     print("Este es mi insertar turno ATENDIENDO -> {}".format(query))    
-    idTurno_atendiendo = None    
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_atendiendo = cur.lastrowid
     conexion.commit()
     conexion.close()
     return idTurno_atendiendo
+
+## Agregar un nuevo turno en estado ATENDIENDO:
+def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
+    conexion = get_conexion()
+    query = """
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaFinalAtencion, IdUsuarioFinalAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
+        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno,usuario)
+    print("Este es mi insertar turno ATENDIENDO -> {}".format(query))    
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        idTurno_atendido = cur.lastrowid
+    conexion.commit()
+    conexion.close()
+    return idTurno_atendido
 
 # Lista de los detalles de la evolución para que se muestren en el historial.
 def obtener_historial_evoluciones(id):
