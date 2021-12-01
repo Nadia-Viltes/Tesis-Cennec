@@ -1,16 +1,48 @@
 <!-- Modal -->
+<!--
 <div class="modal fade" id="verHistorialHCD" tabindex="-1" aria-labelledby="verHistorialHCDLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="{{url_for('ver_historial_hcd')}}" method="POST">
+        <form action="{{url_for('ver_historial_hcd')}}" method="POST"> 
         <div class="modal-body">
+          ...
+          <br>
           ...
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
             id="idCerrarModalEliminar">Cerrar</button>
         </div>
-        </form>
+        </form> 
       </div>
     </div>
   </div>
+-->
+  <!-- Modal -->
+<div class="modal fade" id="verHistorialHCD" tabindex="-1" aria-labelledby="verHistorialHCDLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!--
+          <form action="{{url_for('delete_rol')}}" method="POST">
+              <input type="hidden" value={{data.IdRol[0]}} name="dataRolId">
+          <div class="modal-header bg-danger text-white">
+              <h5 class="modal-title" id="EliminarRolLabel">{{data.titulo}}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                  id="idCerrarModalEliminar"></button>
+          </div>
+          <div class="modal-body">
+                      <h5>¡IMPORTANTE!</h5>
+                      <p>Estás por eliminar un rol. Recordá que si existen usuarios vinculados a este rol se perderán
+                          los privilegios asociados.</p>
+                      <p>¿Deseas eliminar este rol de todos modos?</p>
+          </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                      id="idCerrarModalEliminar">Cerrar</button>
+                  <button type="submit" class="btn btn-danger">Eliminar</button>
+              </div>
+          </form>
+          -->
+          </div>
+      </div>
+</div>

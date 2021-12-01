@@ -94,7 +94,7 @@
                         <div style="height:250px; overflow: auto;">
                             <div class="list-group" name="listaHistorial">
                                 {% for historial in data.historial %}
-                                <a href="/agenda/ver_historial/{{historial[4]}}"
+                                <a href="/agenda/ver_historial/{{historial[4]}}" id={{historial[4]}}
                                     class="list-group-item list-group-item-action" aria-current="true">
                                     <div class="d-flex w-100 justify-content-between">
                                         <div class="fw-bold">{{historial[11]}}</div>
