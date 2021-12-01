@@ -290,8 +290,10 @@ def obtener_evolucion_id(id):
 
 @app.route('/hcd/modal/ver_historial/<int:id>', methods=["GET", "POST"])
 def ver_historial_hcd(id):
+    detalle_historial = obtener_detalle_historial(id)
     values={
-        'titulo': 'Este es un historial'
+        'titulo': 'Este es un historial',
+        'detalle_historial': detalle_historial
     }
     return jsonify({'htmlresponse': render_template('hcd_ver_historial.html',data=values)})
 
