@@ -59,29 +59,29 @@
           <td>{{turno[8]}}</td>
           <td>{{turno[9]}}</td>
           {% if turno[1].lower() == "receptado" or turno[1].lower() == "atendiendo" or turno[1].lower() == "atendido" or turno[1].lower() == "ausente" %}
-          <td><a type="button" class="btn btn-primary openBtn disabled" href="/turnos/receptar_turno/{{turno[0]}}"
+          <td><a type="button" class="btn btn-primary btn-sm disabled" href="/turnos/receptar_turno/{{turno[0]}}"
               name="button_receptar_turno">
               Receptar
             </a>
-            <a type="button" class="btn btn-warning openBtn disabled" href="/turnos/reprogramar_turno/{{turno[0]}}"
+            <a type="button" class="btn btn-warning btn-sm disabled" href="/turnos/reprogramar_turno/{{turno[0]}}"
               name="button_reprogramar_turno">
               Reprogramar
             </a>
-            <a type="button" class="btn btn-danger openBtn disabled" href="/turnos/anular_turno/{{turno[0]}}"
+            <a type="button" class="btn btn-danger btn-sm disabled" href="/turnos/anular_turno/{{turno[0]}}"
               name="button_anular_turno">
               Anular
             </a>
           </td>
           {% else %}
-          <td><a type="button" class="btn btn-primary openBtn" href="/turnos/receptar_turno/{{turno[0]}}"
+          <td><a type="button" class="btn btn-primary btn-sm" href="/turnos/receptar_turno/{{turno[0]}}"
               name="button_receptar_turno">
               Receptar
             </a>
-            <a type="button" class="btn btn-warning openBtn" href="/turnos/reprogramar_turno/{{turno[0]}}"
+            <a type="button" class="btn btn-warning btn-sm" href="/turnos/reprogramar_turno/{{turno[0]}}"
               name="button_reprogramar_turno">
               Reprogramar
             </a>
-            <a type="button" class="btn btn-danger openBtn" href="/turnos/anular_turno/{{turno[0]}}"
+            <a type="button" class="btn btn-danger btn-sm" href="/turnos/anular_turno/{{turno[0]}}"
               name="button_anular_turno">
               Anular
             </a>
@@ -110,7 +110,6 @@
   </canvas>
 
 </main>
-
 
 
 {% endblock %}

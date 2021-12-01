@@ -1,8 +1,21 @@
 <!-- Modal -->
 <div class="modal fade" id="verHistorialHCD" tabindex="-1" aria-labelledby="verHistorialHCDLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        hola soy un modal
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="everHistorialHCDLabel">Detalle de {{data.detalle_historial[9]}} {{data.detalle_historial[10]}}</h5>
       </div>
+      <div class="modal-body">
+          <div class="col-md-12">
+              <label for="TextareaEvoluciones" class="form-label">Evolución</label>
+              <input type="hidden" name="inputIdDetalle" value = {{data.detalle_historial[4]}}>
+              <textarea class="form-control" id="TextareaEvoluciones" rows="10"
+                  name="InputTextareaEvolucionesHis" style="resize: none;">{{data.detalle_historial[8]}}</textarea>
+          </div>
       </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="closeModalId">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>
