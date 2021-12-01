@@ -70,14 +70,18 @@
         {% if data.turnosadm|length == 0 %}
         <div class="container">
             <div class="alert alert-primary d-flex align-items-center" role="alert">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
-                  <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img"
+                    aria-label="Warning:">
+                    <path
+                        d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
                 </svg>
                 <div>
-                    El paciente NO tiene turnos de admisión asignados. Te recomendamos comunicarte con el área de
-                    admisión para que se gestionen las sesiones correspondientes.
+                    El paciente NO tiene turnos de admisión asignados. Para poder añadirlos <a
+                        href="/hcd/ver_admision/{{data.paciente[0]}}" class="alert-link">haz click aquí</a> e ingresá en
+                    la solapa "Turnos de admisión"
                 </div>
-              </div>
+            </div>
             <div class="card-footer bg-transparent border-success">
                 <div class="row">
                     <div class="col-6 justify-content-md-start">
@@ -87,8 +91,8 @@
             </div>
         </div>
         {%else%}
-            <div id="mensajeAlerta" class="container">
-            </div>    
+        <div id="mensajeAlerta" class="container">
+        </div>
         <div class="card-body border-top">
             <h5 class="card-title">Seleccionar turno</h5>
             <div class="container">
@@ -105,7 +109,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Especialidad" class="form-label">Especialidad</label>
-                        <select id="idEspecialidadDropdown" name="nameEspecialidadDropdown" class="form-select" validation="true">
+                        <select id="idEspecialidadDropdown" name="nameEspecialidadDropdown" class="form-select"
+                            validation="true">
                             <option value="" selected disabled>Seleccionar...</option>
                             {% for especialidad in data.especialidad %}
                             <option value={{especialidad[0]}}>{{especialidad[1]}}</option>
@@ -114,7 +119,8 @@
                     </div>
                     <div class="col-md-4">
                         <label for="Profesional" class="form-label">Profesional</label>
-                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select" validation="true">
+                        <select id="idProfesionalDropdown" name="nameProfesionalDropdown" class="form-select"
+                            validation="true">
                             <option value="" selected disabled>Seleccionar...</option>
                         </select>
                     </div>
@@ -153,7 +159,7 @@
                     <a class="btn btn-primary" href="/turnos/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit" id="guardarButtonAsignar" class="btn btn-success">Guardar</button>
+                    <button type="submit"  class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
@@ -210,6 +216,7 @@
 <script>
     //la fecha por defecto es la de hoy
     $("[name='fechaTurno']").val(obtenerFechaActual())
+
 </script>
 
 

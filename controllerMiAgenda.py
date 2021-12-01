@@ -45,6 +45,24 @@ def obtener_datos_usuario_profesional(usuario):
     conexion.close()
     return usuarioProfesional
 
+
+# Query para obtener el dato del IdProfesional logueado
+def obtener_id_profesional(usuario):
+    query = """
+            SELECT p.IdProfesional FROM usuario as us, recurso as r, profesional as p
+            WHERE us.IdRecurso = r.IdRecurso
+            AND r.IdRecurso = p.IdRecurso
+            AND us.IdUsuario = {};""".format(usuario)
+    conexion = get_conexion()
+    idProfesional = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    idProfesional = cur.fetchone()
+    conexion.close()
+    return idProfesional
+
+
+
 ## Ver el ID del turno receptado:
 def obtener_turno_agenda_receptado(id_turno):
     query = """SELECT IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdProfesionalReceptado, IdTurnoOriginal 
