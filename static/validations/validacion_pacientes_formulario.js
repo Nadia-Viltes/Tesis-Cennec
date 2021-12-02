@@ -66,7 +66,7 @@ const campoNroAfiliado = $("[name='nroAfiliado']")
 //esto lo hago para poder hacer las validaciones en el editar
 const campoNroAfiliadoValorInicial = campoNroAfiliado.val()
 
-//si valor contiene numeros return true
+//si valor contiene numeros los quito
 function removeNumber(element){
     const REGEXP = /[0-9]/g;
     element.val(element.val().replace(REGEXP, ""))

@@ -762,7 +762,12 @@ def setear_privilegios():
     print("estos son los privilegios -> {}".format(privilegios))
     return jsonify({'privilegios': privilegios})
 
-
+@app.route("/configuracion/usuarios/chequear_usuario_existente", methods=["POST"])
+def chequear_usuario():
+    nombre_usuario = request.form['nombre_usuario']
+    chequea = chequear_usuario_existente_by_nombre(nombre_usuario)
+    return jsonify({'chequea': chequea})
+    
 @app.route('/configuracion/rol')
 def configuracion_roles():
     rol = obtener_lista_roles()
@@ -882,7 +887,7 @@ def agregar_usuario(id):
 @app.route('/configuracion/usuarios/grabar_usuario', methods=["POST"])
 def grabar_usuario():
     idRecurso = request.form["inputRecursoId"]
-    nombreUsuario = request.form["NombreUsuarioInput1"]
+    nombreUsuario = request.form["NombreUsuarioInput"]
     contrasena = request.form["inputPasswordUsuario"]
     rolSeleccionado = request.form["checkRol"]
     guardar_usuario(idRecurso, nombreUsuario, contrasena, rolSeleccionado)
@@ -890,8 +895,13 @@ def grabar_usuario():
     return redirect("/configuracion/usuarios")
 
 
-@app.route('/configuracion/usuarios/editar_usuario/<int:id>')
+@app.route('/configuracion/usuarios/editar_usuario/<int:id>', methods=["GET", "POST"])
 def editar_usuario(id):
+    if request.method == 'POST':
+        password = request.form["inputPasswordUsuario"]
+        rol_seleccionado = request.form["checkRol"]
+        update_rol_pass_by_id_usuario(rol_seleccionado, password, id)
+        return redirect("/configuracion/usuarios")
     usuario = obtener_usuario_por_id(id)
     recurso = obtener_recurso_por_id_usuario(id)
     roles = obtener_lista_roles()
