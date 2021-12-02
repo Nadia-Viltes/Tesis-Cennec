@@ -39,11 +39,14 @@ $("[name='localidad']").change(function () {
     });
 });
 
+const tituloPantalla = $("[name='tituloPantalla']").text()
+
 //Datos personales limitacion de caracteres
 //tab datos personales
 const campoNombrePaciente = $("[name='nombrePaciente']");
 const campoApellidoPaciente = $("[name='apellidoPaciente']");
 const campoDocumento = $("[name='nroDocumento']");
+const campoDocumentoValorInicial = $("[name='nroDocumento']").val();
 const campoFechaNacimiento = $("[name='fechaNacimiento']");
 const campoCalle = $("[name='calle']");
 const campoAltura = $("[name='altura']");
@@ -58,7 +61,10 @@ const campoNroCelular = $("[name='nroCelular']");
 const campoNroFijo = $("[name='nroFijo']");
 
 //Tab financiador
+const campoFinanciador = $("[name='financiador']")
 const campoNroAfiliado = $("[name='nroAfiliado']")
+//esto lo hago para poder hacer las validaciones en el editar
+const campoNroAfiliadoValorInicial = campoNroAfiliado.val()
 
 //si valor contiene numeros return true
 function removeNumber(element){
@@ -304,4 +310,54 @@ $("#buttonGuardarFormulario").click(function () {
         return;
     }
 
+    //chequear numero afiliado para el agregar y el editar, ver logica, esto es inmantenible
+    let financiadorDiferente = true;
+    if(campoNroAfiliadoValorInicial != campoNroAfiliado.val()){
+        $.ajax({
+            url: "/pacientes/chequear_financiador", 
+            method: "POST",
+            async: false,
+            data: {
+                "financiador_id": campoFinanciador.val(),
+                "numero_afiliado": campoNroAfiliado.val()
+            },
+            success: function(response) {
+                if(response.chequea){
+                    const MENSAJE = "El numero de financiador ya existe"
+                    const componenteDeAlerta = `<div class='alert alert-danger' role='alert'>${MENSAJE}</div>`;
+                    $("#mensajeAlerta").empty();
+                    $("#mensajeAlerta").append(componenteDeAlerta);
+                    financiadorDiferente = false;
+                }
+            }
+        });
+    }
+    if(!financiadorDiferente){
+        return financiadorDiferente
+    }
+
+    //para validar DNI
+    let documentoDiferente = true;
+    if(campoDocumentoValorInicial != campoDocumento.val()){
+        $.ajax({
+            url: "/pacientes/chequear_documento", 
+            method: "POST",
+            async: false,
+            data: {
+                "documento": campoDocumento.val(),
+            },
+            success: function(response) {
+                if(response.chequea){
+                    const MENSAJE = "El número de documento ya existe para otra persona"
+                    const componenteDeAlerta = `<div class='alert alert-danger' role='alert'>${MENSAJE}</div>`;
+                    $("#mensajeAlerta").empty();
+                    $("#mensajeAlerta").append(componenteDeAlerta);
+                    documentoDiferente = false;
+                }
+            }
+        });
+    }
+    if(!documentoDiferente){
+        return documentoDiferente
+    }
 });
