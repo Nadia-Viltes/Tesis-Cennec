@@ -60,29 +60,33 @@
                 </table>
             </div>
 
-            <form action="/configuracion/usuarios/editar_usuario" method="POST">
+            <form action="/configuracion/usuarios/editar_usuario/{{data.usuario[0]}}" method="POST">
                 <div class="card-body border-top">
                     <h5 class="card-title">Datos de autenticación</h5>
                     <div class="container">
                         <div class="row g-3">
                             <input type="hidden" value={{data.recurso[0]}} name="inputRecursoId">
                             <div class="col-md-6 mb-3">
-                                <label for="NombreUsuarioInput1" class="form-label">Nombre de usuario</label>
-                                <input type="text" class="form-control" name="NombreUsuarioInput1" value={{data.usuario[2]}}>
+                                <label for="NombreUsuarioInput" class="form-label">Nombre de usuario</label>
+                                <input type="text" class="form-control" name="NombreUsuarioInput"
+                                    value={{data.usuario[2]}} disabled>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="inputPasswordUsuario" class="form-label">Contraseña</label>
                                 <input type="password" name="inputPasswordUsuario" class="form-control"
-                                    aria-describedby="passwordHelpBlock">
+                                    aria-describedby="passwordHelpBlock" validation-field="true">
+                                <div class="invalid-feedback">Las contraseñas no coinciden</div>
                                 <div id="passwordHelpBlock" class="form-text">
                                     La clave debe contener hasta 8 dígitos.
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label for="inputPasswordRepetir" class="form-label">Repetir contraseña</label>
-                                <input type="password" class="form-control" name="inputPasswordRepetir">
+                                <input type="password" class="form-control" name="inputPasswordRepetir"
+                                    validation-field="true">
+                                <div class="invalid-feedback">Las contraseñas no coinciden</div>
                             </div>
                         </div>
                     </div>
@@ -133,7 +137,7 @@
                         <a class="btn btn-primary" href="/usuario" role="button">Atrás</a>
                     </div>
                     <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonAgregarUsuario" class="btn btn-success">Guardar</button>
+                        <button type="submit" id="buttonGuardarUsuario" class="btn btn-success">Guardar</button>
                     </div>
                 </div>
             </form>
@@ -150,29 +154,11 @@
     </canvas>
 
 </main>
-
+<script type="text/javascript" src="/static/validations/validacion_usuario_formulario.js"></script>
 <script>
-    $("[name='checkRol']").click(function () {
-        const idRol = $(this).val();
-        $.ajax({
-            url: "/configuracion/usuarios/setear_privilegios_rol_seleccionado",
-            method: "POST",
-            data: {
-                "idRol": idRol
-            },
-            success: function (response) {
-                const privilegios = response.privilegios
-                $(`[type='checkbox']`).prop('checked', false)
-                for (const privilegio of privilegios) {
-                    $(`[type='checkbox'][value='${privilegio}']`).prop('checked', true)
-                }
-            }
-        });
-    });
-
     let listOfRadioButton = $("[name='checkRol']");
-    for(let i=0; i < listOfRadioButton.length; i++){
-        if(listOfRadioButton[i].getAttribute("id") == "{{data.rol_seleccionado[0]}}"){
+    for (let i = 0; i < listOfRadioButton.length; i++) {
+        if (listOfRadioButton[i].getAttribute("id") == "{{data.rol_seleccionado[0]}}") {
             listOfRadioButton[i].click();
         }
     }
