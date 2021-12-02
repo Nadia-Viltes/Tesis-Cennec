@@ -1,6 +1,9 @@
+from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista paciente
+
+
 def obtener_pacientes():
     query = """
            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.Nombre, pa.NumeroDocumento, pa.FechaNacimiento, 
@@ -28,7 +31,9 @@ def obtener_pacientes():
     conexion.close()
     return pacientes
 
-#Necesitas una query para pedirlo - BUSQUEDA
+# Necesitas una query para pedirlo - BUSQUEDA
+
+
 def obtener_pacientes_query(parametros):
     query = """
            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.Genero, tdoc.Nombre, pa.NumeroDocumento, pa.FechaNacimiento, 
@@ -47,7 +52,7 @@ def obtener_pacientes_query(parametros):
             AND fi.IdFinanciador = afi.IdFinanciador
             AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento))) LIKE LOWER('{}')
             """.format(parametros)
-    print("Esta es la consutla final {}".format(query))        
+    print("Esta es la consutla final {}".format(query))
     conexion = get_conexion()
     pacientes = []
     with conexion.cursor() as cur:
@@ -56,8 +61,10 @@ def obtener_pacientes_query(parametros):
     conexion.close()
     return pacientes
 
-## Select tipo de documento - Lista de valores
-def obtener_tipoDocumento(): 
+# Select tipo de documento - Lista de valores
+
+
+def obtener_tipoDocumento():
     query = "select IdTipoDocumento, Nombre from tipodocumento where FechaBaja is null"
     conexion = get_conexion()
     tipoDocumento = []
@@ -67,8 +74,10 @@ def obtener_tipoDocumento():
     conexion.close()
     return tipoDocumento
 
-## Select País - Lista de valores
-def obtener_pais(): 
+# Select País - Lista de valores
+
+
+def obtener_pais():
     query = "select IdPais, Nombre from pais where FechaBaja is null"
     conexion = get_conexion()
     pais = None
@@ -78,9 +87,12 @@ def obtener_pais():
     conexion.close()
     return pais
 
-## Select provincia - Lista de valores
-def obtener_provincias_by_id_pais(id_pais): 
-    query = "select IdProvincia, Nombre from provincia where IdPais = {} and FechaBaja is null;".format(id_pais)
+# Select provincia - Lista de valores
+
+
+def obtener_provincias_by_id_pais(id_pais):
+    query = "select IdProvincia, Nombre from provincia where IdPais = {} and FechaBaja is null;".format(
+        id_pais)
     conexion = get_conexion()
     provincias = []
     with conexion.cursor() as cur:
@@ -89,9 +101,12 @@ def obtener_provincias_by_id_pais(id_pais):
     conexion.close()
     return provincias
 
-## Select Localidad - Lista de valores
-def obtener_localidades_by_id_provincia(id_provincia): 
-    query = "select IdLocalidad, Nombre from localidad where IdProvincia = {} and FechaBaja is null;".format(id_provincia)
+# Select Localidad - Lista de valores
+
+
+def obtener_localidades_by_id_provincia(id_provincia):
+    query = "select IdLocalidad, Nombre from localidad where IdProvincia = {} and FechaBaja is null;".format(
+        id_provincia)
     conexion = get_conexion()
     localidades = []
     with conexion.cursor() as cur:
@@ -100,9 +115,12 @@ def obtener_localidades_by_id_provincia(id_provincia):
     conexion.close()
     return localidades
 
-## Select Barrio - Lista de valores
-def obtener_barrios_by_id_localidad(id_localidad): 
-    query = "select IdBarrio, Nombre from barrio where IdLocalidad = {} and FechaBaja is null;".format(id_localidad)
+# Select Barrio - Lista de valores
+
+
+def obtener_barrios_by_id_localidad(id_localidad):
+    query = "select IdBarrio, Nombre from barrio where IdLocalidad = {} and FechaBaja is null;".format(
+        id_localidad)
     conexion = get_conexion()
     barrios = []
     with conexion.cursor() as cur:
@@ -111,8 +129,10 @@ def obtener_barrios_by_id_localidad(id_localidad):
     conexion.close()
     return barrios
 
-## Select Financiador - Lista de valores
-def obtener_financiador(): 
+# Select Financiador - Lista de valores
+
+
+def obtener_financiador():
     query = "select IdFinanciador, Nombre from financiador where FechaBaja is null;"
     conexion = get_conexion()
     financiador = []
@@ -122,8 +142,55 @@ def obtener_financiador():
     conexion.close()
     return financiador
 
-## INSERTAR DOMICILIO
-def insertar_domicilio (pais, provincia, localidad, barrio, calle, altura, piso, dpto):
+
+def chequear_financiador_nro_afiliado(id_financiador, numero_afiliado):
+    query = """
+            SELECT * FROM AFILIACION
+            WHERE IdFinanciador = {}
+            AND NumeroAfiliado = '{}'
+            AND FechaBaja is null;
+            """.format(id_financiador, numero_afiliado)
+    logger.info("chequear nro afiliado -> {}".format(query))
+    conexion = get_conexion()
+    nro_afiliado = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        nro_afiliado = cur.fetchall()
+    conexion.close()
+    if nro_afiliado != ():
+        nro_afiliado = True
+    else:
+        nro_afiliado = False
+    return nro_afiliado
+
+
+def chequear_documento_existente(documento):
+    query = """
+            SELECT documentos.numerodocumento 
+            FROM (SELECT pac.NumeroDocumento
+                FROM PACIENTE as pac
+                UNION
+                SELECT rec.NumeroDocumento 
+                FROM RECURSO as rec) as documentos
+            where documentos.numerodocumento = {};
+            """.format(documento)
+    logger.info("chequear_documento -> {}".format(query))
+    conexion = get_conexion()
+    documento = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        documento = cur.fetchall()
+    conexion.close()
+    if documento != ():
+        documento = True
+    else:
+        documento = False
+    return documento
+
+# INSERTAR DOMICILIO
+
+
+def insertar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso, dpto):
     conexion = get_conexion()
     query = """
         INSERT INTO domicilio (IdPais, IdProvincia, IdLocalidad, IdBarrio, Calle, Altura, Piso, Dpto, FechaAlta)
@@ -137,14 +204,16 @@ def insertar_domicilio (pais, provincia, localidad, barrio, calle, altura, piso,
     conexion.close()
     return idDomicilio_insertado
 
-## INSERTAR TUTOR
-def insertar_tutor (nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular):
+# INSERTAR TUTOR
+
+
+def insertar_tutor(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular):
     conexion = get_conexion()
     idTutoria_insertado = None
     query = """
         INSERT INTO tutoria(Nombre, Apellido, Ocupacion, TelefonoFijo, TelefonoCelular, FechaAlta)
         VALUES ('{}', '{}', '{}', '{}', '{}', NOW())""".format(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular)
-    print("Insertar tutor -> {}".format(query))   
+    print("Insertar tutor -> {}".format(query))
     with conexion.cursor() as cur:
         cur.execute(query)
         idTutoria_insertado = cur.lastrowid
@@ -152,14 +221,16 @@ def insertar_tutor (nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular):
     conexion.close()
     return idTutoria_insertado
 
-## INSERTAR PACIENTE
-def insertar_paciente (nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria):
+# INSERTAR PACIENTE
+
+
+def insertar_paciente(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria):
     conexion = get_conexion()
     query = """
         INSERT INTO paciente (Nombre, Apellido, Genero, IdTipoDocumento, NumeroDocumento, FechaNacimiento, IdDomicilio, IdTutoria, FechaAlta)
         VALUES ('{}','{}','{}',{},{},'{}',{},{}, now())""".format(nombre, apellido, genero, tipoDocumento, nroDocumento, fechaNacimiento, idDomicilio, IdTutoria)
-    print("Este es mi insertar paciente -> {}".format(query))    
-    idPaciente_insertado = None    
+    print("Este es mi insertar paciente -> {}".format(query))
+    idPaciente_insertado = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idPaciente_insertado = cur.lastrowid
@@ -167,13 +238,15 @@ def insertar_paciente (nombre, apellido, genero, tipoDocumento, nroDocumento, fe
     conexion.close()
     return idPaciente_insertado
 
-## INSERTAR AFILIACION
-def insertar_afiliacion (idPaciente, financiador, nroAfiliado):
+# INSERTAR AFILIACION
+
+
+def insertar_afiliacion(idPaciente, financiador, nroAfiliado):
     conexion = get_conexion()
     query = """
         INSERT INTO Afiliacion (IdPaciente, IdFinanciador, NumeroAfiliado, FechaAlta)
         VALUES ({},{},'{}',NOW());""".format(idPaciente, financiador, nroAfiliado)
-    print("Este es mi insertar afiliacion -> {}".format(query))       
+    print("Este es mi insertar afiliacion -> {}".format(query))
     idAfiliacion_insertado = None
     with conexion.cursor() as cur:
         cur.execute(query)
@@ -182,12 +255,14 @@ def insertar_afiliacion (idPaciente, financiador, nroAfiliado):
     conexion.close()
     return idAfiliacion_insertado
 
-## INSERTAR NUMERO DE HISTORIA CLINICA DIGITAL
-def insertar_HCD (idPaciente):
+# INSERTAR NUMERO DE HISTORIA CLINICA DIGITAL
+
+
+def insertar_HCD(idPaciente):
     conexion = get_conexion()
     query = """
         INSERT INTO historiaclinica (IdPaciente, FechaAlta)
-        VALUES ({},NOW());""".format(idPaciente)   
+        VALUES ({},NOW());""".format(idPaciente)
     idHCD_insertado = None
     with conexion.cursor() as cur:
         cur.execute(query)
@@ -195,6 +270,7 @@ def insertar_HCD (idPaciente):
     conexion.commit()
     conexion.close()
     return idHCD_insertado
+
 
 def obtener_paciente_por_id(idPaciente):
     query = """
@@ -233,6 +309,7 @@ def actualizar_domicilio(pais, provincia, localidad, barrio, calle, altura, piso
     conexion.commit()
     conexion.close()
 
+
 def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelular, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
@@ -242,13 +319,15 @@ def actualizar_tutoria(nombreTutor, apellidoTutor, ocupacion, nroFijo, nroCelula
     conexion.commit()
     conexion.close()
 
-def actualizar_afiliacion(financiador,nroAfiliado,idPaciente):
+
+def actualizar_afiliacion(financiador, nroAfiliado, idPaciente):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("UPDATE afiliacion SET IdFinanciador ={}, NumeroAfiliado='{}', FechaModificacion=NOW() WHERE IdPaciente = {}".format
-                       (financiador,nroAfiliado,idPaciente))
+                       (financiador, nroAfiliado, idPaciente))
     conexion.commit()
     conexion.close()
+
 
 def actualizar_paciente(nombrePaciente, apellidoPaciente, genero, tipoDocumento, nroDocumento, fechaNacimiento, idPaciente):
     conexion = get_conexion()
