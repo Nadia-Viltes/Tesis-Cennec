@@ -304,16 +304,24 @@ def hcd():
 def obtener_hcd_idd(id):
     paciente_hcd = obtener_hcd_por_id(id)
     IdEspecialidad = obtener_especialidad(id)
-    idPatologia = obtener_patologia()
     turnosadm = obtener_lista_turnos_admision(id)
     values = {
         'titulo': 'Historia clínica digital',
         'paciente_hcd': paciente_hcd,
         'especialidad': IdEspecialidad,
-        'patologia': idPatologia,
         'turnosadm': turnosadm
     }
     return render_template('hcd_ver_admision.html', data=values)
+
+
+@app.route('/hcd/ver_admision/carga_patologia_especialidad/<int:id>')
+def patologia_especialidad(id):
+    patologias = obtener_patologia_por_especialidad_id(id)
+    options = "<option value='' selected disabled>Seleccionar...</option>"
+    for patologia in patologias:
+        options += "<option value={}>{}</option>".format(
+            patologia[0], patologia[1])
+    return jsonify({'htmlresponse': render_template_string(options)})
 
 # Acá se abre el modal de eliminar turno de admisión
 
@@ -803,13 +811,15 @@ def guardar_rol():
     # SI DA OK redireccionar
     return redirect("/configuracion/rol")
 
+
 @app.route('/configuracion/rol/editar_rol/<int:id>', methods=["GET", "POST"])
 def editar_rol(id):
     if request.method == 'POST':
         nombre_rol = request.form["nombreRol"]
         descripcion_rol = request.form["descripcionRol"]
         id_privilegios = request.form.getlist('privilegio_nombre')
-        update_nombre_descripcion_rol_by_id_rol(id, nombre_rol, descripcion_rol)
+        update_nombre_descripcion_rol_by_id_rol(
+            id, nombre_rol, descripcion_rol)
         update_eliminar_rolprivilegio(id)
         for id_privilegio in id_privilegios:
             insertar_rol_privilegio(id, id_privilegio)
