@@ -2,6 +2,8 @@ from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de ROLES
+
+
 def obtener_lista_roles():
     query = """
            SELECT IdRol, Nombre, Descripcion FROM rol 
@@ -17,6 +19,8 @@ def obtener_lista_roles():
     return rol
 
 # query para que me muestre los datos en la lista de ROLES
+
+
 def obtener_rol_by_usuario_id(usuario_id):
     query = """
             select r.IdRol, r.Nombre
@@ -32,6 +36,8 @@ def obtener_rol_by_usuario_id(usuario_id):
     return roles
 
 # query para que me muestre los datos en la lista de PRIVILEGIOS
+
+
 def obtener_lista_privilegios():
     query = """
            SELECT IdPrivilegio, Nombre, Descripcion FROM privilegio 
@@ -46,6 +52,8 @@ def obtener_lista_privilegios():
     return privilegios
 
 # obtener privilegios por rol
+
+
 def obtener_lista_privilegios_by_rol():
     query = """
            SELECT IdPrivilegio, Nombre, Descripcion FROM privilegio 
@@ -61,11 +69,11 @@ def obtener_lista_privilegios_by_rol():
 
 
 # Acá inserto primero el rol para obtener el id
-def insertar_rol (nombreRol,descripcionRol):
+def insertar_rol(nombreRol, descripcionRol):
     conexion = get_conexion()
     query = """
         INSERT INTO rol(Nombre, Descripcion, FechaAlta) 
-        VALUES ('{}','{}', NOW());""".format(nombreRol,descripcionRol)  
+        VALUES ('{}','{}', NOW());""".format(nombreRol, descripcionRol)
     rol_id = None
     logger.info("Inserta rol -> {}".format(query))
     with conexion.cursor() as cur:
@@ -77,7 +85,7 @@ def insertar_rol (nombreRol,descripcionRol):
 
 
 # Acá inserto los privilegios que le asigné a ese rol
-def insertar_rol_privilegio (idRol, idPrivilegio):
+def insertar_rol_privilegio(idRol, idPrivilegio):
     conexion = get_conexion()
     query = """
         INSERT INTO rolprivilegio (IdRol, IdPrivilegio, FechaAlta) 
@@ -92,6 +100,8 @@ def insertar_rol_privilegio (idRol, idPrivilegio):
     return rol_privilegio
 
 # query para obtener rol por ID
+
+
 def obtener_id_rol(idRol):
     query = """
            SELECT IdRol, Nombre, Descripcion FROM rol 
@@ -105,7 +115,20 @@ def obtener_id_rol(idRol):
     return rol_id
 
 
+def update_nombre_descripcion_rol_by_id_rol(id_rol, nombre, descripcion):
+    conexion = get_conexion()
+    with conexion.cursor() as cursor:
+        cursor.execute("""UPDATE rol 
+                       SET FechaModificacion = now(),
+                       Nombre = '{}',
+                       Descripcion = '{}'
+                       WHERE IdRol = {}""".format(nombre, descripcion, id_rol))
+    conexion.commit()
+    conexion.close()
+
 # Le asigno fecha de baja al rol
+
+
 def update_eliminar_rol(id_rol):
     conexion = get_conexion()
     with conexion.cursor() as cursor:

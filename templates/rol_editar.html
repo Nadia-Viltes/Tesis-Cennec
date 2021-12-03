@@ -32,11 +32,11 @@
     <div class="card">
         <div class="card-header bg-transparent border-success">
             <h5 class="h4">{{ data.titulo }}</h5>
-            </div>
+        </div>
+        <div id="mensajeAlerta" class="container mt-3"></div>
         <div class="card-body">
-            <form>
+            <form action=/configuracion/rol/editar_rol/{{data.IdRol[0]}} method="POST">
                 <div class="container">
-
                     <div class="row">
                         <div class="col-md-6">
                             <label for="nombreRol" class="form-label">Nombre del rol</label>
@@ -44,44 +44,40 @@
                         </div>
                     </div>
 
-                        <div class="row mt-3">
+                    <div class="row mt-3">
 
-                            <div class="col-md-6">
-                                <label for="descripcionRol" class="form-label">Descripción</label>
-                                <textarea class="form-control" name="descripcionRol"
-                                    style="height: 250px; resize: none;" >{{data.IdRol[2]}}</textarea>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div>
-                                    <label for="checkPrivilegio" class="form-label">Privilegios</label>
-                                </div>
-                                <ul class="list-group">
-                                    {% for privilegios in data.privilegios %}
-                                    <li class="list-group-item">
-                                        <input class="form-check-input me-1" name="privilegio_nombre" type="checkbox"
-                                            value={{privilegios[0]}} id={{privilegios[0]}}>
-                                        {{privilegios[1]}}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-    
-                            </div>
+                        <div class="col-md-6">
+                            <label for="descripcionRol" class="form-label">Descripción</label>
+                            <textarea class="form-control" name="descripcionRol"
+                                style="height: 250px; resize: none;">{{data.IdRol[2]}}</textarea>
                         </div>
 
-                        <div class="row mt-3">
-                            <div class="col-md-6 justify-content-md-start">
-                                <a class="btn btn-primary" href="/configuracion/rol" role="button">Atrás</a>
+                        <div class="col-md-6">
+                            <div>
+                                <label for="checkPrivilegio" class="form-label">Privilegios</label>
                             </div>
-                            <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                                <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
-                            </div>
+                            <ul class="list-group">
+                                {% for privilegios in data.privilegios %}
+                                <li class="list-group-item">
+                                    <input class="form-check-input me-1" name="privilegio_nombre" type="checkbox"
+                                        value={{privilegios[0]}} id={{privilegios[0]}}>
+                                    {{privilegios[1]}}
+                                </li>
+                                {% endfor %}
+                            </ul>
+
                         </div>
+                    </div>
 
-
-
+                    <div class="row mt-3">
+                        <div class="col-md-6 justify-content-md-start">
+                            <a class="btn btn-primary" href="/configuracion/rol" role="button">Atrás</a>
+                        </div>
+                        <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
+                            <button type="submit" id="guardarButton" class="btn btn-success">Guardar</button>
+                        </div>
+                    </div>
                 </div>
-
             </form>
         </div>
     </div>
@@ -95,5 +91,21 @@
     </canvas>
 
 </main>
-
+<script>
+    const idRol = "{{data.IdRol[0]}}";
+    $.ajax({
+        url: "/configuracion/usuarios_rol/setear_privilegios_rol_seleccionado",
+        method: "POST",
+        data: {
+            "idRol": idRol
+        },
+        success: function (response) {
+            const privilegios = response.privilegios
+            for (const privilegio of privilegios) {
+                $(`[name='privilegio_nombre'][value='${privilegio}']`).prop('checked', true)
+            }
+        }
+    });
+</script>
+<script type="text/javascript" src="/static/validations/validacion_rol_formulario.js"></script>
 {% endblock %}

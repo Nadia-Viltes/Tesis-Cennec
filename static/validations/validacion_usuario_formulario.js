@@ -1,7 +1,7 @@
 $("[name='checkRol']").change(function () {
     const idRol = $(this).val();
     $.ajax({
-        url: "/configuracion/usuarios/setear_privilegios_rol_seleccionado",
+        url: "/configuracion/usuarios_rol/setear_privilegios_rol_seleccionado",
         method: "POST",
         data: {
             "idRol": idRol
