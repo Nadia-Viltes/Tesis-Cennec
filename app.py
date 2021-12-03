@@ -290,9 +290,15 @@ def actualizar_pacientes():
     return redirect("/pacientes")
 
 
-@app.route('/hcd')
+@app.route('/hcd', methods=['GET', 'POST'])
 def hcd():
-    hcd = obtener_lista_hcd()
+    hcd = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        parametros = '%' + '%'.join(parametros.split()) + '%'
+        hcd = obtener_lista_hcd_query(parametros)
+    else:
+        hcd = obtener_lista_hcd()
     data = {
         'titulo': 'Historia Clínica Dígital',
         'hcd': hcd
@@ -778,9 +784,15 @@ def chequear_usuario():
     return jsonify({'chequea': chequea})
 
 
-@app.route('/configuracion/rol')
+@app.route('/configuracion/rol', methods=['GET', 'POST'])
 def configuracion_roles():
-    rol = obtener_lista_roles()
+    rol = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        parametros = '%' + '%'.join(parametros.split()) + '%'
+        rol = obtener_roles_query(parametros)
+    else:
+        rol = obtener_lista_roles()
     data = {
         'titulo': 'Configuración de roles',
         'rol': rol
@@ -858,12 +870,18 @@ def delete_rol():
     return redirect("/configuracion/rol")
 
 
-@app.route('/configuracion/usuarios')
+@app.route('/configuracion/usuarios', methods=['GET', 'POST'])
 def configuracion_usuarios():
-    usuario = obtener_lista_usuarios()
+    usuarios = None
+    if request.method == 'POST':
+        parametros = request.form["buscar"]
+        parametros = '%' + '%'.join(parametros.split()) + '%'
+        usuarios = obtener_lista_usuarios_query(parametros)
+    else:
+        usuarios = obtener_lista_usuarios()
     data = {
         'titulo': 'Configuración de usuarios',
-        'usuario': usuario
+        'usuario': usuarios
     }
     return render_template('usuarios.html', data=data)
 

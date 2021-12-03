@@ -32,11 +32,10 @@
 
 
   <!-- Search - Barra de busqueda -->
-  <form class="d-flex p-2 m-3" style="width: 515px;">
-    <input class="form-control me-2 flex-end" type="search" placeholder="Buscar HCD" aria-label="Buscar">
+  <form action="{{url_for('hcd')}}" method="POST" class="d-flex p-2 m-3" style="width: 515px;">
+    <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar HCD" aria-label="Buscar">
     <button class="btn btn-outline-success" type="submit">Buscar</button>
   </form>
-
 
   <!-- Tabla -->
   <table class="table table-hover">

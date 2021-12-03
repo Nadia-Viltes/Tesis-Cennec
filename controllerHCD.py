@@ -7,8 +7,26 @@ def obtener_lista_hcd():
     query = """
            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')
             FROM paciente as pa, historiaclinica as hcd
-            WHERE hcd.IdPaciente = pa.IdPaciente               
+            WHERE hcd.IdPaciente = pa.IdPaciente
+            AND pa.fechabaja is null;               
             """
+    conexion = get_conexion()
+    hcd = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    hcd = cur.fetchall()
+    conexion.close()
+    return hcd
+
+
+def obtener_lista_hcd_query(parametros):
+    query = """
+            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')
+            FROM paciente as pa, historiaclinica as hcd
+            WHERE hcd.IdPaciente = pa.IdPaciente
+            AND pa.fechabaja is null
+            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')))) LIKE LOWER('{}');              
+            """.format(parametros)
     conexion = get_conexion()
     hcd = []
     with conexion.cursor() as cur:
