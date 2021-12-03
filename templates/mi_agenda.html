@@ -39,14 +39,15 @@
     <thead class="table-info">
       <tr>
         <th scope="col">Fecha</th>
-        <th scope="col">Hora desde</th>
-        <th scope="col">Hora hasta</th>
+        <th scope="col">Desde</th>
+        <th scope="col">Hasta</th>
         <th scope="col">Estado</th>
         <th scope="col">Nombre y Apellido</th>
         <th scope="col">Nro. documento</th>
         <th class="text-center" scope="col">Acción</th>
       </tr>
     </thead>
+
     <tbody>
       {% for turnoprof in data.turnoprof %}
       <tr>
@@ -111,6 +112,7 @@
       {% endfor %}
     </tbody>
   </table>
+
 
   <div id="idSeccionModalIniciarAtencion">
   </div>

@@ -403,7 +403,7 @@ def agenda():
     mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
-        'turnoprof': mi_agenda,
+        'turnoprof': mi_agenda
     }
     return render_template('mi_agenda.html', data=data)
 
@@ -532,9 +532,11 @@ def editar_detalle():
 @app.route('/turnos')
 def turnos():
     turno = obtener_lista_turno()
+    filtro = obtener_estado_filtro()
     data = {
         'titulo': 'Turnos',
-        'turno': turno
+        'turno': turno,
+        'filtro': filtro
     }
     return render_template('turnos.html', data=data)
 

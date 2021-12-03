@@ -293,3 +293,20 @@ def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, Id
     return idTurno_anulado
 
 
+# query para que me muestre los datos en la lista de turnos
+def obtener_estado_filtro():
+    query = """
+            SELECT idEstadoTurno, nombre
+            FROM estadoturno
+            WHERE FechaBaja is null
+            AND nombre != lower('anulado')
+            AND nombre != lower('libre')
+            AND nombre != lower('reprogramado')
+            """
+    conexion = get_conexion()
+    filtro = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    filtro = cur.fetchall()
+    conexion.close()
+    return filtro
