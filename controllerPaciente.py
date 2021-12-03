@@ -50,6 +50,7 @@ def obtener_pacientes_query(parametros):
             AND tu.IdTutoria = pa.idTutoria
             AND pa.IdPaciente = afi.IdPaciente
             AND fi.IdFinanciador = afi.IdFinanciador
+            AND pa.fechabaja is null
             AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento))) LIKE LOWER('{}')
             """.format(parametros)
     print("Esta es la consutla final {}".format(query))
