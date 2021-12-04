@@ -410,6 +410,13 @@ def reportes():
     }
     return render_template('reportes.html', data=data)
 
+# este es un controler para tener una referencia
+
+
+@app.route("/reportes/chart")
+def chart_prueba():
+    return render_template('chart.html')
+
 
 @app.route('/agenda')
 def agenda():
