@@ -127,7 +127,8 @@ def obtener_privilegios_por_id_usuario(id_usuario):
             and rolpri.IdRol = rol.IdRol
             and pri.IdPrivilegio = rolpri.IdPrivilegio
             and us.IdUsuario = {}
-            and us.fechabaja is null;
+            and us.fechabaja is null
+            and rolpri.fechabaja is null;
             """.format(id_usuario)
     conexion = get_conexion()
     privilegios = []
