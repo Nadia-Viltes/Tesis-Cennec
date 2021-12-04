@@ -968,12 +968,18 @@ def delete_usuario():
     update_eliminar_usuario(idUsuario)
     return redirect("/configuracion/usuarios")
 
+
 @app.route('/reportes')
 def reportes():
     data = {
         'titulo': 'Reportes',
     }
     return render_template('reportes.html', data=data)
+
+# este es un controler para tener una referencia
+@app.route("/reportes/chart")
+def chart_prueba():
+    return render_template('chart.html')
 
 @app.route('/reportes/estados_turnos')
 def reportes_estados_turnos():
