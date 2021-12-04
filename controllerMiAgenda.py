@@ -28,6 +28,30 @@ def obtener_lista_turno_mi_agenda(usuario):
     conexion.close()
     return turnoProfesional
 
+# query para que me muestre los datos en la lista de turnos
+def obtener_lista_turno_mi_agenda_adm():
+    query = """
+             SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
+            DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica, u.Nombre	
+            FROM turno as tur, paciente as pac, estadoturno as est, historiaclinica as hcd, usuario as u, recurso as rec, 
+            profesional as pro, especialidad as esp
+            WHERE hcd.IdPaciente = pac.IdPaciente
+            AND pac.IdPaciente = tur.IdPaciente
+            AND tur.IdEstadoTurno = est.IdEstadoTurno
+            AND tur.IdEspecialidad = esp.IdEspecialidad
+            AND esp.IdEspecialidad = pro.IdEspecialidad
+            AND pro.IdRecurso = rec.IdRecurso
+            AND rec.IdRecurso = u.IdRecurso
+            AND tur.FechaBaja is null
+            order by tur.FechaTurno asc, tur.HoraDesde asc;
+            """.format()
+    conexion = get_conexion()
+    turnoAdm = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    turnoAdm = cur.fetchall()
+    conexion.close()
+    return turnoAdm
 
 # Query para obtener datos del usuario logueado y rellenar datos en la hcd
 def obtener_datos_usuario_profesional(usuario):

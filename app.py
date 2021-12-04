@@ -403,21 +403,13 @@ def agrega_turnos_admision():
     return jsonify({'htmlresponse': render_template_string(table)})
 
 
-@app.route('/reportes')
-def reportes():
-    data = {
-        'titulo': 'Reportes',
-    }
-    return render_template('reportes.html', data=data)
-
-
 @app.route('/agenda')
 def agenda():
     usuario = session["usuario_id"]
     mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
-        'turnoprof': mi_agenda,
+        'turnoprof': mi_agenda
     }
     return render_template('mi_agenda.html', data=data)
 
@@ -546,9 +538,11 @@ def editar_detalle():
 @app.route('/turnos')
 def turnos():
     turno = obtener_lista_turno()
+    filtro = obtener_estado_filtro()
     data = {
         'titulo': 'Turnos',
-        'turno': turno
+        'turno': turno,
+        'filtro': filtro
     }
     return render_template('turnos.html', data=data)
 
@@ -973,6 +967,20 @@ def delete_usuario():
     idUsuario = request.form["dataUsuarioId"]
     update_eliminar_usuario(idUsuario)
     return redirect("/configuracion/usuarios")
+
+@app.route('/reportes')
+def reportes():
+    data = {
+        'titulo': 'Reportes',
+    }
+    return render_template('reportes.html', data=data)
+
+@app.route('/reportes/estados_turnos')
+def reportes_estados_turnos():
+    data = {
+        'titulo': 'Estados turnos',
+    }
+    return render_template('reportes_estados_turnos.html', data=data)
 
 
 if __name__ == '__main__':
