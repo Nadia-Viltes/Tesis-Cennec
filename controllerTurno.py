@@ -230,7 +230,7 @@ def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDr
 def update_turno_reasignado(IdTurno):
     conexion = get_conexion()
     query = """
-        UPDATE turno SET FechaBaja = NOW() WHERE IdTurno = {}""".format(IdTurno)
+        UPDATE turno SET FechaBaja = NOW(), IdEstadoTurno = (SELECT IdEstadoTurno FROM estadoturno WHERE nombre like lower('reprogramado')) WHERE IdTurno = {}""".format(IdTurno)
     print("Este es mi Update en fecha de baja del asignar -> {}".format(query))    
     idTurno_reasignado_baja = None    
     with conexion.cursor() as cur:
@@ -293,3 +293,20 @@ def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, Id
     return idTurno_anulado
 
 
+# query para que me muestre los datos en la lista de turnos
+def obtener_estado_filtro():
+    query = """
+            SELECT idEstadoTurno, nombre
+            FROM estadoturno
+            WHERE FechaBaja is null
+            AND nombre != lower('anulado')
+            AND nombre != lower('libre')
+            AND nombre != lower('reprogramado')
+            """
+    conexion = get_conexion()
+    filtro = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    filtro = cur.fetchall()
+    conexion.close()
+    return filtro
