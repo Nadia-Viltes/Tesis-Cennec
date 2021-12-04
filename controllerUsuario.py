@@ -22,6 +22,26 @@ def obtener_lista_usuarios():
     conexion.close()
     return usuario
 
+
+def obtener_lista_usuarios_query(parametros):
+    query = """
+           SELECT us.IdUsuario, rec.Nombre, rec.Apellido, rol.Nombre, us.Nombre
+            FROM usuario as us, recurso as rec, rol as rol
+            WHERE us.IdRecurso = rec.IdRecurso
+            AND us.IdRol = rol.IdRol
+            AND us.Nombre != lower('admin')
+            AND us.fechaBaja is null
+            AND (LOWER(CONCAT(us.Nombre, rec.Nombre, rec.Apellido))) LIKE LOWER('{}')
+            ORDER BY us.Nombre asc;              
+            """.format(parametros)
+    conexion = get_conexion()
+    usuario = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    usuario = cur.fetchall()
+    conexion.close()
+    return usuario
+
 # obtener usuario y contraseña
 
 

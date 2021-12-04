@@ -18,6 +18,24 @@ def obtener_lista_roles():
     conexion.close()
     return rol
 
+
+def obtener_roles_query(parametros):
+    query = """
+            SELECT IdRol, Nombre, Descripcion 
+            FROM rol 
+            WHERE FechaBaja is null
+            AND Nombre != lower('Administrador')
+            AND (LOWER(CONCAT(Nombre))) LIKE LOWER('{}')
+            ORDER BY nombre asc;""".format(parametros)
+    conexion = get_conexion()
+    rol = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    rol = cur.fetchall()
+    conexion.close()
+    return rol
+
+
 # query para que me muestre los datos en la lista de ROLES
 
 

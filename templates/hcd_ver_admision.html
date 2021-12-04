@@ -331,6 +331,20 @@
     </canvas>
 
     <script>
+        //logica para cargar dropdown
+        $("[name='tipoEspecialidad']").change(function () {
+            let especialidadId = $(this).val();
+            $.ajax({
+                url: `/hcd/ver_admision/carga_patologia_especialidad/${especialidadId}`, 
+                method: "GET",
+                success: function (response) {
+                    $("[name='tipoPatologia'] option").remove();
+                    $("[name='tipoPatologia']").append(response.htmlresponse);
+                }
+            });
+        });
+
+
         $(document).on("click", "#buttonAgregarAdmision", function () {
             let idPaciente = $("[name=paciente_hcd]").val();
             let idEspecialidad = $("[name=tipoEspecialidad]").val();
