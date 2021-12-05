@@ -34,23 +34,41 @@
   <!-- ================================================ -->
   <!-- TURNERO -->
   <!-- ================================================ -->
-  
+
   <!-- FILTRO -->
-<div class="mt-3 mb-3">
-  <label for="formGroupExampleInput" class="form-label">Filtrar por:</label>
-  <div class="dropdown">
-    <a class="btn btn-dark dropdown-toggle text-dark" href="#" role="button" id="dropdownFiltro" data-bs-toggle="dropdown" aria-expanded="false">
-      Estado
-    </a>
-    <ul class="dropdown-menu" aria-labelledby="dropdownFiltro" id="dropdownMenuFiltro">
-      {% for filtro in data.filtro %}
-      <li><a class="dropdown-item" href="#">{{filtro[1]}}</a></li>
-      {% endfor %}
-    </ul>
+  <div class="mt-3 mb-3">
+    <label for="formGroupExampleInput" class="form-label">Filtrar por:</label>
+    <form action="/turnos" method="POST" id="formularioEstadoId">
+      <section>
+        <div class="row">
+          <div class="col-md-4 m-4">
+            <div class="form-floating">
+              <select name="estadosSelect" class="form-select" id="filtrarEstadosId" aria-label="Seleccionar estados">
+                {% if data.estado_seleccionado != None %}
+                  {% for filtro in data.filtro %}
+                    {% if data.estado_seleccionado|int == filtro[0] %}
+                      <option value={{filtro[0]}} selected>{{filtro[1]}}</option>
+                    {% endif %}
+                  {% endfor %}
+                  <option value="todos">Todos</option>
+                {% else %}
+                  <option value="todos" selected>Todos</option>
+                {% endif %}
+                {% for filtro in data.filtro %}
+                  {% if data.estado_seleccionado|int != filtro[0] %}
+                    <option value={{filtro[0]}}>{{filtro[1]}}</option>
+                  {% endif %}  
+                {% endfor %}
+              </select>
+              <label for="filtrarEstadosId">Selecciona un estado</label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </form>
   </div>
-</div>
-  
-  
+
+
   <div>
     <table class="table table-hover">
       <thead class="table-info">
@@ -66,7 +84,7 @@
         </tr>
       </thead>
       <tbody>
-        {% for turno in data.turno %}
+        {% for turno in data.turnos %}
         <tr>
           <td>{{turno[1]}}</td>
           <td>{{turno[2]}}</td>
@@ -75,7 +93,8 @@
           <td>{{turno[6]}} {{turno[7]}}</td>
           <td>{{turno[8]}}</td>
           <td>{{turno[9]}}</td>
-          {% if turno[1].lower() == "receptado" or turno[1].lower() == "atendiendo" or turno[1].lower() == "atendido" or turno[1].lower() == "ausente" %}
+          {% if turno[1].lower() == "receptado" or turno[1].lower() == "atendiendo" or turno[1].lower() == "atendido" or
+          turno[1].lower() == "ausente" %}
           <td><a type="button" class="btn btn-primary btn-sm disabled" href="/turnos/receptar_turno/{{turno[0]}}"
               name="button_receptar_turno">
               Receptar
@@ -127,6 +146,11 @@
   </canvas>
 
 </main>
+<script>
+  $("[name='estadosSelect']").change(function () {
+    $("#formularioEstadoId").submit()
+  });
+</script>
 
 
 {% endblock %}
