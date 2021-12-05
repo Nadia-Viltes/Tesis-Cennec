@@ -144,7 +144,7 @@ def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno,
     return idTurno_atendiendo
 
 ## Agregar un nuevo turno en estado ATENDIENDO:
-def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
+def insertar_turno_atendido(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaFinalAtencion, IdUsuarioFinalAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
