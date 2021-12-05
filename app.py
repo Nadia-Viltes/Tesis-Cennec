@@ -7,6 +7,7 @@ from controllerRol import *
 from controllerTurno import *
 from controllerHCD import *
 from controllerMiAgenda import *
+import json
 from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify, session, abort
 
 app = Flask(__name__)
@@ -994,11 +995,18 @@ def reportes():
 @app.route('/reportes/estados_turnos')
 def reportes_estados_turnos():
     estados_turnos = obtener_estados_turnos()
+    valores_columnas = []
+    nombre_columnas = []
+    for estados_turno in estados_turnos:
+        valores_columnas.append(estados_turno[0])
+        nombre_columnas.append(estados_turno[1])
     periodos_turnos = obtener_periodos()
     data = {
         'titulo': 'Estados turnos',
         'estados_turnos': estados_turnos,
-        'periodos_turnos': periodos_turnos
+        'periodos_turnos': periodos_turnos,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': valores_columnas
     }
     return render_template('reportes_estados_turnos.html', data=data)
 
