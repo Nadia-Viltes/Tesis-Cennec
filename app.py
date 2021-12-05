@@ -467,7 +467,7 @@ def finalizar_atencion():
     idTurno_atendiendo = obtener_turno_agenda_receptado(idTurno)
     id_estado = obtener_id_estado_turno_por_estado("Atendido")
     insertar_turno_atendido(idTurno_atendiendo[0], idTurno_atendiendo[1], idTurno_atendiendo[2], idTurno_atendiendo[3],
-                              idTurno_atendiendo[4], idTurno_atendiendo[5], id_estado, usuario, idTurno_atendiendo[6], idTurno_atendiendo[7])
+                            idTurno_atendiendo[4], idTurno_atendiendo[5], id_estado, usuario, idTurno_atendiendo[6], idTurno_atendiendo[7])
     update_turno_asignado(idTurno)
     return redirect("/agenda")
 
@@ -990,17 +990,7 @@ def reportes():
     }
     return render_template('reportes.html', data=data)
 
-<<<<<<< HEAD
-=======
-# este es un controler para tener una referencia
 
-
-@app.route("/reportes/chart")
-def chart_prueba():
-    return render_template('chart.html')
-
-
->>>>>>> 3dd6f3a5378c3c637e9f9d10a307ecda3af56a4f
 @app.route('/reportes/estados_turnos')
 def reportes_estados_turnos():
     estados_turnos = obtener_estados_turnos()
