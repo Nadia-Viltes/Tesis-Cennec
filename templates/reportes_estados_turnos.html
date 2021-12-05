@@ -57,7 +57,7 @@
       <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
         <div class="card">
           <div class="card-body">
-            <canvas id="chart"></canvas>
+            <canvas id="charEstadoTurnos"></canvas>
           </div>
         </div>
       </div>
@@ -110,9 +110,9 @@
               <tbody>
                 {% for estados in data.estados_turnos %}
                 <tr>
+                  <td>{{loop.index}}</td>
                   <td>{{estados[0]}}</td>
                   <td>{{estados[1]}}</td>
-                  <td>{{estados[2]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -138,6 +138,12 @@
   </div>
 
 </main>
-<script type="text/javascript" src="/static/validations/reports/graphics_line.js"></script>
+<script type="text/javascript" src="/static/validations/reports/grafico_barras.js"></script>
+<script type="text/javascript" charset="UTF-8">
+  const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
+  const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
+
+  graficoBarras("charEstadoTurnos", "Estado de Turnos", nombreColumnas, valoresColumnas);
+</script>  
 
 {% endblock %}

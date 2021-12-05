@@ -2,10 +2,12 @@ from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre estado ASIGNADO
+
+
 def obtener_estados_turnos():
     query = """
-           SELECT @rownum := @rownum + 1 AS 'rank', count(*) as total, et.nombre 
-            FROM turno as t, estadoturno as et, (SELECT @rownum := 0) r
+            SELECT count(*) as total, et.nombre 
+            FROM turno as t, estadoturno as et
             WHERE t.IdEstadoTurno = et.IdEstadoTurno
             GROUP BY et.nombre;"""
     conexion = get_conexion()
@@ -17,6 +19,8 @@ def obtener_estados_turnos():
     return reporte_turnos
 
 # query para ver el periodo de los totales
+
+
 def obtener_periodos():
     query = """
            SELECT (SELECT count(*) FROM turno WHERE FechaBaja is null
@@ -34,3 +38,18 @@ def obtener_periodos():
     periodos_turnos = cur.fetchone()
     conexion.close()
     return periodos_turnos
+
+
+def cantidad_turnos_asignados_por_mes_y_anio(mes, anio):
+    query = """
+            SELECT COUNT(*) FROM TURNO
+            WHERE idEstadoTurno IN ( select idEstadoTurno from estadoturno where LOWER(nombre) = "asignado")
+            AND DATE_FORMAT(FechaTurno, "%m") = {}
+            AND DATE_FORMAT(FechaTurno, "%Y") = {};"""
+    conexion = get_conexion()
+    cantidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    cantidad = cur.fetchone()
+    conexion.close()
+    return cantidad
