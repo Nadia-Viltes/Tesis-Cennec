@@ -2,6 +2,8 @@ from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de turnos
+
+
 def obtener_lista_turno():
     query = """
            	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
@@ -19,8 +21,10 @@ def obtener_lista_turno():
     turno = cur.fetchall()
     conexion.close()
     return turno
-   
-    ## Select tipo de turno - Lista de valores
+
+    # Select tipo de turno - Lista de valores
+
+
 def obtener_tipoTurno():
     query = "SELECT IdTipoTurno, Nombre FROM tipoturno WHERE FechaBaja is null;"
     conexion = get_conexion()
@@ -31,8 +35,10 @@ def obtener_tipoTurno():
     conexion.close()
     return tipoTurno
 
-## Select Especialidades - Lista de valores
-def obtener_especialidad_turnos(id): 
+# Select Especialidades - Lista de valores
+
+
+def obtener_especialidad_turnos(id):
     query = """Select IdEspecialidad, Nombre from especialidad 
     WHERE IdEspecialidad in (Select esp.IdEspecialidad from configuracionturno as config, especialidad as esp 
     WHERE config.IdEspecialidad = esp.IdEspecialidad AND config.CantidadComputados <> config.CantidadDisponibles 
@@ -46,7 +52,7 @@ def obtener_especialidad_turnos(id):
     return IdEspecialidad
 
 
-## Select profesionales según especialidad - Lista de valores
+# Select profesionales según especialidad - Lista de valores
 def obtener_profesionales_especialidad(id):
     query = """
             SELECT pro.idprofesional, rec.nombre, rec.apellido, esp.idespecialidad, esp.nombre
@@ -61,8 +67,8 @@ def obtener_profesionales_especialidad(id):
         cur.execute(query)
     profesionales_especialidad = cur.fetchall()
     conexion.close()
-    return profesionales_especialidad 
-    
+    return profesionales_especialidad
+
 
 def obtener_turno_por_id(id_turno):
     query = """SELECT est.IdEstadoTurno, est.Nombre, tur.FechaTurno, DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, 
@@ -79,14 +85,14 @@ def obtener_turno_por_id(id_turno):
     conexion = get_conexion()
     id_turno = None
     with conexion.cursor() as cur:
-        cur.execute(query),(id_turno)
+        cur.execute(query), (id_turno)
     id_turno = cur.fetchone()
     conexion.close()
     return id_turno
 
 
-## Lista de valores de MOTIVOS de anulación de turnos
-def obtener_motivoTurno(): 
+# Lista de valores de MOTIVOS de anulación de turnos
+def obtener_motivoTurno():
     query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null;"
     conexion = get_conexion()
     motivoTurno = []
@@ -96,32 +102,36 @@ def obtener_motivoTurno():
     conexion.close()
     return motivoTurno
 
-## Acá obtengo el ID del turno que está macheado en el app.py
+# Acá obtengo el ID del turno que está macheado en el app.py
+
+
 def obtener_id_estado_turno_por_estado(estado):
-    query = "SELECT IdEstadoTurno FROM estadoturno WHERE LOWER(Nombre) like LOWER('{}') AND FechaBaja is null".format(estado)
+    query = "SELECT IdEstadoTurno FROM estadoturno WHERE LOWER(Nombre) like LOWER('{}') AND FechaBaja is null".format(
+        estado)
     conexion = get_conexion()
     with conexion.cursor() as cur:
-        cur.execute(query)    
+        cur.execute(query)
     id_estado_turno = cur.fetchone()[0]
     print("esto tiene mi fetchone -> {}".format(id_estado_turno))
     conexion.close()
     return id_estado_turno
 
 
-## Agregar un nuevo turno en estado asignado:
-def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno,usuario):
+# Agregar un nuevo turno en estado asignado:
+def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
-        VALUES ({},{},{},{},'{}','{}','{}',{},now(),{},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno,usuario)
-    print("Este es mi insertar turno asignado -> {}".format(query))    
-    idTurno_asignado = None    
+        VALUES ({},{},{},{},'{}','{}','{}',{},now(),{},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario)
+    print("Este es mi insertar turno asignado -> {}".format(query))
+    idTurno_asignado = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_asignado = cur.lastrowid
     conexion.commit()
     conexion.close()
     return idTurno_asignado
+
 
 def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
     query = """
@@ -132,9 +142,9 @@ def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
             AND DATE_FORMAT(t.HoraDesde, '%H:%i') = '{2}'
             AND t.FechaBaja is null;
             """.format(id_profesional, fecha_turno, hora_desde)
-    logger.info("chequar_turno_existente -> {}".format(query))        
+    logger.info("chequar_turno_existente -> {}".format(query))
     conexion = get_conexion()
-    turno_existente = None 
+    turno_existente = None
     with conexion.cursor() as cur:
         cur.execute(query)
         turno_existente = cur.fetchall()
@@ -142,10 +152,12 @@ def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
     if turno_existente != ():
         turno_existente = True
     else:
-        turno_existente = False     
-    return turno_existente        
+        turno_existente = False
+    return turno_existente
 
-## Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
+# Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
+
+
 def obtener_id_configuracion_turno(id_paciente, id_especialidad):
     query = """
             SELECT IdconfiguracionTurno 
@@ -168,8 +180,8 @@ def actualizar_turnos_computados(id_configturno):
                 SET CantidadComputados=(CantidadComputados + 1),
                 FechaModificacion=NOW()
                 WHERE IdconfiguracionTurno = {0};""".format(id_configturno)
-    print("Este es mi insertar turnos computados -> {}".format(query))  
-    turnos_computados = None    
+    print("Este es mi insertar turnos computados -> {}".format(query))
+    turnos_computados = None
     with conexion.cursor() as cur:
         cur.execute(query)
         turnos_computados = cur.lastrowid
@@ -178,14 +190,14 @@ def actualizar_turnos_computados(id_configturno):
     return turnos_computados
 
 
-## Agregar un nuevo turno en estado RECEPTADO:
+# Agregar un nuevo turno en estado RECEPTADO:
 def insertar_turno_receptado(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReceptado, IdUsuarioReceptado, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta)
         VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now())""".format(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno)
-    print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
-    idTurno_receptado = None    
+    print("Este es mi insertar turno RECEPTADO -> {}".format(query))
+    idTurno_receptado = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_receptado = cur.lastrowid
@@ -194,13 +206,13 @@ def insertar_turno_receptado(tipoTurno, idEspecialidadDropdown, idPacienteAsigna
     return idTurno_receptado
 
 
-## Acá Updateo el turno original (asignado) con la fecha de baja para que solo se vea el receptado:
+# Acá Updateo el turno original (asignado) con la fecha de baja para que solo se vea el receptado:
 def update_turno_asignado(IdTurno):
     conexion = get_conexion()
     query = """
         UPDATE turno SET FechaBaja = NOW() WHERE IdTurno = {}""".format(IdTurno)
-    print("Este es mi Update en fecha de baja del asignar -> {}".format(query))    
-    idTurno_asignado_baja = None    
+    print("Este es mi Update en fecha de baja del asignar -> {}".format(query))
+    idTurno_asignado_baja = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_asignado_baja = cur.lastrowid
@@ -209,15 +221,14 @@ def update_turno_asignado(IdTurno):
     return idTurno_asignado_baja
 
 
-
-## Agregar un nuevo turno en estado REASIGNADO:
+# Agregar un nuevo turno en estado REASIGNADO:
 def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReasignado, IdUsuarioReasignado, TurnoReasignado, IdTurnoReasignado ,FechaAlta)
         VALUES ({},{},{},{},'{}','{}','{}',{},now(), {}, 1, {},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario)
-    print("Este es mi insertar turno RECEPTADO -> {}".format(query))    
-    idTurno_reasignado = None    
+    print("Este es mi insertar turno RECEPTADO -> {}".format(query))
+    idTurno_reasignado = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_reasignado = cur.lastrowid
@@ -225,14 +236,15 @@ def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDr
     conexion.close()
     return idTurno_reasignado
 
+ # Acá Updateo el turno original  con la fecha de baja para que solo se vea el reasignado:
 
- ## Acá Updateo el turno original  con la fecha de baja para que solo se vea el reasignado:
+
 def update_turno_reasignado(IdTurno):
     conexion = get_conexion()
     query = """
         UPDATE turno SET FechaBaja = NOW(), IdEstadoTurno = (SELECT IdEstadoTurno FROM estadoturno WHERE nombre like lower('reprogramado')) WHERE IdTurno = {}""".format(IdTurno)
-    print("Este es mi Update en fecha de baja del asignar -> {}".format(query))    
-    idTurno_reasignado_baja = None    
+    print("Este es mi Update en fecha de baja del asignar -> {}".format(query))
+    idTurno_reasignado_baja = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_reasignado_baja = cur.lastrowid
@@ -240,9 +252,9 @@ def update_turno_reasignado(IdTurno):
     conexion.close()
     return idTurno_reasignado_baja
 
+    # Listo los turnos que el paciente tiene en asignados para poder anularlos.
 
 
-    ##Listo los turnos que el paciente tiene en asignados para poder anularlos.
 def obtener_lista_de_turnos_para_anular(id_paciente):
     query = """
            	  SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
@@ -276,15 +288,17 @@ def obtener_turno_por_id_asignado_anulado(idTurnosAnulados):
     conexion.close()
     return turnoAnular
 
-## Agregar un nuevo registro en estado ANULADO:
-def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario,IdTurno):
+# Agregar un nuevo registro en estado ANULADO:
+
+
+def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario, IdTurno):
     conexion = get_conexion()
     query = """
         INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 
         IdEstadoTurno, FechaAnulado, IdMotivoAnulado, IdUsuarioAnulado, IdTurnoOriginal, FechaAlta, FechaBaja) 
-        VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados,IdTurno)
-    logger.info("Este es mi insertar turno anulado -> {}".format(query))    
-    idTurno_anulado = None    
+        VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, IdTurno)
+    logger.info("Este es mi insertar turno anulado -> {}".format(query))
+    idTurno_anulado = None
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_anulado = cur.lastrowid
@@ -310,3 +324,23 @@ def obtener_estado_filtro():
     filtro = cur.fetchall()
     conexion.close()
     return filtro
+
+
+def obtener_lista_turnos_por_estado(id_estado):
+    query = """
+           	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
+				FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp
+				WHERE tur.IdEstadoTurno = est.IdEstadoTurno
+				AND tur.IdPaciente = pac.IdPaciente
+				AND tur.IdEspecialidad = esp.IdEspecialidad
+                AND tur.IdEstadoTurno = {}
+				AND tur.FechaBaja is null
+                order by tur.FechaTurno asc, tur.HoraDesde asc;          
+            """.format(id_estado)
+    conexion = get_conexion()
+    turno = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    turno = cur.fetchall()
+    conexion.close()
+    return turno
