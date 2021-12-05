@@ -399,8 +399,13 @@ def agrega_turnos_admision():
     # creo una tabla con los datos de la lista de turnos y se la envío
     # a ver_HCD.html
     for turno in lista_turnos:
-        table += "<tr><td>{}</td><td>{}</td><td>{}</td></tr>".format(
-            turno[1], turno[2], turno[4])
+        table += """<tr>
+                    <td>{}</td>
+                    <td>{}</td>
+                    <td>{}</td>
+                    <td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id={}>Eliminar</button></td>
+                    </tr>""".format(
+            turno[1], turno[2], turno[4], turno[0])
     return jsonify({'htmlresponse': render_template_string(table)})
 
 
@@ -536,14 +541,22 @@ def editar_detalle():
 # Operación para mostrar la lista de turnos
 
 
-@app.route('/turnos')
+@app.route('/turnos', methods=["GET", "POST"])
 def turnos():
-    turno = obtener_lista_turno()
+    turnos = None
+    estado = None
+    if request.method == 'POST':
+        estado = request.form['estadosSelect']
+        turnos = obtener_lista_turnos_por_estado(
+            estado) if estado != "todos" else obtener_lista_turno()
+    else:
+        turnos = obtener_lista_turno()
     filtro = obtener_estado_filtro()
     data = {
         'titulo': 'Turnos',
-        'turno': turno,
-        'filtro': filtro
+        'turnos': turnos,
+        'filtro': filtro,
+        'estado_seleccionado': estado
     }
     return render_template('turnos.html', data=data)
 
@@ -977,6 +990,17 @@ def reportes():
     }
     return render_template('reportes.html', data=data)
 
+<<<<<<< HEAD
+=======
+# este es un controler para tener una referencia
+
+
+@app.route("/reportes/chart")
+def chart_prueba():
+    return render_template('chart.html')
+
+
+>>>>>>> 3dd6f3a5378c3c637e9f9d10a307ecda3af56a4f
 @app.route('/reportes/estados_turnos')
 def reportes_estados_turnos():
     estados_turnos = obtener_estados_turnos()
