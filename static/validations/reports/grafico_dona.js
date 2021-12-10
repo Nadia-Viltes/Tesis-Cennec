@@ -1,6 +1,6 @@
 import {beautyRGBColorList} from "/static/validations/reports/generar_random_color.js"
 
-export const graficoBarras = (idGrafico, titulo, categorias, datos) => {
+export const graficoDona = (idGrafico, titulo, categorias, datos) => {
   const labels = categorias;
 
   const data = {
@@ -8,16 +8,25 @@ export const graficoBarras = (idGrafico, titulo, categorias, datos) => {
     datasets: [
       {
         label: titulo,
-        backgroundColor: "rgb(255,20,147)",
+        backgroundColor: beautyRGBColorList(datos),
         data: datos,
       },
     ],
   };
   const config = {
-    type: "bar",
+    type: "doughnut",
     data: data,
     options: {
-      responsive: true
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: titulo
+        }
+      }
     },
   };
   const myChart = new Chart(document.getElementById(idGrafico), config);
