@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block turnos %}
+{% block reportes_estados_turnos %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -119,7 +119,7 @@
               <tfoot>
                 <tr>
                   <th scope="row">Total</th>
-                  <td>Algo</td>
+                  <td>{{ data.total }}</td>
                   <td></td>
                 </tr>
               </tfoot>
@@ -138,12 +138,13 @@
   </div>
 
 </main>
-<script type="text/javascript" src="/static/validations/reports/grafico_barras.js"></script>
-<script type="text/javascript" charset="UTF-8">
+<script type="module">
+  import {graficoBarras} from "/static/validations/reports/grafico_barras.js"
   const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
 
   graficoBarras("charEstadoTurnos", "Estado de Turnos", nombreColumnas, valoresColumnas);
-</script>  
+
+</script>
 
 {% endblock %}

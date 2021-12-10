@@ -18,7 +18,36 @@ def obtener_estados_turnos():
     conexion.close()
     return reporte_turnos
 
+
+def obtener_motivos_anulacion():
+    query = """
+            SELECT count(*), m.NombreMotivo FROM turno as t, motivo as m
+            WHERE t.IdMotivoAnulado = m.IdMotivo
+            GROUP BY t.IdMotivoAnulado;
+            """
+    conexion = get_conexion()
+    motivos_anulacion = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    motivos_anulacion = cur.fetchall()
+    conexion.close()
+    return motivos_anulacion
 # query para ver el periodo de los totales
+
+
+def obtener_ranking_obras_sociales():
+    query = """
+            SELECT count(*), fin.Nombre FROM afiliacion as afi, financiador as fin
+            WHERE afi.IdFinanciador = fin.IdFinanciador
+            group by afi.IdFinanciador
+            """
+    conexion = get_conexion()
+    ranking = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    ranking = cur.fetchall()
+    conexion.close()
+    return ranking
 
 
 def obtener_periodos():

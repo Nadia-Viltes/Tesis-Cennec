@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block turnos %}
+{% block reportes_motivo_anulacion %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -35,20 +35,90 @@
   <!-- ================================================ -->
   <!-- REPORTES  -->
   <!-- ================================================ -->
-  
-  
+  <section>
+    <div class="row">
+      <div class="col-md-4 m-4">
+        <div class="form-floating">
+          <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
+            <option selected>Una semana</option>
+            <option value="1">Un mes</option>
+            <option value="2">Seis meses</option>
+            <option value="3">Un año</option>
+          </select>
+          <label for="floatingSelectGrid">Selecciona un periodo</label>
+        </div>
+      </div>
+    </div>
+  </section>
 
 
+  <section>
+    <div class="row">
+      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="charMotivosAnulacion"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<hr/>
+
+  <section>
+    <div class="row">
+      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+        <h5 class="text-center">Resultados</h5>
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Estado</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for motivo in data.motivos_anulacion_turnos %}
+                <tr>
+                  <td>{{loop.index}}</td>
+                  <td>{{motivo[0]}}</td>
+                  <td>{{motivo[1]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td>{{ data.total }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
 
-  <canvas class="my-4 w-100 chartjs-render-monitor" id="myChart" width="100%" height="100%"
-    style="display: block; height: 514px; width: 1218px;">
-  </canvas>
+  <div class="my-4 w-100 chartjs-render-monitor" style="display: block; height: 100px; width: 1218px;">
+  </div>
 
 </main>
+<script type="module">
+  import {graficoTorta} from "/static/validations/reports/grafico_tortas.js"
+  const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
+  const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
+
+  graficoTorta("charMotivosAnulacion", "Motivos Anulacion", nombreColumnas, valoresColumnas);
+
+</script>
 
 
 {% endblock %}

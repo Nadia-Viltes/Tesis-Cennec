@@ -1,7 +1,7 @@
 from loguru import logger
 from controllerHome import obtener_lista_cumple
 from controllerPaciente import *
-from controllerReportes import obtener_estados_turnos, obtener_periodos
+from controllerReportes import *
 from controllerUsuario import *
 from controllerRol import *
 from controllerTurno import *
@@ -997,18 +997,61 @@ def reportes_estados_turnos():
     estados_turnos = obtener_estados_turnos()
     valores_columnas = []
     nombre_columnas = []
+    totales = 0
     for estados_turno in estados_turnos:
+        totales += estados_turno[0]
         valores_columnas.append(estados_turno[0])
         nombre_columnas.append(estados_turno[1])
     periodos_turnos = obtener_periodos()
     data = {
-        'titulo': 'Estados turnos',
+        'titulo': 'Estados de turnos',
         'estados_turnos': estados_turnos,
         'periodos_turnos': periodos_turnos,
         'nombres_columnas': json.dumps(nombre_columnas),
-        'valores_columnas': valores_columnas
+        'valores_columnas': valores_columnas,
+        'total': totales
     }
     return render_template('reportes_estados_turnos.html', data=data)
+
+
+@app.route('/reportes/motivos_anulacion_turnos')
+def reportes_movitos_anulacion_turnos():
+    motivos_anulacion = obtener_motivos_anulacion()
+    valores_categorias = []
+    nombre_categorias = []
+    totales = 0
+    for motivo_anulacion in motivos_anulacion:
+        totales += motivo_anulacion[0]
+        valores_categorias.append(motivo_anulacion[0])
+        nombre_categorias.append(motivo_anulacion[1])
+    data = {
+        'titulo': 'Motivos Anulacion',
+        'motivos_anulacion_turnos': motivos_anulacion,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': valores_categorias,
+        'total': totales
+    }
+    return render_template('reportes_motivo_anulacion.html', data=data)
+
+
+@app.route('/reportes/ranking_obras_sociales')
+def reportes_ranking_obras_sociales():
+    ranking_obras_sociales = obtener_ranking_obras_sociales()
+    valores_categorias = []
+    nombre_categorias = []
+    totales = 0
+    for ranking in ranking_obras_sociales:
+        totales += ranking[0]
+        valores_categorias.append(ranking[0])
+        nombre_categorias.append(ranking[1])
+    data = {
+        'titulo': 'Ranking Obras Sociales',
+        'ranking_obras_sociales': ranking_obras_sociales,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': valores_categorias,
+        'total': totales
+    }
+    return render_template('reportes_ranking_obra_social.html', data=data)
 
 
 if __name__ == '__main__':
