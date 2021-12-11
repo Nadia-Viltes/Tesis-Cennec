@@ -49,6 +49,22 @@ def obtener_ranking_obras_sociales():
     conexion.close()
     return ranking
 
+def obtener_turnos_por_especialidad():
+    query = """
+            SELECT count(*), e.nombre FROM turno as t, especialidad as e
+            WHERE t.IdEspecialidad = e.IdEspecialidad
+            AND t.FechaBaja is null
+            group by t.IdEspecialidad;
+            """
+    conexion = get_conexion()
+    turnos_especialidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    turnos_especialidad = cur.fetchall()
+    conexion.close()
+    return turnos_especialidad
+    
+
 
 def obtener_periodos():
     query = """
