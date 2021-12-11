@@ -36,3 +36,14 @@ header{
 #cardGrafico{
     margin-left: 24px;
 }
+
+#cardGraficoTorta{
+    height:552px;
+    width:275px;
+}
+
+#charMotivosAnulacion{
+    height:252px;
+    margin-left: 3cm;
+}
+

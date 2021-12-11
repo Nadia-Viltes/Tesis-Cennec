@@ -37,15 +37,16 @@
   <!-- ================================================ -->
   <section>
     <div class="row">
-      <div class="col-md-4 m-4">
+      <div class="col-md-3 m-4">
         <div class="form-floating">
-          <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example">
-            <option selected>Una semana</option>
-            <option value="1">Un mes</option>
-            <option value="2">Seis meses</option>
-            <option value="3">Un año</option>
-          </select>
-          <label for="floatingSelectGrid">Selecciona un periodo</label>
+          <input type="date" class="form-control" id="floatingInputGrid">
+          <label for="floatingInputGrid">Fecha desde</label>
+        </div>
+      </div>
+      <div class="col-md-3 m-4">
+        <div class="form-floating">
+          <input type="date" class="form-control" id="floatingInputHasta">
+          <label for="floatingInputHasta">Fecha hasta</label>
         </div>
       </div>
     </div>
@@ -56,7 +57,7 @@
     <div class="row">
       <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
         <div class="card">
-          <div class="card-body">
+          <div class="card-body" id="cardGraficoRedondo">
             <canvas id="charRankingObraSociales"></canvas>
           </div>
         </div>
