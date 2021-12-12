@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block reportes_patologia_admision %}
+{% block reportes_altas_mensuales %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -36,45 +36,19 @@
   <!-- REPORTES  -->
   <!-- ================================================ -->
   <section>
-    <form action="/reportes/patologias_admision" method="POST" id="fechasFormulario">
-      <div class="row">
-        <div class="col-md-3 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaDesde" id="fechaDesde" value={{data.fecha_desde}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaDesde">Fecha desde</label>
-          </div>
-        </div>
-        <div class="col-md-3 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaHasta" id="fechaHasta" value={{data.fecha_hasta}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaHasta">Fecha hasta</label>
-          </div>
-        </div>
-        <div class="col-md-3 mt-4">
-          <div>
-            <button type="submit" class="btn btn-primary" id="buttonFiltrar">Filtrar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </section>
-
-
-  <section>
     <div class="row">
       <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
         <div class="card">
           <div class="card-body">
-            <canvas id="charPatologiaAdmision"></canvas>
+            <canvas id="charPacientesNuevos"></canvas>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
-  <hr />
+<hr/>
 
   <section>
     <div class="row">
@@ -87,17 +61,17 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Cantidad</th>
-                  <th scope="col">Especialidad</th>
-                  <th scope="col">Patologia</th>
+                  <th scope="col">Genero</th>
+                  <th scope="col">Mes</th>
                 </tr>
               </thead>
               <tbody>
-                {% for patologia in data.patologias_admision %}
+                {% for altas in data.altas_mensuales_genero %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td>{{patologia[0]}}</td>
-                  <td>{{patologia[2]}}</td>
-                  <td>{{patologia[4]}}</td>
+                  <td>{{altas[0]}}</td>
+                  <td>{{altas[1]}}</td>
+                  <td>{{data.meses[altas[2] - 1]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -124,37 +98,12 @@
 
 </main>
 <script type="module">
-  import { graficoBarrasHorizontal } from "/static/validations/reports/grafico_barras_horizontal_patologias_admision.js"
+  import {graficoLineaPacientesNuevos} from "/static/validations/reports/grafico_linea_pacientes_nuevos.js"
   const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
-  console.log(nombreColumnas)
-  console.log(valoresColumnas)
 
-  graficoBarrasHorizontal("charPatologiaAdmision", "Patologías de Admisión", nombreColumnas, valoresColumnas);
+  graficoLineaPacientesNuevos("charPacientesNuevos", "Altas Mensuales de Pacientes", nombreColumnas, valoresColumnas);
 
-  let fechaDesdeInput = $("#fechaDesde")
-  let fechaHastaInput = $("#fechaHasta")
-
-  $("#buttonFiltrar").click(function(){
-    let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))
-    let fechaHasta = new Date(fechaHastaInput.val().replace('-', '/'))
-
-    if (fechaDesdeInput.val() == "") {
-      fechaDesdeInput.addClass("is-invalid")
-      return false;
-    }
-
-    if (fechaHastaInput.val() == "") {
-      fechaHastaInput.addClass("is-invalid")
-      return false;
-    }
-    
-    if (fechaDesde > fechaHasta) {
-      fechaDesdeInput.addClass("is-invalid")
-      fechaHastaInput.addClass("is-invalid")
-      return false;
-    }
-  })
 </script>
 
 {% endblock %}

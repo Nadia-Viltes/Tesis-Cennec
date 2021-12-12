@@ -1,3 +1,5 @@
+import {obtenerFechaActual} from "/static/validations/utils.js"
+
 //carga el dropdown de provincias por pais
 $("[name='pais']").change(function () {
     let idPais = $(this).val();
@@ -263,15 +265,6 @@ $("#buttonGuardarFormulario").click(function () {
             }
         }
         return;
-    }
-
-    //validacion nacimiento futuro
-    const obtenerFechaActual = function () {
-        let fecha_actual = new Date()
-        let dia = fecha_actual.getDate()
-        let mes = fecha_actual.getMonth() + 1
-        let anio = fecha_actual.getFullYear()
-        return `${anio}-${mes}-${dia}`
     }
 
     let valorDeFecha = campoFechaNacimiento.val()
