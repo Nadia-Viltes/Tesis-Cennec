@@ -79,6 +79,7 @@ def obtener_turno_por_id(id_turno):
                 AND tur.IdTipoTurno = tt.IdTipoTurno
                 AND tur.IdEspecialidad = esp.IdEspecialidad
                 AND prof.idEspecialidad = esp.IdEspecialidad
+                AND prof.IdProfesional = tur.IdProfesional
                 AND prof.IdRecurso = rec.IdRecurso
                 AND tur.FechaBaja is null
                 AND tur.IdTurno = {}""".format(id_turno)
@@ -121,7 +122,7 @@ def obtener_id_estado_turno_por_estado(estado):
 def insertar_turno_asignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaAsignado, IdUsuarioAsignado, FechaAlta)
         VALUES ({},{},{},{},'{}','{}','{}',{},now(),{},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario)
     print("Este es mi insertar turno asignado -> {}".format(query))
     idTurno_asignado = None
@@ -137,7 +138,7 @@ def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
     query = """
             SELECT *
             FROM turno as t
-            WHERE (IdProfesionalAsignado = {0} OR IdProfesionalReceptado = {0})
+            WHERE IdProfesional = {0}
             AND t.FechaTurno = '{1}'
             AND DATE_FORMAT(t.HoraDesde, '%H:%i') = '{2}'
             AND t.FechaBaja is null;
@@ -194,7 +195,7 @@ def actualizar_turnos_computados(id_configturno):
 def insertar_turno_receptado(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReceptado, IdUsuarioReceptado, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta)
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReceptado, IdUsuarioReceptado, IdProfesional, IdTurnoOriginal, FechaAlta)
         VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now())""".format(tipoTurno, idEspecialidadDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno)
     print("Este es mi insertar turno RECEPTADO -> {}".format(query))
     idTurno_receptado = None
@@ -225,7 +226,7 @@ def update_turno_asignado(IdTurno):
 def insertar_turno_reasignado(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReasignado, IdUsuarioReasignado, TurnoReasignado, IdTurnoReasignado ,FechaAlta)
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaReasignado, IdUsuarioReasignado, TurnoReasignado, IdTurnoReasignado ,FechaAlta)
         VALUES ({},{},{},{},'{}','{}','{}',{},now(), {}, 1, {},now())""".format(tipoTurno, idEspecialidadDropdown, idProfesionalDropdown, idPacienteAsignarTurno, fechaTurno, horaDesde, horaHasta, idEstadoTurno, IdTurno, usuario)
     print("Este es mi insertar turno RECEPTADO -> {}".format(query))
     idTurno_reasignado = None
@@ -277,7 +278,7 @@ def obtener_lista_de_turnos_para_anular(id_paciente):
 # Este es el select con los datos que me trae la tupla
 def obtener_turno_por_id_asignado_anulado(idTurnosAnulados):
     query = """
-           	 SELECT IdTurno, IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno
+           	 SELECT IdTurno, IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno
                 FROM turno
                 WHERE FechaBaja is null
                 AND IdTurno = {}""".format(idTurnosAnulados)
@@ -291,12 +292,12 @@ def obtener_turno_por_id_asignado_anulado(idTurnosAnulados):
 # Agregar un nuevo registro en estado ANULADO:
 
 
-def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario, IdTurno):
+def insertar_anular_turno(IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, usuario, IdTurno):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, 
         IdEstadoTurno, FechaAnulado, IdMotivoAnulado, IdUsuarioAnulado, IdTurnoOriginal, FechaAlta, FechaBaja) 
-        VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesionalAsignado, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, IdTurno)
+        VALUES({},{},{},{},'{}','{}','{}',{},NOW(),{},1,{},NOW(),NOW())""".format(IdTipoTurno, IdEspecialidad, IdProfesional, IdPaciente, FechaTurno, HoraDesde, HoraHasta, id_estado, motivoTurnosAnulados, IdTurno)
     logger.info("Este es mi insertar turno anulado -> {}".format(query))
     idTurno_anulado = None
     with conexion.cursor() as cur:

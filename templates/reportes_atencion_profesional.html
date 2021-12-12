@@ -79,6 +79,7 @@
                   <th scope="col">#</th>
                   <th scope="col">Cantidad</th>
                   <th scope="col">Estado</th>
+                  <th scope="col">Profesional</th>
                 </tr>
               </thead>
               <tbody>
@@ -87,6 +88,7 @@
                   <td>{{loop.index}}</td>
                   <td>{{prof[0]}}</td>
                   <td>{{prof[1]}}</td>
+                  <td>{{prof[3]}} {{prof[4]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -113,11 +115,13 @@
 
 </main>
 <script type="module">
-  import { graficoBarras } from "/static/validations/reports/grafico_barras.js"
-  const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
-  const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
+  import { graficoBarrasHorizontal } from "/static/validations/reports/grafico_barras horizontal.js"
+  const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
+  const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
+  console.log(nombreColumnas)
+  console.log(valoresColumnas)
 
-  graficoBarras("charEstadoTurnos", "Estado de Turnos", nombreColumnas, valoresColumnas);
+  graficoBarrasHorizontal("charAtencionProfesional", "Estado de Turnos", nombreColumnas, valoresColumnas);
 
 </script>
 
