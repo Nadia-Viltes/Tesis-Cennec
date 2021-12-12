@@ -1208,7 +1208,7 @@ def reportes_altas_mensuales_pacientes():
     }
     return render_template('reportes_altas_mensuales_pacientes.html', data=data)
 
-
+'''
 @app.route('/reportes/alta_pacientes_zona')
 def reportes_altas_mensuales_pacientes():
     alta_pacientes_por_zona = obtener_alta_paciente_por_zonas()
@@ -1227,7 +1227,7 @@ def reportes_altas_mensuales_pacientes():
         'total': totales
     }
     return render_template('reportes_altas_mensuales_pacientes.html', data=data)
-
+'''
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
