@@ -6,11 +6,15 @@ from config_bd import get_conexion
 
 def obtener_lista_turno():
     query = """
-           	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
-				FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp
+           	SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
+               DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre, 
+               tur.IdProfesional, r.nombre, r.apellido
+				FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp, profesional as p, recurso as r
 				WHERE tur.IdEstadoTurno = est.IdEstadoTurno
 				AND tur.IdPaciente = pac.IdPaciente
 				AND tur.IdEspecialidad = esp.IdEspecialidad
+                AND tur.IdProfesional = p.IdProfesional
+                AND p.IdRecurso = r.IdRecurso
 				AND tur.FechaBaja is null
                 order by tur.FechaTurno asc, tur.HoraDesde asc;          
             """
