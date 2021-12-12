@@ -1,4 +1,5 @@
 from loguru import logger
+from datetime import date
 from controllerHome import obtener_lista_cumple
 from controllerPaciente import *
 from controllerReportes import *
@@ -999,9 +1000,17 @@ def reportes():
     return render_template('reportes.html', data=data)
 
 
-@app.route('/reportes/estados_turnos')
+@app.route('/reportes/estados_turnos', methods=["GET", "POST"])
 def reportes_estados_turnos():
-    estados_turnos = obtener_estados_turnos()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    estados_turnos = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        estados_turnos = obtener_estados_turnos(fecha_desde, fecha_hasta)
+    else:
+        estados_turnos = obtener_estados_turnos(fecha_desde, fecha_hasta)
     valores_columnas = []
     nombre_columnas = []
     totales = 0
@@ -1014,6 +1023,8 @@ def reportes_estados_turnos():
         'titulo': 'Estados de turnos',
         'estados_turnos': estados_turnos,
         'periodos_turnos': periodos_turnos,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombres_columnas': json.dumps(nombre_columnas),
         'valores_columnas': valores_columnas,
         'total': totales
@@ -1021,9 +1032,17 @@ def reportes_estados_turnos():
     return render_template('reportes_estados_turnos.html', data=data)
 
 
-@app.route('/reportes/motivos_anulacion_turnos')
+@app.route('/reportes/motivos_anulacion_turnos', methods=["GET", "POST"])
 def reportes_movitos_anulacion_turnos():
-    motivos_anulacion = obtener_motivos_anulacion()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    motivos_anulacion = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        motivos_anulacion = obtener_motivos_anulacion(fecha_desde, fecha_hasta)
+    else:
+        motivos_anulacion = obtener_motivos_anulacion(fecha_desde, fecha_hasta)
     valores_categorias = []
     nombre_categorias = []
     totales = 0
@@ -1034,6 +1053,8 @@ def reportes_movitos_anulacion_turnos():
     data = {
         'titulo': 'Motivos Anulacion',
         'motivos_anulacion_turnos': motivos_anulacion,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombre_categorias': json.dumps(nombre_categorias),
         'valores_categorias': valores_categorias,
         'total': totales
@@ -1041,9 +1062,19 @@ def reportes_movitos_anulacion_turnos():
     return render_template('reportes_motivo_anulacion.html', data=data)
 
 
-@app.route('/reportes/ranking_obras_sociales')
+@app.route('/reportes/ranking_obras_sociales', methods=["GET", "POST"])
 def reportes_ranking_obras_sociales():
-    ranking_obras_sociales = obtener_ranking_obras_sociales()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    ranking_obras_sociales = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        ranking_obras_sociales = obtener_ranking_obras_sociales(
+            fecha_desde, fecha_hasta)
+    else:
+        ranking_obras_sociales = obtener_ranking_obras_sociales(
+            fecha_desde, fecha_hasta)
     valores_categorias = []
     nombre_categorias = []
     totales = 0
@@ -1054,6 +1085,8 @@ def reportes_ranking_obras_sociales():
     data = {
         'titulo': 'Ranking Obras Sociales',
         'ranking_obras_sociales': ranking_obras_sociales,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombre_categorias': json.dumps(nombre_categorias),
         'valores_categorias': valores_categorias,
         'total': totales
@@ -1061,9 +1094,19 @@ def reportes_ranking_obras_sociales():
     return render_template('reportes_ranking_obra_social.html', data=data)
 
 
-@app.route('/reportes/obtener_turnos_especialidad')
+@app.route('/reportes/obtener_turnos_especialidad', methods=["GET", "POST"])
 def reportes_turnos_especialidad():
-    turnos_especialidad = obtener_turnos_por_especialidad()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    turnos_especialidad = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        turnos_especialidad = obtener_turnos_por_especialidad(
+            fecha_desde, fecha_hasta)
+    else:
+        turnos_especialidad = obtener_turnos_por_especialidad(
+            fecha_desde, fecha_hasta)
     valores_categorias = []
     nombre_categorias = []
     totales = 0
@@ -1074,6 +1117,8 @@ def reportes_turnos_especialidad():
     data = {
         'titulo': 'Turnos por especialidad',
         'turnos_especialidad': turnos_especialidad,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombre_categorias': json.dumps(nombre_categorias),
         'valores_categorias': valores_categorias,
         'total': totales
@@ -1081,9 +1126,19 @@ def reportes_turnos_especialidad():
     return render_template('reportes_atencion_especialidad.html', data=data)
 
 
-@app.route('/reportes/atencion_profesional')
+@app.route('/reportes/atencion_profesional', methods=["GET", "POST"])
 def reportes_atencion_profesional():
-    atencion_profesional = obtener_atencion_profesional()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    atencion_profesional = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        atencion_profesional = obtener_atencion_profesional(
+            fecha_desde, fecha_hasta)
+    else:
+        atencion_profesional = obtener_atencion_profesional(
+            fecha_desde, fecha_hasta)
     nombre_categorias = []
     totales = 0
     for atencion in atencion_profesional:
@@ -1093,6 +1148,8 @@ def reportes_atencion_profesional():
     data = {
         'titulo': 'Atencion Profesional',
         'atencion_profesional': atencion_profesional,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombre_categorias': json.dumps(nombre_categorias),
         'valores_categorias': json.dumps(atencion_profesional),
         'total': totales
@@ -1100,9 +1157,19 @@ def reportes_atencion_profesional():
     return render_template('reportes_atencion_profesional.html', data=data)
 
 
-@app.route('/reportes/patologias_admision')
+@app.route('/reportes/patologias_admision', methods=["GET", "POST"])
 def reportes_patologias_admision():
-    patologias_admision = obtener_patologias_admision()
+    fecha_desde = '2021-01-01'
+    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    patologias_admision = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        patologias_admision = obtener_patologias_admision(
+            fecha_desde, fecha_hasta)
+    else:
+        patologias_admision = obtener_patologias_admision(
+            fecha_desde, fecha_hasta)
     nombre_categorias = []
     totales = 0
     for patologia in patologias_admision:
@@ -1112,6 +1179,8 @@ def reportes_patologias_admision():
     data = {
         'titulo': 'Patologias Admisión',
         'patologias_admision': patologias_admision,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
         'nombre_categorias': json.dumps(nombre_categorias),
         'valores_categorias': json.dumps(patologias_admision),
         'total': totales
@@ -1125,6 +1194,26 @@ def reportes_altas_mensuales_pacientes():
     valores_categorias = []
     nombre_categorias = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
                          "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    totales = 0
+    for altas in altas_mensuales_genero:
+        totales += altas[0]
+        valores_categorias.append(altas[0])
+    data = {
+        'titulo': 'Altas Mensuales de Pacientes',
+        'altas_mensuales_genero': altas_mensuales_genero,
+        'meses': nombre_categorias,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': json.dumps(altas_mensuales_genero),
+        'total': totales
+    }
+    return render_template('reportes_altas_mensuales_pacientes.html', data=data)
+
+
+@app.route('/reportes/alta_pacientes_zona')
+def reportes_altas_mensuales_pacientes():
+    alta_pacientes_por_zona = obtener_alta_paciente_por_zonas()
+    valores_categorias = []
+    nombre_categorias = obtener_detalle_barrios()
     totales = 0
     for altas in altas_mensuales_genero:
         totales += altas[0]

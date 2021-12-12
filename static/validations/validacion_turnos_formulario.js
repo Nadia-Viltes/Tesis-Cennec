@@ -1,3 +1,4 @@
+import {obtenerFechaActual} from "/static/validations/utils.js"
 
 //seteo fecha de turno por defecto
 let tipoTurnoSelect = $("[name='tipoTurno']")
@@ -8,14 +9,6 @@ let horaInicioCampo = $("[name='nameHoraInicio']")
 let horaFinCampo = $("#idhoraFin")
 let horaFinOculta = $("[name='nameHoraFin']")
 let campoRequeridos = $("[validation='true']")
-
-const obtenerFechaActual = function () {
-    let fecha_actual = new Date()
-    let dia = fecha_actual.getDate()
-    let mes = fecha_actual.getMonth() + 1
-    let anio = fecha_actual.getFullYear()
-    return `${anio}-${mes}-${dia}`
-}
 
 for (let i= 0; i < campoRequeridos.length; i++) {
     $(campoRequeridos[i]).attr("required", true);

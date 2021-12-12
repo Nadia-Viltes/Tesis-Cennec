@@ -1,49 +1,53 @@
-*{
-	box-sizing: border-box;
-}
- 
-header{
-    padding: 15px;
-    background-color:#dcdcdc;
-    text-align: start;
+* {
+  box-sizing: border-box;
 }
 
-.image_logo{
-    height: 55px;
-    display: flex;
+header {
+  padding: 15px;
+  background-color: #dcdcdc;
+  text-align: start;
 }
 
-.modal-content{
-    height: auto;
-    display: flex;
+.image_logo {
+  height: 55px;
+  display: flex;
 }
 
+.modal-content {
+  height: auto;
+  display: flex;
+}
 
 #listaHistorial {
-    overflow:scroll;
-    height:240px;
-    width:798px;
+  overflow: scroll;
+  height: 240px;
+  width: 798px;
 }
 
-#dropdownFiltro{
-    background-color:#cff4fc;
+#dropdownFiltro {
+  background-color: #cff4fc;
 }
 
-#dropdownMenuFiltro{
-    background-color:#F2F3F4;
+#dropdownMenuFiltro {
+  background-color: #f2f3f4;
 }
 
-#cardGrafico{
-    margin-left: 24px;
+#cardGrafico {
+  margin-left: 24px;
 }
 
-#cardGraficoTorta{
-    height:552px;
-    width:275px;
+#cardGraficoTorta {
+  height: 552px;
+  width: 275px;
 }
 
-#charMotivosAnulacion{
-    height:252px;
-    margin-left: 3cm;
+#charMotivosAnulacion {
+  height: 252px;
+  margin-left: 3cm;
 }
 
+#buttonFiltrar {
+  width: 90px;
+  position: relative;
+  margin-top: 9px;
+}
