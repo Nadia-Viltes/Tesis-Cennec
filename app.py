@@ -400,13 +400,20 @@ def agrega_turnos_admision():
     # creo una tabla con los datos de la lista de turnos y se la envío
     # a ver_HCD.html
     for turno in lista_turnos:
+        boton = ""
+        if turno[2] > 0:
+            boton = """<td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id={} disabled>Eliminar</button></td>""".format(
+                turno[0])
+        else:
+            boton = """<td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id={}>Eliminar</button></td>""".format(
+                turno[0])
         table += """<tr>
                     <td>{}</td>
                     <td>{}</td>
                     <td>{}</td>
-                    <td><button type="button" class="btn btn-danger" name="button_eliminar_turAdm" id={}>Eliminar</button></td>
+                    {}
                     </tr>""".format(
-            turno[1], turno[2], turno[4], turno[0])
+            turno[1], turno[2], turno[4], boton)
     return jsonify({'htmlresponse': render_template_string(table)})
 
 
@@ -1052,6 +1059,45 @@ def reportes_ranking_obras_sociales():
         'total': totales
     }
     return render_template('reportes_ranking_obra_social.html', data=data)
+
+
+@app.route('/reportes/obtener_turnos_especialidad')
+def reportes_turnos_especialidad():
+    turnos_especialidad = obtener_turnos_por_especialidad()
+    valores_categorias = []
+    nombre_categorias = []
+    totales = 0
+    for turnos in turnos_especialidad:
+        totales += turnos[0]
+        valores_categorias.append(turnos[0])
+        nombre_categorias.append(turnos[1])
+    data = {
+        'titulo': 'Turnos por especialidad',
+        'turnos_especialidad': turnos_especialidad,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': valores_categorias,
+        'total': totales
+    }
+    return render_template('reportes_atencion_especialidad.html', data=data)
+
+
+@app.route('/reportes/atencion_profesional')
+def reportes_atencion_profesional():
+    atencion_profesional = obtener_atencion_profesional()
+    nombre_categorias = []
+    totales = 0
+    for atencion in atencion_profesional:
+        totales += atencion[0]
+        nombre_categorias.append(atencion[1])
+    nombre_categorias = list(dict.fromkeys(nombre_categorias))
+    data = {
+        'titulo': 'Atencion Profesional',
+        'atencion_profesional': atencion_profesional,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': json.dumps(atencion_profesional),
+        'total': totales
+    }
+    return render_template('reportes_atencion_profesional.html', data=data)
 
 
 if __name__ == '__main__':

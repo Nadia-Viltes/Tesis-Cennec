@@ -50,6 +50,44 @@ def obtener_ranking_obras_sociales():
     return ranking
 
 
+def obtener_turnos_por_especialidad():
+    query = """
+            SELECT count(*), e.nombre FROM turno as t, especialidad as e
+            WHERE t.IdEspecialidad = e.IdEspecialidad
+            AND t.FechaBaja is null
+            group by t.IdEspecialidad;
+            """
+    conexion = get_conexion()
+    turnos_especialidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    turnos_especialidad = cur.fetchall()
+    conexion.close()
+    return turnos_especialidad
+
+
+def obtener_atencion_profesional():
+    query = """
+            select count(*), esp.nombre, tur.IdProfesional, rec.nombre, rec.apellido
+            from turno as tur, especialidad as esp, profesional as prof, recurso as rec
+            where tur.IdEspecialidad = esp.idEspecialidad
+            and prof.IdProfesional = tur.IdProfesional
+            and rec.IdRecurso = prof.IdRecurso
+            and tur.idEstadoTurno = (select idEstadoTurno 
+                                    from estadoturno 
+                                    where LOWER(nombre) = 'Receptado')
+            group by tur.IdEspecialidad, tur.IdProfesional
+            order by esp.nombre;
+            """
+    conexion = get_conexion()
+    atencion_profesional = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    atencion_profesional = cur.fetchall()
+    conexion.close()
+    return atencion_profesional
+
+
 def obtener_periodos():
     query = """
            SELECT (SELECT count(*) FROM turno WHERE FechaBaja is null

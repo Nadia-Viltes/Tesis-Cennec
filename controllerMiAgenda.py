@@ -2,6 +2,8 @@ from loguru import logger
 from config_bd import get_conexion
 
 # query para que me muestre los datos en la lista de turnos
+
+
 def obtener_lista_turno_mi_agenda(usuario):
     query = """
              SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
@@ -17,7 +19,7 @@ def obtener_lista_turno_mi_agenda(usuario):
             AND rec.IdRecurso = u.IdRecurso
             and u.IdUsuario = {}
             AND tur.FechaBaja is null
-            AND (tur.IdProfesionalAsignado = pro.idProfesional OR tur.IdProfesionalReceptado = pro.idProfesional)
+            AND tur.IdProfesional = pro.idProfesional
             order by tur.FechaTurno asc, tur.HoraDesde asc;
             """.format(usuario)
     conexion = get_conexion()
@@ -29,6 +31,8 @@ def obtener_lista_turno_mi_agenda(usuario):
     return turnoProfesional
 
 # query para que me muestre los datos en la lista de turnos
+
+
 def obtener_lista_turno_mi_agenda_adm():
     query = """
              SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
@@ -54,6 +58,8 @@ def obtener_lista_turno_mi_agenda_adm():
     return turnoAdm
 
 # Query para obtener datos del usuario logueado y rellenar datos en la hcd
+
+
 def obtener_datos_usuario_profesional(usuario):
     query = """
             SELECT us.IdUsuario, re.Nombre, re.Apellido, esp.Nombre, prof.IdProfesional
@@ -87,22 +93,23 @@ def obtener_id_profesional(usuario):
     return idProfesional
 
 
-
-## Ver el ID del turno receptado:
+# Ver el ID del turno receptado:
 def obtener_turno_agenda_receptado(id_turno):
-    query = """SELECT IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdProfesionalReceptado, IdTurnoOriginal 
+    query = """SELECT IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdProfesional, IdTurnoOriginal 
                 FROM turno
                 WHERE FechaBaja is null
                 AND IdTurno = {}""".format(id_turno)
     conexion = get_conexion()
     agenda_receptado = None
     with conexion.cursor() as cur:
-        cur.execute(query),(id_turno)
+        cur.execute(query), (id_turno)
     agenda_receptado = cur.fetchone()
     conexion.close()
     return agenda_receptado
 
 # query para obtener los datos del turno
+
+
 def obtener_turno_atendiendo(idTurno):
     query = """
            SELECT IdTurno, IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, 
@@ -118,6 +125,8 @@ def obtener_turno_atendiendo(idTurno):
     return idTurnoAtendiendo
 
 # query para si ya existe un detalle con ese turno
+
+
 def obtener_detalle_con_turno(idTurno):
     query = """
            SELECT IdTurno FROM detalleevolucion WHERE IdTurno = {};""".format(idTurno)
@@ -128,14 +137,16 @@ def obtener_detalle_con_turno(idTurno):
     detalleTurno = cur.fetchone()
     conexion.close()
     return detalleTurno
-    
-## Agregar un nuevo turno en estado ATENDIENDO:
+
+# Agregar un nuevo turno en estado ATENDIENDO:
+
+
 def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaInicioAtencion, IdUsuarioInicioAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
-        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno,usuario)
-    print("Este es mi insertar turno ATENDIENDO -> {}".format(query))    
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaInicioAtencion, IdUsuarioInicioAtencion, IdProfesional, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
+        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno, usuario)
+    print("Este es mi insertar turno ATENDIENDO -> {}".format(query))
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_atendiendo = cur.lastrowid
@@ -143,13 +154,15 @@ def insertar_turno_atendiendo(tipoTurno, idEspecialidad, idPaciente, fechaTurno,
     conexion.close()
     return idTurno_atendiendo
 
-## Agregar un nuevo turno en estado ATENDIENDO:
+# Agregar un nuevo turno en estado ATENDIENDO:
+
+
 def insertar_turno_atendido(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno):
     conexion = get_conexion()
     query = """
-        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaFinalAtencion, IdUsuarioFinalAtencion, IdProfesionalReceptado, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
-        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno,usuario)
-    print("Este es mi insertar turno ATENDIENDO -> {}".format(query))    
+        INSERT INTO turno (IdTipoTurno, IdEspecialidad, IdPaciente, FechaTurno, HoraDesde, HoraHasta, IdEstadoTurno, FechaFinalAtencion, IdUsuarioFinalAtencion, IdProfesional, IdTurnoOriginal, FechaAlta,IdUsuarioAlta)
+        VALUES ({},{},{},'{}','{}','{}',{},now(),{},{}, {}, now(),{})""".format(tipoTurno, idEspecialidad, idPaciente, fechaTurno, horaDesde, horaHasta, idEstadoTurno, usuario, idProfesionalDropdown, IdTurno, usuario)
+    print("Este es mi insertar turno ATENDIENDO -> {}".format(query))
     with conexion.cursor() as cur:
         cur.execute(query)
         idTurno_atendido = cur.lastrowid
@@ -158,6 +171,8 @@ def insertar_turno_atendido(tipoTurno, idEspecialidad, idPaciente, fechaTurno, h
     return idTurno_atendido
 
 # Lista de los detalles de la evolución para que se muestren en el historial.
+
+
 def obtener_historial_evoluciones(id):
     query = """
            SELECT hcd.IdHistoriaClinica, hcd.IdPaciente, e.IdEvolucion, e.IdHistoriaClinica, de.IdDetalleEvolucion, de.IdEvolucion, 
@@ -179,6 +194,8 @@ def obtener_historial_evoluciones(id):
     return historial
 
 # Acá muestro el historial seleccionado
+
+
 def obtener_detalle_historial(id):
     query = """
            SELECT hcd.IdHistoriaClinica, hcd.IdPaciente, e.IdEvolucion, e.IdHistoriaClinica, de.IdDetalleEvolucion, 
@@ -204,12 +221,12 @@ def obtener_detalle_historial(id):
     return detalle_historial
 
 
-## CONSULTA SI ESTÁ LA EVOLUCION
+# CONSULTA SI ESTÁ LA EVOLUCION
 def consulta_existe_evolucion(id):
     query = """
            SELECT IdEvolucion FROM evolucion 
 		   WHERE IdHistoriaClinica = {};""".format(id)
-    print("Este es mi ver si existe evolucion -> {}".format(query))   
+    print("Este es mi ver si existe evolucion -> {}".format(query))
     conexion = get_conexion()
     existe_evolucion = None
     try:
@@ -218,17 +235,17 @@ def consulta_existe_evolucion(id):
         existe_evolucion = cur.fetchone()[0]
     except:
         logger.info("Ocurrio un error obteniendo datos")
-    finally:        
+    finally:
         conexion.close()
     return existe_evolucion
 
 
-## INSERTAR EVOLUCION
-def insertar_evolucion (idHCD,usuario):
+# INSERTAR EVOLUCION
+def insertar_evolucion(idHCD, usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO evolucion (IdHistoriaClinica, FechaAlta, IdUsuarioAlta)
-        VALUES ({}, now(),{})""".format(idHCD,usuario)
+        VALUES ({}, now(),{})""".format(idHCD, usuario)
     idEvolucion = None
     print("Insertar idEvolucion -> {}".format(query))
     with conexion.cursor() as cur:
@@ -239,13 +256,12 @@ def insertar_evolucion (idHCD,usuario):
     return idEvolucion
 
 
-
-## INSERTAR DETALLE DE ESA EVOLUCION
-def insertar_detalle (idEvolucion, idTurno, idProfesional, observacion, usuario):
+# INSERTAR DETALLE DE ESA EVOLUCION
+def insertar_detalle(idEvolucion, idTurno, idProfesional, observacion, usuario):
     conexion = get_conexion()
     query = """
         INSERT INTO detalleevolucion (IdEvolucion, IdTurno, IdProfesional, ObservacionAvance, FechaAlta, IdUsuarioAlta)
-		VALUES({},{},{},'{}',now(),{})""".format(idEvolucion, idTurno, idProfesional, observacion, usuario)    
+		VALUES({},{},{},'{}',now(),{})""".format(idEvolucion, idTurno, idProfesional, observacion, usuario)
     idEvolucion = None
     print("Insertar detalle -> {}".format(query))
     with conexion.cursor() as cur:
@@ -256,12 +272,12 @@ def insertar_detalle (idEvolucion, idTurno, idProfesional, observacion, usuario)
     return idEvolucion
 
 
-## Operación para modificar el detall de la HCD
-def actualizar_detalle(inputIdEvolucion,inputIdTurnoHis,inputProfesionalHis,InputTextareaEvolucionesHis,usuario,inputIdDetEvo):
+# Operación para modificar el detall de la HCD
+def actualizar_detalle(inputIdEvolucion, inputIdTurnoHis, inputProfesionalHis, InputTextareaEvolucionesHis, usuario, inputIdDetEvo):
     conexion = get_conexion()
     with conexion.cursor() as cursor:
         cursor.execute("""
         UPDATE detalleevolucion SET IdEvolucion={}, IdTurno={}, IdProfesional={}, ObservacionAvance='{}',FechaModificacion=NOW(), IdUsuarioModificacion={}
-        WHERE IdDetalleEvolucion = {} """.format(inputIdEvolucion,inputIdTurnoHis,inputProfesionalHis,InputTextareaEvolucionesHis,usuario,inputIdDetEvo))
+        WHERE IdDetalleEvolucion = {} """.format(inputIdEvolucion, inputIdTurnoHis, inputProfesionalHis, InputTextareaEvolucionesHis, usuario, inputIdDetEvo))
     conexion.commit()
     conexion.close()
