@@ -1,0 +1,106 @@
+{% extends 'base/base.html' %}
+
+<!-- ================================================ -->
+<!-- PANTALLA TURNOS -->
+<!-- ================================================ -->
+{% block reportes_altas_pacientes_zonas %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10">
+  <div class="chartjs-size-monitor">
+    <div class="chartjs-size-monitor-expand">
+      <div class></div>
+    </div>
+    <div class="chartjs-size-monitor-shrink">
+      <div class=""></div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <nav
+    style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+    aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+      <li class="breadcrumb-item"><a href="/home">Home</a></li>
+      <li class="breadcrumb-item"><a href="/reportes">Reportes</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
+    </ol>
+  </nav>
+
+  <!-- Titulo de la pantalla -->
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
+    <h1 class="h2">{{ data.titulo }}</h1>
+  </div>
+
+
+  <!-- ================================================ -->
+  <!-- REPORTES  -->
+  <!-- ================================================ -->
+  <section>
+    <div class="row">
+      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+        <div class="card">
+          <div class="card-body">
+            <canvas id="charAltasPacientesZonas"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<hr/>
+
+  <section>
+    <div class="row">
+      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+        <h5 class="text-center">Resultados</h5>
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Zona</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for altas in data.alta_pacientes_por_zona %}
+                <tr>
+                  <td>{{loop.index}}</td>
+                  <td>{{altas[0]}}</td>
+                  <td>{{altas[1]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td>{{ data.total }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================================ -->
+  <!-- Config Pantalla -->
+  <!-- ================================================ -->
+
+  <div class="my-4 w-100 chartjs-render-monitor" style="display: block; height: 100px; width: 1218px;">
+  </div>
+
+</main>
+<script type="module">
+  import {graficoRadar} from "/static/validations/reports/grafico_radar.js"
+  const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
+  const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
+
+  graficoRadar("charAltasPacientesZonas", "Altas Mensuales de Pacientes", nombreColumnas, valoresColumnas);
+
+</script>
+
+{% endblock %}

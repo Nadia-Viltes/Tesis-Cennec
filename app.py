@@ -1210,23 +1210,22 @@ def reportes_altas_mensuales_pacientes():
 
 
 @app.route('/reportes/alta_pacientes_zona')
-def reportes_altas_mensuales_pacientes():
+def reportes_pacientes_zonas():
     alta_pacientes_por_zona = obtener_alta_paciente_por_zonas()
     valores_categorias = []
     nombre_categorias = obtener_detalle_barrios()
     totales = 0
-    for altas in altas_mensuales_genero:
+    for altas in alta_pacientes_por_zona:
         totales += altas[0]
         valores_categorias.append(altas[0])
     data = {
-        'titulo': 'Altas Mensuales de Pacientes',
-        'altas_mensuales_genero': altas_mensuales_genero,
-        'meses': nombre_categorias,
+        'titulo': 'Altas de Pacientes por Zona',
+        'alta_pacientes_por_zona': alta_pacientes_por_zona,
         'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(altas_mensuales_genero),
+        'valores_categorias': json.dumps(alta_pacientes_por_zona),
         'total': totales
     }
-    return render_template('reportes_altas_mensuales_pacientes.html', data=data)
+    return render_template('reportes_altas_pacientes_zonas.html', data=data)
 
 
 if __name__ == '__main__':
