@@ -63,32 +63,6 @@
         </div>
       </div>
 
-      <div class="col-lg-3 col-md-6 mb-4">
-        <div class="card">
-          <div class="card-body">
-            <p class="text-uppercase small mb-2">
-              <strong>Total de turnos últimos 30 días</strong>
-            </p>
-            <h5 class="mb-0">
-              <strong>{{data.periodos_turnos[0]}}</strong>
-              {% if data.periodos_turnos[0] > data.periodos_turnos[1] %}
-              <small class="text-success ml-2">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-short" viewBox="0 0 16 16">
-                  <path fill-rule="evenodd" d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-                </svg>{{data.periodos_turnos[2]}}
-              </small>
-              {%else%}
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-short" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
-              </svg>{{data.periodos_turnos[2]}}
-              {% endif %}
-            </h5>
-            <hr />
-            <p class="text-uppercase text-muted small mb-2"></p> Periodo previo
-            <h5 class="text-muted mb-0">{{data.periodos_turnos[1]}}</h5>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 

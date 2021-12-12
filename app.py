@@ -1100,5 +1100,45 @@ def reportes_atencion_profesional():
     return render_template('reportes_atencion_profesional.html', data=data)
 
 
+@app.route('/reportes/patologias_admision')
+def reportes_patologias_admision():
+    patologias_admision = obtener_patologias_admision()
+    nombre_categorias = []
+    totales = 0
+    for patologia in patologias_admision:
+        totales += patologia[0]
+        nombre_categorias.append(patologia[2])
+    nombre_categorias = list(dict.fromkeys(nombre_categorias))
+    data = {
+        'titulo': 'Patologias Admisión',
+        'patologias_admision': patologias_admision,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': json.dumps(patologias_admision),
+        'total': totales
+    }
+    return render_template('reportes_patologias_admision.html', data=data)
+
+
+@app.route('/reportes/altas_mensuales_pacientes')
+def reportes_altas_mensuales_pacientes():
+    altas_mensuales_genero = obtener_altas_mensuales_por_genero()
+    valores_categorias = []
+    nombre_categorias = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                         "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+    totales = 0
+    for altas in altas_mensuales_genero:
+        totales += altas[0]
+        valores_categorias.append(altas[0])
+    data = {
+        'titulo': 'Altas Mensuales de Pacientes',
+        'altas_mensuales_genero': altas_mensuales_genero,
+        'meses': nombre_categorias,
+        'nombre_categorias': json.dumps(nombre_categorias),
+        'valores_categorias': json.dumps(altas_mensuales_genero),
+        'total': totales
+    }
+    return render_template('reportes_altas_mensuales_pacientes.html', data=data)
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

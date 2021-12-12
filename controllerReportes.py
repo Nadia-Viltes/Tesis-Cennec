@@ -88,6 +88,39 @@ def obtener_atencion_profesional():
     return atencion_profesional
 
 
+def obtener_patologias_admision():
+    query = """
+            SELECT count(*), config.IdEspecialidad, esp.nombre, config.IdTipoPatologia, tp.nombre
+            FROM configuracionturno as config, especialidad as esp, tipopatologia as tp
+            WHERE config.IdEspecialidad = esp.IdEspecialidad
+            AND config.IdTipoPatologia = tp.IdTipoPatologia
+            group by IdTipoPatologia;
+            """
+    conexion = get_conexion()
+    patologias_admision = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    patologias_admision = cur.fetchall()
+    conexion.close()
+    return patologias_admision
+
+
+def obtener_altas_mensuales_por_genero():
+    query = """
+            SELECT count(*), genero, MONTH(FechaAlta)
+            FROM paciente
+            group by genero, MONTH(FechaAlta)
+            ORDER BY MONTH(FechaAlta) asc;
+            """
+    conexion = get_conexion()
+    altas_mensuales_por_genero = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    altas_mensuales_por_genero = cur.fetchall()
+    conexion.close()
+    return altas_mensuales_por_genero
+
+
 def obtener_periodos():
     query = """
            SELECT (SELECT count(*) FROM turno WHERE FechaBaja is null

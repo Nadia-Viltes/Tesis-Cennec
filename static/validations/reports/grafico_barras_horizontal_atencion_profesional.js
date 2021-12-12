@@ -32,6 +32,13 @@ export const graficoBarrasHorizontal = (idGrafico, titulo, categorias, datos) =>
     data: data,
     options: {
       indexAxis: 'y',
+      scales:{
+        x: {
+          ticks: {
+            stepSize: 1
+          }
+        }
+     },
       responsive: true,
       plugins: {
           legend: {

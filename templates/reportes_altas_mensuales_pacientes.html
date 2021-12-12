@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block reportes_patologia_admision %}
+{% block reportes_altas_mensuales %}
 
 <main class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -58,14 +58,15 @@
       <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
         <div class="card">
           <div class="card-body">
-            <canvas id="charPatologiaAdmision"></canvas>
+            <canvas id="charPacientesNuevos"></canvas>
           </div>
         </div>
       </div>
+
     </div>
   </section>
 
-  <hr />
+<hr/>
 
   <section>
     <div class="row">
@@ -78,17 +79,17 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Cantidad</th>
-                  <th scope="col">Especialidad</th>
-                  <th scope="col">Patologia</th>
+                  <th scope="col">Genero</th>
+                  <th scope="col">Mes</th>
                 </tr>
               </thead>
               <tbody>
-                {% for patologia in data.patologias_admision %}
+                {% for altas in data.altas_mensuales_genero %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td>{{patologia[0]}}</td>
-                  <td>{{patologia[2]}}</td>
-                  <td>{{patologia[4]}}</td>
+                  <td>{{altas[0]}}</td>
+                  <td>{{altas[1]}}</td>
+                  <td>{{data.meses[altas[2] - 1]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -115,13 +116,11 @@
 
 </main>
 <script type="module">
-  import { graficoBarrasHorizontal } from "/static/validations/reports/grafico_barras_horizontal_patologias_admision.js"
+  import {graficoLineaPacientesNuevos} from "/static/validations/reports/grafico_linea_pacientes_nuevos.js"
   const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
-  console.log(nombreColumnas)
-  console.log(valoresColumnas)
 
-  graficoBarrasHorizontal("charPatologiaAdmision", "Patologías de Admisión", nombreColumnas, valoresColumnas);
+  graficoLineaPacientesNuevos("charPacientesNuevos", "Altas Mensuales de Pacientes", nombreColumnas, valoresColumnas);
 
 </script>
 
