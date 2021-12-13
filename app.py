@@ -1003,7 +1003,7 @@ def reportes():
 @app.route('/reportes/estados_turnos', methods=["GET", "POST"])
 def reportes_estados_turnos():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     estados_turnos = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1035,7 +1035,7 @@ def reportes_estados_turnos():
 @app.route('/reportes/motivos_anulacion_turnos', methods=["GET", "POST"])
 def reportes_movitos_anulacion_turnos():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     motivos_anulacion = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1065,7 +1065,7 @@ def reportes_movitos_anulacion_turnos():
 @app.route('/reportes/ranking_obras_sociales', methods=["GET", "POST"])
 def reportes_ranking_obras_sociales():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     ranking_obras_sociales = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1097,7 +1097,7 @@ def reportes_ranking_obras_sociales():
 @app.route('/reportes/obtener_turnos_especialidad', methods=["GET", "POST"])
 def reportes_turnos_especialidad():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     turnos_especialidad = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1129,7 +1129,7 @@ def reportes_turnos_especialidad():
 @app.route('/reportes/atencion_profesional', methods=["GET", "POST"])
 def reportes_atencion_profesional():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     atencion_profesional = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1160,7 +1160,7 @@ def reportes_atencion_profesional():
 @app.route('/reportes/patologias_admision', methods=["GET", "POST"])
 def reportes_patologias_admision():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     patologias_admision = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
