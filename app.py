@@ -1331,5 +1331,36 @@ def imprimir_reporte():
     }
     return render_template('reportes_imprimir.html', data=data)
 
+@app.route('/reportes/reportes_motivos_anulacion_especialidad', methods=["GET", "POST"])
+def reportes_motivos_anulacion_especialidad():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    motivos_anulacion_especialidad = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        motivos_anulacion_especialidad = obtener_motivos_anulacion_especialidad(
+            fecha_desde, fecha_hasta)
+    else:
+        motivos_anulacion_especialidad = obtener_motivos_anulacion_especialidad(
+            fecha_desde, fecha_hasta)
+    nombre_columnas = []
+    totales=0
+    for motivos in motivos_anulacion_especialidad:
+        totales += motivos[0]
+    for especialidades in obtener_lista_de_especialidades():
+        nombre_columnas.append(especialidades[1])
+    data = {
+        'titulo': 'Motivo anulación por especialidad',
+        'motivos_anulacion_especialidad': motivos_anulacion_especialidad,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': json.dumps(motivos_anulacion_especialidad),
+        'total': totales
+    }
+    return render_template('reportes_motivo_anulacion_especialidad.html', data=data)
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
