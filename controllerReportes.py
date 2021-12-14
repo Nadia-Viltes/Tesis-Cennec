@@ -23,12 +23,16 @@ def obtener_estados_turnos(fecha_desde, fecha_hasta):
 
 def obtener_genero_especialidades():
     query = """
-            SELECT count(*), e.nombre, p.genero
-            FROM turno as t, especialidad as e, paciente as p
-            WHERE t.IdEspecialidad = e.IdEspecialidad
-            AND t.IdPaciente = p.IdPaciente
-            AND t.FechaBaja is null
-            group by  p.genero, t.IdEspecialidad;
+            select count(*), nombre, genero
+            from (select esp.Nombre, pac.Genero
+                    from turno tur, especialidad esp, paciente pac
+                    where tur.IdEstadoTurno in (select IdEstadoTurno 
+                                                from estadoturno
+                                                where nombre = "Asignado")
+                    and esp.IdEspecialidad = tur.idEspecialidad
+                    and tur.idPaciente = pac.idPaciente
+                    group by esp.Nombre, pac.IdPaciente, pac.genero) a
+            group by nombre, genero;  
             """
     conexion = get_conexion()
     genero_especialidades = []
@@ -201,7 +205,25 @@ def obtener_motivos_anulacion(fecha_desde, fecha_hasta):
     motivos_anulacion = cur.fetchall()
     conexion.close()
     return motivos_anulacion
-# query para ver el periodo de los totales
+
+
+def obtener_motivos_anulacion_especialidad(fecha_desde, fecha_hasta):
+    query = """
+            SELECT count(*), e.nombre, m.NombreMotivo
+            FROM turno as t, especialidad as e, motivo as m
+            WHERE t.IdEspecialidad = e.IdEspecialidad
+            AND t.IdMotivoAnulado = m.IdMotivo
+            AND t.FechaTurno >= '{}'
+            AND t.FechaTurno <= '{}'
+            group by t.IdEspecialidad, m.NombreMotivo;
+            """.format(fecha_desde, fecha_hasta)
+    conexion = get_conexion()
+    motivos_anulacion_especialidad = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    motivos_anulacion_especialidad = cur.fetchall()
+    conexion.close()
+    return motivos_anulacion_especialidad
 
 
 def obtener_ranking_obras_sociales(fecha_desde, fecha_hasta):
