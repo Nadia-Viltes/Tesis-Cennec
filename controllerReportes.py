@@ -21,6 +21,171 @@ def obtener_estados_turnos(fecha_desde, fecha_hasta):
     return reporte_turnos
 
 
+def obtener_genero_especialidades():
+    query = """
+            SELECT count(*), e.nombre, p.genero
+            FROM turno as t, especialidad as e, paciente as p
+            WHERE t.IdEspecialidad = e.IdEspecialidad
+            AND t.IdPaciente = p.IdPaciente
+            AND t.FechaBaja is null
+            group by  p.genero, t.IdEspecialidad;
+            """
+    conexion = get_conexion()
+    genero_especialidades = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    genero_especialidades = cur.fetchall()
+    conexion.close()
+    return genero_especialidades
+
+
+def obtener_horas_trabajadas_profesional(fecha_desde, fecha_hasta):
+    query = """
+            select re.nombre, re.apellido, format(count(*) / 2, 1) as "horas trabajadas" 
+            from turno as tur, profesional pro, recurso re
+            where idEstadoTurno = (select idEstadoTurno 
+                                    from estadoturno
+                                    where nombre = 'Receptado')
+            and pro.idRecurso = re.IdRecurso
+            and tur.IdProfesional = pro.Idprofesional 
+            and tur.FechaAlta >= '{}'
+            and tur.FechaAlta <= '{}'                       
+            group by tur.idProfesional;
+            """.format(fecha_desde, fecha_hasta)
+    conexion = get_conexion()
+    horas_trabajadas = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    horas_trabajadas = cur.fetchall()
+    conexion.close()
+    return horas_trabajadas
+
+
+def obtener_estado_turno_parametro_edades(fecha_desde, fecha_hasta):
+    query = """
+            SELECT COUNT(*) AS "Cantidad", "Primera Infancia (0-5 años)" AS "Categoria", et.Nombre
+            FROM paciente as p, turno as t, estadoturno AS et
+            WHERE p.IdPaciente = t.IdPaciente
+            AND t.IdEstadoTurno = et.IdEstadoTurno
+            AND TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 0
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 5
+            AND t.FechaTurno >= '{0}'
+            AND t.FechaTurno <= '{1}'
+            AND t.IdEstadoTurno in (select idEstadoTurno 
+						from estadoturno
+						where nombre not in ('Receptado', 'Atendiendo'))
+            GROUP BY t.IdEstadoTurno
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Infancia (6 - 11 años)" AS "Categoria", et.Nombre
+            FROM paciente as p, turno as t, estadoturno as et
+            WHERE p.IdPaciente = t.IdPaciente
+            AND t.IdEstadoTurno = et.IdEstadoTurno
+            AND TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 6
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 11
+            AND t.FechaTurno >= '{0}'
+            AND t.FechaTurno <= '{1}'
+            AND t.IdEstadoTurno in (select idEstadoTurno 
+						from estadoturno
+						where nombre not in ('Receptado', 'Atendiendo'))
+            GROUP BY t.IdEstadoTurno
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Adolescencia (12 - 18 años)" AS "Categoria", et.Nombre
+            FROM paciente as p, turno as t, estadoturno as et
+            WHERE p.IdPaciente = t.IdPaciente
+            AND t.IdEstadoTurno = et.IdEstadoTurno
+            AND TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 12
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 18
+            AND t.FechaTurno >= '{0}'
+            AND t.FechaTurno <= '{1}'
+            AND t.IdEstadoTurno in (select idEstadoTurno 
+						from estadoturno
+						where nombre not in ('Receptado', 'Atendiendo'))
+            GROUP BY t.IdEstadoTurno
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Juventud (14 - 26 años)" AS "Categoria", et.Nombre
+            FROM paciente as p, turno as t, estadoturno as et
+            WHERE p.IdPaciente = t.IdPaciente
+            AND t.IdEstadoTurno = et.IdEstadoTurno
+            AND TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 14
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 26
+            AND t.FechaTurno >= '{0}'
+            AND t.FechaTurno <= '{1}'
+            AND t.IdEstadoTurno in (select idEstadoTurno 
+						from estadoturno
+						where nombre not in ('Receptado', 'Atendiendo'))
+            GROUP BY t.IdEstadoTurno
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Adultez (27 o más años)" AS "Categoria", et.Nombre
+            FROM paciente as p, turno as t, estadoturno as et
+            WHERE p.IdPaciente = t.IdPaciente
+            AND t.IdEstadoTurno = et.IdEstadoTurno
+            AND TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 27
+            AND t.FechaTurno >= '{0}'
+            AND t.FechaTurno <= '{1}'
+            AND t.IdEstadoTurno in (select idEstadoTurno 
+						from estadoturno
+						where nombre not in ('Receptado', 'Atendiendo'))
+            GROUP BY t.IdEstadoTurno;
+            """.format(fecha_desde, fecha_hasta)
+    conexion = get_conexion()
+    estados_turnos_parametros_edades = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    estados_turnos_parametros_edades = cur.fetchall()
+    conexion.close()
+    return estados_turnos_parametros_edades
+
+
+def obtener_lista_profesionales():
+    query = """
+            select rec.IdRecurso, rec.nombre, rec.apellido 
+            from profesional pro, recurso rec
+            where pro.IdRecurso = rec.idRecurso;
+            """
+    conexion = get_conexion()
+    lista_profesionales = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    lista_profesionales = cur.fetchall()
+    conexion.close()
+    return lista_profesionales
+
+
+def obtener_parametros_edades():
+    query = """
+            SELECT COUNT(*) AS "Cantidad", "Primera Infancia (0-5 años)" AS "Categoria" 
+            FROM paciente as p
+            WHERE TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 0
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 5
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Infancia (6 - 11 años)" AS "Categoria" 
+            FROM paciente as p
+            WHERE TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 6
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 11
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Adolescencia (12 - 18 años)" AS "Categoria" 
+            FROM paciente as p
+            WHERE TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 12
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 18
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Juventud (14 - 26 años)" AS "Categoria" 
+            FROM paciente as p
+            WHERE TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 14
+            AND  TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) <= 26
+            UNION
+            SELECT COUNT(*) AS "Cantidad", "Adultez (27 o más años)" AS "Categoria" 
+            FROM paciente as p
+            WHERE TIMESTAMPDIFF(YEAR, p.fechaNacimiento , now()) >= 27;
+            """
+    conexion = get_conexion()
+    parametros_edades = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    parametros_edades = cur.fetchall()
+    conexion.close()
+    return parametros_edades
+
+
 def obtener_motivos_anulacion(fecha_desde, fecha_hasta):
     query = """
             SELECT count(*), m.NombreMotivo FROM turno as t, motivo as m

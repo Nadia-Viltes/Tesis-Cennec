@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block reportes_estados_turnos %}
+{% block reportes_parametro_edades %}
 
 <main id="idZonaImpresion" class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -37,39 +37,13 @@
   <!-- ================================================ -->
  
  <div id="padre">
-  <section>
-    <form action="/reportes/estados_turnos" method="POST" id="fechasFormulario">
-      <div class="row">
-        <div class="col-md-4 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaDesde" id="fechaDesde" value={{data.fecha_desde}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaDesde">Fecha desde</label>
-          </div>
-        </div>
-        <div class="col-md-4 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaHasta" id="fechaHasta" value={{data.fecha_hasta}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaHasta">Fecha hasta</label>
-          </div>
-        </div>
-        <div class="col-md-1 mt-4">
-          <div>
-            <button type="submit" class="btn btn-primary" id="buttonFiltrar">Filtrar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </section>
-
-
+  
   <section>
     <div class="row">
       <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
         <div class="card">
           <div class="card-body">
-            <canvas id="charEstadoTurnos"></canvas>
+            <canvas id="charParametroEdades"></canvas>
           </div>
         </div>
       </div>
@@ -89,15 +63,15 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Cantidad</th>
-                  <th scope="col">Estado</th>
+                  <th scope="col">Categoria</th>
                 </tr>
               </thead>
               <tbody>
-                {% for estados in data.estados_turnos %}
+                {% for parametros in data.parametros_edades %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td>{{estados[0]}}</td>
-                  <td>{{estados[1]}}</td>
+                  <td>{{parametros[0]}}</td>
+                  <td>{{parametros[1]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
@@ -133,64 +107,13 @@
   </div>
 
 </main>
-<script type="text/javascript" src="/static/print/printThis.js"></script>
 <script type="module">
   import {graficoBarras} from "/static/validations/reports/grafico_barras.js"
-  import {obtenerFechaActual} from "/static/validations/utils.js"
   const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
 
-  graficoBarras("charEstadoTurnos", "Estado de Turnos", nombreColumnas, valoresColumnas);
+  graficoBarras("charParametroEdades", "Parametro de Edades", nombreColumnas, valoresColumnas);
 
-  let fechaDesdeInput = $("#fechaDesde")
-  let fechaHastaInput = $("#fechaHasta")
-
-  $("#botonImprimir").click(function(){
-    $('#padre').printThis({
-      debug: false,               // show the iframe for debugging
-      importCSS: true,            // import parent page css
-      importStyle: true,         // import style tags
-      printContainer: true,       // print outer container/$.selector
-      loadCSS: "", // path to additional css file - use an array [] for multiple
-      pageTitle: "Estado de Turnos",              // add title to print page
-      removeInline: false,        // remove inline styles from print elements
-      removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
-      printDelay: 333,            // variable print delay
-      header: null,               // prefix to html
-      footer: null,               // postfix to html
-      base: false,                // preserve the BASE tag or accept a string for the URL
-      formValues: true,           // preserve input/form values
-      canvas: true,              // copy canvas content
-      doctypeString: '...',       // enter a different doctype for older markup
-      removeScripts: false,       // remove script tags from print content
-      copyTagClasses: true,      // copy classes from the html & body tag
-      beforePrintEvent: null,     // function for printEvent in iframe
-      beforePrint: null,          // function called before iframe is filled
-      afterPrint: null            // function called before iframe is removed
-    });
-  })
-
-  $("#buttonFiltrar").click(function(){
-    let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))
-    let fechaHasta = new Date(fechaHastaInput.val().replace('-', '/'))
-
-    if (fechaDesdeInput.val() == "") {
-      fechaDesdeInput.addClass("is-invalid")
-      return false;
-    }
-
-    if (fechaHastaInput.val() == "") {
-      fechaHastaInput.addClass("is-invalid")
-      return false;
-    }
-    
-    if (fechaDesde > fechaHasta) {
-      fechaDesdeInput.addClass("is-invalid")
-      fechaHastaInput.addClass("is-invalid")
-      return false;
-    }
-  })
-  
 </script>
 
 {% endblock %}

@@ -1003,7 +1003,7 @@ def reportes():
 @app.route('/reportes/estados_turnos', methods=["GET", "POST"])
 def reportes_estados_turnos():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     estados_turnos = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1035,7 +1035,7 @@ def reportes_estados_turnos():
 @app.route('/reportes/motivos_anulacion_turnos', methods=["GET", "POST"])
 def reportes_movitos_anulacion_turnos():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     motivos_anulacion = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1065,7 +1065,7 @@ def reportes_movitos_anulacion_turnos():
 @app.route('/reportes/ranking_obras_sociales', methods=["GET", "POST"])
 def reportes_ranking_obras_sociales():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     ranking_obras_sociales = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1097,7 +1097,7 @@ def reportes_ranking_obras_sociales():
 @app.route('/reportes/obtener_turnos_especialidad', methods=["GET", "POST"])
 def reportes_turnos_especialidad():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     turnos_especialidad = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1129,7 +1129,7 @@ def reportes_turnos_especialidad():
 @app.route('/reportes/atencion_profesional', methods=["GET", "POST"])
 def reportes_atencion_profesional():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     atencion_profesional = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1160,7 +1160,7 @@ def reportes_atencion_profesional():
 @app.route('/reportes/patologias_admision', methods=["GET", "POST"])
 def reportes_patologias_admision():
     fecha_desde = '2021-01-01'
-    fecha_hasta = date.today().strftime("%Y-%m-%d")
+    fecha_hasta = '2021-12-31'
     patologias_admision = None
     if request.method == 'POST':
         fecha_desde = request.form["fechaDesde"]
@@ -1208,26 +1208,122 @@ def reportes_altas_mensuales_pacientes():
     }
     return render_template('reportes_altas_mensuales_pacientes.html', data=data)
 
-'''
+
 @app.route('/reportes/alta_pacientes_zona')
-def reportes_altas_mensuales_pacientes():
+def reportes_pacientes_zonas():
     alta_pacientes_por_zona = obtener_alta_paciente_por_zonas()
     valores_categorias = []
     nombre_categorias = obtener_detalle_barrios()
     totales = 0
-    for altas in altas_mensuales_genero:
+    for altas in alta_pacientes_por_zona:
         totales += altas[0]
         valores_categorias.append(altas[0])
     data = {
-        'titulo': 'Altas Mensuales de Pacientes',
-        'altas_mensuales_genero': altas_mensuales_genero,
-        'meses': nombre_categorias,
+        'titulo': 'Altas de Pacientes por Zona',
+        'alta_pacientes_por_zona': alta_pacientes_por_zona,
         'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(altas_mensuales_genero),
+        'valores_categorias': json.dumps(alta_pacientes_por_zona),
         'total': totales
     }
-    return render_template('reportes_altas_mensuales_pacientes.html', data=data)
-'''
+    return render_template('reportes_altas_pacientes_zonas.html', data=data)
+
+
+@app.route('/reportes/parametros_edades', methods=["GET", "POST"])
+def reportes_parametros_edades():
+    parametros_edades = obtener_parametros_edades()
+    valores_columnas = []
+    nombre_columnas = []
+    totales = 0
+    for parametros in parametros_edades:
+        totales += parametros[0]
+        valores_columnas.append(parametros[0])
+        nombre_columnas.append(parametros[1])
+    data = {
+        'titulo': 'Parametros por Edades',
+        'parametros_edades': parametros_edades,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': valores_columnas,
+        'total': totales
+    }
+    return render_template('reportes_parametros_edades.html', data=data)
+
+
+@app.route('/reportes/genero_especialidades', methods=["GET", "POST"])
+def reportes_genero_especialidades():
+    genero_especialidades = obtener_genero_especialidades()
+    nombre_columnas = []
+    for especialidades in obtener_lista_de_especialidades():
+        nombre_columnas.append(especialidades[1])
+    totales = 0
+    for generos in genero_especialidades:
+        totales += generos[0]
+    data = {
+        'titulo': 'Generos por Especialidad',
+        'genero_especialidades': genero_especialidades,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': json.dumps(genero_especialidades),
+        'total': totales
+    }
+    return render_template('reportes_genero_especialidades.html', data=data)
+
+
+@app.route('/reportes/horas_trabajadas_profesional', methods=["GET", "POST"])
+def reportes_horas_trabajadas_profesional():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    horas_trabajadas = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        horas_trabajadas = obtener_horas_trabajadas_profesional(
+            fecha_desde, fecha_hasta)
+    else:
+        horas_trabajadas = obtener_horas_trabajadas_profesional(
+            fecha_desde, fecha_hasta)
+    nombres_columnas = []
+    for profesionales in obtener_lista_profesionales():
+        nombres_columnas.append("{} {}".format(
+            profesionales[1], profesionales[2]))
+    totales = 0
+    for horas in horas_trabajadas:
+        totales += float(horas[2])
+    data = {
+        'titulo': 'Horas Trabajadas por profesional',
+        'horas_trabajadas': horas_trabajadas,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'nombres_columnas': json.dumps(nombres_columnas),
+        'valores_columnas': json.dumps(horas_trabajadas),
+        'total': totales
+    }
+    return render_template('reportes_horas_trabajadas_profesional.html', data=data)
+
+
+@app.route('/reportes/reportes_estado_parametro_edades', methods=["GET", "POST"])
+def reportes_estado_parametro_edades():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    estado_parametros_edades = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        estado_parametros_edades = obtener_estado_turno_parametro_edades(
+            fecha_desde, fecha_hasta)
+    else:
+        estado_parametros_edades = obtener_estado_turno_parametro_edades(
+            fecha_desde, fecha_hasta)
+    nombres_columnas = ["Primera Infancia (0-5 años)", "Infancia (6 - 11 años)",
+                        "Adolescencia (12 - 18 años)", "Juventud (14 - 26 años)", "Adultez (27 o más años)"]
+    data = {
+        'titulo': 'Estado de Turnos por Parámetro de Edades',
+        'estado_parametros_edades': estado_parametros_edades,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'nombres_columnas': json.dumps(nombres_columnas),
+        'valores_columnas': json.dumps(estado_parametros_edades)
+    }
+    return render_template('reportes_estado_parametros_edades.html', data=data)
+
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

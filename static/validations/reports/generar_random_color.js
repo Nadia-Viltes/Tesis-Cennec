@@ -14,7 +14,7 @@ export const generateRandomRGBColorList = (data) => {
     return colorList;
 }
 
-const listOfColors = [
+export const listOfColors = () => [
     "rgb(255,0,0)", //red
     "rgb(255,255,0)", //blue
     "rgb(255,99,71)", //tomato
@@ -36,9 +36,8 @@ const listOfColors = [
 export const beautyRGBColorList = (data) => {
     let colorList = [];
     for(let i=0; i < data.length; i++){
-        colorList.push(listOfColors[i])
+        colorList.push(listOfColors()[i])
     }
     return colorList;
 }
 
-//rgb(255, 99, 132)
