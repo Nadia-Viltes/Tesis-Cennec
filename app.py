@@ -1324,6 +1324,12 @@ def reportes_estado_parametro_edades():
     }
     return render_template('reportes_estado_parametros_edades.html', data=data)
 
+@app.route('/reportes/imprimir')
+def imprimir_reporte():
+    data = {
+        'titulo': 'Imprimir reporte',
+    }
+    return render_template('reportes_imprimir.html', data=data)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
