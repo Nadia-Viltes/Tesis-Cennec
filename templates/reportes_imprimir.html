@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href={{ url_for('static', filename='home.css' )}}>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/static/graphs/chart.js"></script>
+    <title>CENNEC</title>
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4" id="imprimir">
+        <div class="row" id="imprimir">
+            <div class="col-12">
+                <div class="imagenImprimir">
+                    <img src={{url_for('static', filename='images/logo_cennec.png')}} alt="Logo_cennec" style="height: 65px;">
+                    <p class="fw-bold">C.E.N.N.E.C - Centro privado de tratamiento para niños y adolescentes con necesidades especiales de Córdoba</p>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="imprimir">
+            <div class="col-12">
+                <p class="fw-light mt-2">
+                    Director médico: Dr. Raul Cordoba<br>
+                    Coordinadora: Lic. Mariana Dalbes<br>
+                    Dirección: Salta 272 - Córdoba, Argentina<br>
+                    Teléfono: 0351-4239394<br>
+                    E-mail: cennecsrl@hotmail.com
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <p class="text-decoration-underline fs-4 text-center">Reportes</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">Nombre del tipo de reporte</div>
+        </div>
+        <div class="row">
+            <div class="col-12">Periodo consultado del reporte: Desde - Hasta</div>
+        </div>
+        <div class="row">
+            <div class="col-12">Grafico</div>
+        </div>
+        <div class="row">
+            <div class="col-12">Detalle del reporte</div>
+        </div>
+        <div class="row">
+            <div class="col-4" id="imprimir">Fecha y hora de la descarga</div>
+            <div class="col-4" id="imprimir">Nombre del usuario</div>
+            <div class="col-4" id="imprimir">Nro. De pagina</div>
+        </div>
+    </div>
+
+</body>
+</html>
