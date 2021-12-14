@@ -349,3 +349,17 @@ def obtener_lista_turnos_por_estado(id_estado):
     turno = cur.fetchall()
     conexion.close()
     return turno
+
+
+def obtener_lista_de_especialidades():
+    query = """
+           	SELECT * 
+            FROM especialidad          
+            """
+    conexion = get_conexion()
+    especialidades = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    especialidades = cur.fetchall()
+    conexion.close()
+    return especialidades

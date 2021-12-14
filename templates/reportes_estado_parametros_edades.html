@@ -3,7 +3,7 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block reportes_estados_turnos %}
+{% block reportes_estado_parametros_edades %}
 
 <main id="idZonaImpresion" class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
@@ -38,7 +38,7 @@
  
  <div id="padre">
   <section>
-    <form action="/reportes/estados_turnos" method="POST" id="fechasFormulario">
+    <form action="/reportes/reportes_estado_parametro_edades" method="POST" id="fechasFormulario">
       <div class="row">
         <div class="col-md-4 m-4">
           <div class="form-floating">
@@ -69,7 +69,7 @@
       <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
         <div class="card">
           <div class="card-body">
-            <canvas id="charEstadoTurnos"></canvas>
+            <canvas id="charEstadoParametrosEdades"></canvas>
           </div>
         </div>
       </div>
@@ -89,25 +89,20 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Cantidad</th>
-                  <th scope="col">Estado</th>
+                  <th scope="col">Categoría</th>
+                  <th scope="col">Tipo Turno</th>
                 </tr>
               </thead>
               <tbody>
-                {% for estados in data.estados_turnos %}
+                {% for estado in data.estado_parametros_edades %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td>{{estados[0]}}</td>
-                  <td>{{estados[1]}}</td>
+                  <td>{{estado[0]}}</td>
+                  <td>{{estado[1]}}</td>
+                  <td>{{estado[2]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td>{{ data.total }}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
             </table>
           </div>
         </div>
@@ -133,42 +128,16 @@
   </div>
 
 </main>
-<script type="text/javascript" src="/static/print/printThis.js"></script>
 <script type="module">
-  import {graficoBarras} from "/static/validations/reports/grafico_barras.js"
-  import {obtenerFechaActual} from "/static/validations/utils.js"
+  import {graficoBarras} from "/static/validations/reports/grafico_barras_parametro_edades_tipo_turnos.js"
+
   const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
 
-  graficoBarras("charEstadoTurnos", "Estado de Turnos", nombreColumnas, valoresColumnas);
+  graficoBarras("charEstadoParametrosEdades", "Parametro Edades Tipo Turno", nombreColumnas, valoresColumnas);
 
   let fechaDesdeInput = $("#fechaDesde")
   let fechaHastaInput = $("#fechaHasta")
-
-  $("#botonImprimir").click(function(){
-    $('#padre').printThis({
-      debug: false,               // show the iframe for debugging
-      importCSS: true,            // import parent page css
-      importStyle: true,         // import style tags
-      printContainer: true,       // print outer container/$.selector
-      loadCSS: "", // path to additional css file - use an array [] for multiple
-      pageTitle: "Estado de Turnos",              // add title to print page
-      removeInline: false,        // remove inline styles from print elements
-      removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
-      printDelay: 333,            // variable print delay
-      header: null,               // prefix to html
-      footer: null,               // postfix to html
-      base: false,                // preserve the BASE tag or accept a string for the URL
-      formValues: true,           // preserve input/form values
-      canvas: true,              // copy canvas content
-      doctypeString: '...',       // enter a different doctype for older markup
-      removeScripts: false,       // remove script tags from print content
-      copyTagClasses: true,      // copy classes from the html & body tag
-      beforePrintEvent: null,     // function for printEvent in iframe
-      beforePrint: null,          // function called before iframe is filled
-      afterPrint: null            // function called before iframe is removed
-    });
-  })
 
   $("#buttonFiltrar").click(function(){
     let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))

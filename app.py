@@ -1228,5 +1228,102 @@ def reportes_pacientes_zonas():
     return render_template('reportes_altas_pacientes_zonas.html', data=data)
 
 
+@app.route('/reportes/parametros_edades', methods=["GET", "POST"])
+def reportes_parametros_edades():
+    parametros_edades = obtener_parametros_edades()
+    valores_columnas = []
+    nombre_columnas = []
+    totales = 0
+    for parametros in parametros_edades:
+        totales += parametros[0]
+        valores_columnas.append(parametros[0])
+        nombre_columnas.append(parametros[1])
+    data = {
+        'titulo': 'Parametros por Edades',
+        'parametros_edades': parametros_edades,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': valores_columnas,
+        'total': totales
+    }
+    return render_template('reportes_parametros_edades.html', data=data)
+
+
+@app.route('/reportes/genero_especialidades', methods=["GET", "POST"])
+def reportes_genero_especialidades():
+    genero_especialidades = obtener_genero_especialidades()
+    nombre_columnas = []
+    for especialidades in obtener_lista_de_especialidades():
+        nombre_columnas.append(especialidades[1])
+    totales = 0
+    for generos in genero_especialidades:
+        totales += generos[0]
+    data = {
+        'titulo': 'Generos por Especialidad',
+        'genero_especialidades': genero_especialidades,
+        'nombres_columnas': json.dumps(nombre_columnas),
+        'valores_columnas': json.dumps(genero_especialidades),
+        'total': totales
+    }
+    return render_template('reportes_genero_especialidades.html', data=data)
+
+
+@app.route('/reportes/horas_trabajadas_profesional', methods=["GET", "POST"])
+def reportes_horas_trabajadas_profesional():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    horas_trabajadas = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        horas_trabajadas = obtener_horas_trabajadas_profesional(
+            fecha_desde, fecha_hasta)
+    else:
+        horas_trabajadas = obtener_horas_trabajadas_profesional(
+            fecha_desde, fecha_hasta)
+    nombres_columnas = []
+    for profesionales in obtener_lista_profesionales():
+        nombres_columnas.append("{} {}".format(
+            profesionales[1], profesionales[2]))
+    totales = 0
+    for horas in horas_trabajadas:
+        totales += float(horas[2])
+    data = {
+        'titulo': 'Horas Trabajadas por profesional',
+        'horas_trabajadas': horas_trabajadas,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'nombres_columnas': json.dumps(nombres_columnas),
+        'valores_columnas': json.dumps(horas_trabajadas),
+        'total': totales
+    }
+    return render_template('reportes_horas_trabajadas_profesional.html', data=data)
+
+
+@app.route('/reportes/reportes_estado_parametro_edades', methods=["GET", "POST"])
+def reportes_estado_parametro_edades():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    estado_parametros_edades = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        estado_parametros_edades = obtener_estado_turno_parametro_edades(
+            fecha_desde, fecha_hasta)
+    else:
+        estado_parametros_edades = obtener_estado_turno_parametro_edades(
+            fecha_desde, fecha_hasta)
+    nombres_columnas = ["Primera Infancia (0-5 años)", "Infancia (6 - 11 años)",
+                        "Adolescencia (12 - 18 años)", "Juventud (14 - 26 años)", "Adultez (27 o más años)"]
+    data = {
+        'titulo': 'Estado de Turnos por Parámetro de Edades',
+        'estado_parametros_edades': estado_parametros_edades,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'nombres_columnas': json.dumps(nombres_columnas),
+        'valores_columnas': json.dumps(estado_parametros_edades)
+    }
+    return render_template('reportes_estado_parametros_edades.html', data=data)
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
