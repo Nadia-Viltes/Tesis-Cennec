@@ -1,0 +1,172 @@
+{% extends 'base/base.html' %}
+
+<!-- ================================================ -->
+<!-- PANTALLA TURNOS -->
+<!-- ================================================ -->
+{% block reportes_motivo_anulacion_especialidad %}
+
+<main class="col-md-9 ms-sm-auto col-lg-10">
+  <div class="chartjs-size-monitor">
+    <div class="chartjs-size-monitor-expand">
+      <div class></div>
+    </div>
+    <div class="chartjs-size-monitor-shrink">
+      <div class=""></div>
+    </div>
+  </div>
+
+  <!-- Breadcrumb -->
+  <nav
+    style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='currentColor'/%3E%3C/svg%3E&#34;);"
+    aria-label="breadcrumb">
+    <ol class="breadcrumb bg-light" style="padding: 15px; border: 0">
+      <li class="breadcrumb-item"><a href="/home">Home</a></li>
+      <li class="breadcrumb-item"><a href="/reportes">Reportes</a></li>
+      <li class="breadcrumb-item active" aria-current="page">{{ data.titulo }}</li>
+    </ol>
+  </nav>
+
+  <!-- Titulo de la pantalla -->
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom pb-0">
+    <h1 class="h2">{{ data.titulo }}</h1>
+  </div>
+
+
+  <!-- ================================================ -->
+  <!-- REPORTES  -->
+  <!-- ================================================ -->
+  
+  <div id="padre">
+  <section>
+    <form action="/reportes/reportes_motivos_anulacion_especialidad" method="POST" id="fechasFormulario">
+      <div class="row">
+        <div class="col-md-4 m-4">
+          <div class="form-floating">
+            <input type="date" class="form-control" name="fechaDesde" id="fechaDesde" value={{data.fecha_desde}}>
+            <div class="invalid-feedback">Fecha no válida</div>
+            <label for="fechaDesde">Fecha desde</label>
+          </div>
+        </div>
+        <div class="col-md-4 m-4">
+          <div class="form-floating">
+            <input type="date" class="form-control" name="fechaHasta" id="fechaHasta" value={{data.fecha_hasta}}>
+            <div class="invalid-feedback">Fecha no válida</div>
+            <label for="fechaHasta">Fecha hasta</label>
+          </div>
+        </div>
+        <div class="col-md-1 mt-4">
+          <div>
+            <button type="submit" class="btn btn-primary" id="buttonFiltrar">Filtrar</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+
+
+  <section>
+    <div class="row">
+        <div class="card col-11" id="cardGrafico">
+          <div class="card-body">
+            <div class="col-lg-8 offset-md-2">
+              <canvas id="charMotivosAnulacionEspecialidad"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<hr/>
+
+  <section>
+    <div class="row">
+      <div class="col-lg-11 col-md-6 mb-4" id="cardGrafico">
+        <h5 class="text-center">Resultados</h5>
+        <div class="card">
+          <div class="card-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Especialidad</th>
+                  <th scope="col">Motivo</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for motivo in data.motivos_anulacion_especialidad %}
+                <tr>
+                  <td>{{loop.index}}</td>
+                  <td>{{motivo[0]}}</td>
+                  <td>{{motivo[1]}}</td>
+                  <td>{{motivo[2]}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td>{{ data.total }}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div>
+    <button type="button" class="btn btn-primary mt-4">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
+  <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+  <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
+  </svg>
+      Imprimir
+    </button>
+  </div>
+</div>
+
+  <!-- ================================================ -->
+  <!-- Config Pantalla -->
+  <!-- ================================================ -->
+
+  <div class="my-4 w-100 chartjs-render-monitor" style="display: block; height: 100px; width: 1218px;">
+  </div>
+
+</main>
+<script type="module">
+  import {graficoBarras} from "/static/validations/reports/grafico_barras_motivo_anulacion_especialidad.js"
+  const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
+  const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
+
+  graficoBarras("charMotivosAnulacionEspecialidad", "Motivos Anulacion por Especialidad", nombreColumnas, valoresColumnas);
+
+  let fechaDesdeInput = $("#fechaDesde")
+  let fechaHastaInput = $("#fechaHasta")
+
+  $("#buttonFiltrar").click(function(){
+    let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))
+    let fechaHasta = new Date(fechaHastaInput.val().replace('-', '/'))
+
+    if (fechaDesdeInput.val() == "") {
+      fechaDesdeInput.addClass("is-invalid")
+      return false;
+    }
+
+    if (fechaHastaInput.val() == "") {
+      fechaHastaInput.addClass("is-invalid")
+      return false;
+    }
+    
+    if (fechaDesde > fechaHasta) {
+      fechaDesdeInput.addClass("is-invalid")
+      fechaHastaInput.addClass("is-invalid")
+      return false;
+    }
+  })
+</script>
+
+
+{% endblock %}
