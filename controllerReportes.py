@@ -140,6 +140,55 @@ def obtener_estado_turno_parametro_edades(fecha_desde, fecha_hasta):
     return estados_turnos_parametros_edades
 
 
+def obtener_ranking_de_pacientes_cantidad_turnos():
+    query = """
+            select sum(ctur.cantidadDisponibles), pac.nombre, pac.apellido
+            from configuracionturno ctur,
+            paciente pac
+            where ctur.IdPaciente = pac.IdPaciente
+            group by ctur.idPaciente
+            limit 10;
+            """
+    conexion = get_conexion()
+    pacientes = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    pacientes = cur.fetchall()
+    conexion.close()
+    return pacientes
+
+
+def obtener_recursos(fecha_desde, fecha_hasta):
+    query = """
+            select rec.IdRecurso, rec.nombre, rec.apellido, trec.nombre, esp.nombre
+            from recurso rec, 
+            tiporecurso trec,
+            profesional pro,
+            especialidad esp
+            where rec.idTipoRecurso = trec.idTipoRecurso
+            and pro.IdRecurso = rec.IdRecurso
+            and pro.IdEspecialidad = esp.idEspecialidad
+            and rec.fechaalta >= '{0}'
+            and rec.fechaalta <= '{1}'
+            and trec.nombre <> 'sistemas'
+            UNION
+            select rec.IdRecurso, rec.nombre, rec.apellido, trec.nombre, "N/A"
+            from recurso rec, 
+            tiporecurso trec
+            where rec.idTipoRecurso = trec.idTipoRecurso
+            and rec.fechaalta >= '{0}'
+            and rec.fechaalta <= '{1}'
+            and trec.nombre not in ('sistemas', 'profesional');
+            """.format(fecha_desde, fecha_hasta)
+    conexion = get_conexion()
+    recursos = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    recursos = cur.fetchall()
+    conexion.close()
+    return recursos
+
+
 def obtener_lista_profesionales():
     query = """
             select rec.IdRecurso, rec.nombre, rec.apellido 

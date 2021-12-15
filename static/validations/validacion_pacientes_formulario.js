@@ -82,7 +82,7 @@ function cortaValor(elemento, cantidadCaracteres){
 //no permite valor negativo
 function valorNegativo(elemento){
     if(elemento.val() < 0){
-        elemento.val(1)
+        elemento.val('')
     }
 }
 
@@ -119,9 +119,9 @@ campoDocumento.keyup(function(){
 
 campoDocumento.change(function(){
     if(campoDocumento.val() <= 0) {
-        campoDocumento.val(1);
+        campoDocumento.val('');
     }    
-})    
+});   
 
 campoCalle.keydown(function(){
     cortaValor(campoCalle, 50)
@@ -133,27 +133,51 @@ campoCalle.keyup(function(){
 
 campoAltura.keydown(function(){
     cortaValor(campoAltura, 10)
+    valorNegativo(campoAltura)
 });
 
 campoAltura.keyup(function(){
     cortaValor(campoAltura, 10)
+    valorNegativo(campoAltura)
 });
+
+campoAltura.change(function(){
+    if(campoAltura.val() <= 0) {
+        campoAltura.val('');
+    }    
+});    
 
 campoPiso.keydown(function(){
     cortaValor(campoPiso, 5)
+    valorNegativo(campoPiso)
 });
 
 campoPiso.keyup(function(){
     cortaValor(campoPiso, 5)
+    valorNegativo(campoPiso)
+});
+
+campoPiso.change(function(){
+    if(campoPiso.val() <= 0) {
+        campoPiso.val('');
+    }    
 });
 
 campoDpto.keydown(function(){
     cortaValor(campoDpto, 5)
+    valorNegativo(campoDpto)
 });
 
 campoDpto.keyup(function(){
     cortaValor(campoDpto, 5)
+    valorNegativo(campoDpto)
 });
+
+campoDpto.change(function(){
+    if(campoDpto.val() <= 0) {
+        campoDpto.val('');
+    }    
+}) 
 
 //limitacion en tab tutor
 campoNombreTutor.keydown(function(){

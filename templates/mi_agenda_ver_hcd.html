@@ -78,7 +78,7 @@
                     <div class="col-md-4">
                         <label for="inputEspecialidad" class="form-label">Especialidad</label>
                         <input type="text" class="form-control" name="inputEspecialidad"
-                            value={{data.usuarioProfesional[3]}} disabled>
+                        disabled value={{data.usuarioProfesional[3]}}>
                     </div>
                 </div>
 
@@ -86,9 +86,15 @@
                     <div class="col-md-8">
                         <label for="TextareaEvoluciones" class="form-label">Evolución</label>
                         <td><input type="hidden" name=caracteres></td>
+                        {% if data.tiene_detalle %}
+                        <textarea class="form-control" id="TextareaEvoluciones" rows="10"
+                            name="InputTextareaEvoluciones" style="resize: none;" onKeyDown="valida_longitud()"
+                            onKeyUp="valida_longitud()" disabled></textarea>
+                        {% else %}
                         <textarea class="form-control" id="TextareaEvoluciones" rows="10"
                             name="InputTextareaEvoluciones" style="resize: none;" onKeyDown="valida_longitud()"
                             onKeyUp="valida_longitud()"></textarea>
+                        {% endif %}
                     </div>
                     <div class="col-md-4">
                         <label for="historialEvolucion" class="form-label">Historial</label>
@@ -114,7 +120,12 @@
                         <a class="btn btn-primary" href="/agenda" role="button">Atrás</a>
                     </div>
                     <div class="col-md-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                        <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
+                        {% if data.tiene_detalle %}
+                            <button type="button" id="buttonGuardarEvolucion" class="btn btn-success" disabled>Guardar</button>
+                        {% else %}
+                            <button type="submit" id="buttonGuardarEvolucion" class="btn btn-success">Guardar</button>
+                        {% endif %}
+                        
                     </div>
                 </div>
             </form>

@@ -96,6 +96,26 @@ def obtener_turno_por_id(id_turno):
     return id_turno
 
 
+def validar_tiene_detalle_evolucion_turno(id_turno):
+    query = """
+            select * 
+            from detalleevolucion
+            where idTurno = {};
+            """.format(id_turno)
+    logger.info("validar_tiene_detalle_evolucion_turno -> {}".format(query))
+    conexion = get_conexion()
+    tiene_detalle = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        tiene_detalle = cur.fetchall()
+    conexion.close()
+    if tiene_detalle != ():
+        tiene_detalle = True
+    else:
+        tiene_detalle = False
+    return tiene_detalle
+
+
 # Lista de valores de MOTIVOS de anulación de turnos
 def obtener_motivoTurno():
     query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null;"
@@ -159,6 +179,29 @@ def chequear_turno_existente(id_profesional, fecha_turno, hora_desde):
     else:
         turno_existente = False
     return turno_existente
+
+
+def chequea_horario_ocupado_paciente(id_paciente, fecha_turno, hora_desde):
+    query = """
+            SELECT *
+            FROM turno as t
+            WHERE IdPaciente= {0}
+            AND t.FechaTurno = '{1}'
+            AND DATE_FORMAT(t.HoraDesde, '%H:%i') = '{2}'
+            AND t.FechaBaja is null;   
+            """.format(id_paciente, fecha_turno, hora_desde)
+    logger.info("chequar_turno_existente -> {}".format(query))
+    conexion = get_conexion()
+    horario_ocupado = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        horario_ocupado = cur.fetchall()
+    conexion.close()
+    if horario_ocupado != ():
+        horario_ocupado = True
+    else:
+        horario_ocupado = False
+    return horario_ocupado
 
 # Acá obtengo el ID del turno asignado para poder actualizar los turnos computados
 

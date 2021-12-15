@@ -421,7 +421,11 @@ def agrega_turnos_admision():
 @app.route('/agenda')
 def agenda():
     usuario = session["usuario_id"]
-    mi_agenda = obtener_lista_turno_mi_agenda(usuario)
+    mi_agenda = None
+    if validar_usuario_admin(session["usuario"]):
+        mi_agenda = obtener_lista_turno_mi_agenda_adm()
+    else:
+        mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
         'turnoprof': mi_agenda
@@ -459,10 +463,11 @@ def iniciar_atencion():
 
 @app.route('/agenda/modal_finalizar_turno/<int:id>')
 def finalizar_turno(id):
-    IdTurno = obtener_turno_por_id(id)
+    tiene_detalle = validar_tiene_detalle_evolucion_turno(id)
     values = {
         'titulo': 'Finalizar atención',
-        'IdTurno': IdTurno
+        'IdTurno': id,
+        'tiene_detalle': tiene_detalle
     }
     return jsonify({'htmlresponse': render_template('mi_agenda_finalizar_atencion.html', data=values)})
 
@@ -487,6 +492,7 @@ def ver_hcd(idpaciente, idturno):
     historial_hcd = obtener_historial_evoluciones(idpaciente)
     turnoId = obtener_turno_atendiendo(idturno)
     detalleTurno = obtener_detalle_con_turno(idturno)
+    tiene_detalle = validar_tiene_detalle_evolucion_turno(idturno)
     usuario = session["usuario_id"]
     usuario_profesional = obtener_datos_usuario_profesional(usuario)
     values = {
@@ -495,7 +501,8 @@ def ver_hcd(idpaciente, idturno):
         'historial': historial_hcd,
         'usuarioProfesional': usuario_profesional,
         'turno_id': turnoId,
-        'detalleTurno': detalleTurno
+        'detalleTurno': detalleTurno,
+        'tiene_detalle': tiene_detalle
     }
     return render_template('mi_agenda_ver_hcd.html', data=values)
 
@@ -597,13 +604,19 @@ def chequear_disponibilidad_turno():
         "request profesionalId -> {}".format(request.form['profesionalId']))
     logger.info("request fechaTurno -> {}".format(request.form['fechaTurno']))
     logger.info("request horaInicio -> {}".format(request.form['horaInicio']))
+    id_paciente = request.form['pacienteId']
     id_profesional = request.form['profesionalId']
     fecha_turno = request.form['fechaTurno']
     hora_inicio = request.form['horaInicio']
-    chequea = chequear_turno_existente(
+    horario_paciente_ocupado = chequea_horario_ocupado_paciente(
+        id_paciente, fecha_turno, hora_inicio)
+    horario_profesional_ocupado = chequear_turno_existente(
         id_profesional, fecha_turno, hora_inicio)
-    logger.info("chequea -> {}".format(chequea))
-    return jsonify({'chequea': chequea})
+    values = {
+        "horario_profesional_ocupado": horario_profesional_ocupado,
+        "horario_paciente_ocupado": horario_paciente_ocupado
+    }
+    return jsonify({'values': values})
 
 
 @app.route('/turnos/grabar_turno', methods=["POST"])
@@ -1025,7 +1038,7 @@ def reportes_estados_turnos():
         'periodos_turnos': periodos_turnos,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombres_columnas': json.dumps(nombre_columnas),
+        'nombres_columnas': json.dumps(nombre_columnas, ensure_ascii=False),
         'valores_columnas': valores_columnas,
         'total': totales
     }
@@ -1055,7 +1068,7 @@ def reportes_movitos_anulacion_turnos():
         'motivos_anulacion_turnos': motivos_anulacion,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombre_categorias': json.dumps(nombre_categorias),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
         'valores_categorias': valores_categorias,
         'total': totales
     }
@@ -1087,7 +1100,7 @@ def reportes_ranking_obras_sociales():
         'ranking_obras_sociales': ranking_obras_sociales,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombre_categorias': json.dumps(nombre_categorias),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
         'valores_categorias': valores_categorias,
         'total': totales
     }
@@ -1119,7 +1132,7 @@ def reportes_turnos_especialidad():
         'turnos_especialidad': turnos_especialidad,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombre_categorias': json.dumps(nombre_categorias),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
         'valores_categorias': valores_categorias,
         'total': totales
     }
@@ -1150,8 +1163,8 @@ def reportes_atencion_profesional():
         'atencion_profesional': atencion_profesional,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(atencion_profesional),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
+        'valores_categorias': json.dumps(atencion_profesional, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_atencion_profesional.html', data=data)
@@ -1181,8 +1194,8 @@ def reportes_patologias_admision():
         'patologias_admision': patologias_admision,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(patologias_admision),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
+        'valores_categorias': json.dumps(patologias_admision, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_patologias_admision.html', data=data)
@@ -1202,8 +1215,8 @@ def reportes_altas_mensuales_pacientes():
         'titulo': 'Altas Mensuales de Pacientes',
         'altas_mensuales_genero': altas_mensuales_genero,
         'meses': nombre_categorias,
-        'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(altas_mensuales_genero),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
+        'valores_categorias': json.dumps(altas_mensuales_genero, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_altas_mensuales_pacientes.html', data=data)
@@ -1221,8 +1234,8 @@ def reportes_pacientes_zonas():
     data = {
         'titulo': 'Altas de Pacientes por Zona',
         'alta_pacientes_por_zona': alta_pacientes_por_zona,
-        'nombre_categorias': json.dumps(nombre_categorias),
-        'valores_categorias': json.dumps(alta_pacientes_por_zona),
+        'nombre_categorias': json.dumps(nombre_categorias, ensure_ascii=False),
+        'valores_categorias': json.dumps(alta_pacientes_por_zona, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_altas_pacientes_zonas.html', data=data)
@@ -1241,7 +1254,7 @@ def reportes_parametros_edades():
     data = {
         'titulo': 'Parametros por Edades',
         'parametros_edades': parametros_edades,
-        'nombres_columnas': json.dumps(nombre_columnas),
+        'nombres_columnas': json.dumps(nombre_columnas, ensure_ascii=False),
         'valores_columnas': valores_columnas,
         'total': totales
     }
@@ -1260,8 +1273,8 @@ def reportes_genero_especialidades():
     data = {
         'titulo': 'Generos por Especialidad',
         'genero_especialidades': genero_especialidades,
-        'nombres_columnas': json.dumps(nombre_columnas),
-        'valores_columnas': json.dumps(genero_especialidades),
+        'nombres_columnas': json.dumps(nombre_columnas, ensure_ascii=False),
+        'valores_columnas': json.dumps(genero_especialidades, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_genero_especialidades.html', data=data)
@@ -1292,8 +1305,8 @@ def reportes_horas_trabajadas_profesional():
         'horas_trabajadas': horas_trabajadas,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombres_columnas': json.dumps(nombres_columnas),
-        'valores_columnas': json.dumps(horas_trabajadas),
+        'nombres_columnas': json.dumps(nombres_columnas, ensure_ascii=False),
+        'valores_columnas': json.dumps(horas_trabajadas, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_horas_trabajadas_profesional.html', data=data)
@@ -1319,8 +1332,8 @@ def reportes_estado_parametro_edades():
         'estado_parametros_edades': estado_parametros_edades,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombres_columnas': json.dumps(nombres_columnas),
-        'valores_columnas': json.dumps(estado_parametros_edades)
+        'nombres_columnas': json.dumps(nombres_columnas, ensure_ascii=False),
+        'valores_columnas': json.dumps(estado_parametros_edades, ensure_ascii=False)
     }
     return render_template('reportes_estado_parametros_edades.html', data=data)
 
@@ -1339,7 +1352,7 @@ def reportes_motivos_anulacion_especialidad():
         motivos_anulacion_especialidad = obtener_motivos_anulacion_especialidad(
             fecha_desde, fecha_hasta)
     nombre_columnas = []
-    totales=0
+    totales = 0
     for motivos in motivos_anulacion_especialidad:
         totales += motivos[0]
     for especialidades in obtener_lista_de_especialidades():
@@ -1349,11 +1362,54 @@ def reportes_motivos_anulacion_especialidad():
         'motivos_anulacion_especialidad': motivos_anulacion_especialidad,
         'fecha_desde': fecha_desde,
         'fecha_hasta': fecha_hasta,
-        'nombres_columnas': json.dumps(nombre_columnas),
-        'valores_columnas': json.dumps(motivos_anulacion_especialidad),
+        'nombres_columnas': json.dumps(nombre_columnas, ensure_ascii=False),
+        'valores_columnas': json.dumps(motivos_anulacion_especialidad, ensure_ascii=False),
         'total': totales
     }
     return render_template('reportes_motivo_anulacion_especialidad.html', data=data)
+
+
+@app.route('/reportes/ranking_pacientes_atenciones', methods=["GET", "POST"])
+def reportes_ranking_pacientes_atenciones():
+    nombres_columnas = []
+    valores_columnas = []
+    ranking_pacientes_atenciones = obtener_ranking_de_pacientes_cantidad_turnos()
+    totales = 0
+    for pacientes in ranking_pacientes_atenciones:
+        nombres_columnas.append("{} {}".format(
+            pacientes[1], pacientes[2]))
+        valores_columnas.append(int(pacientes[0]))
+        totales += pacientes[0]
+    data = {
+        'titulo': 'Ranking de pacientes por cantidad de turnos de admisión',
+        'ranking_pacientes_atenciones': ranking_pacientes_atenciones,
+        'nombres_columnas': json.dumps(nombres_columnas, ensure_ascii=False),
+        'valores_columnas': valores_columnas,
+        'total': totales
+    }
+    return render_template('reportes_pacientes_cantidad_turnos.html', data=data)
+
+
+@app.route('/reportes/reporte_tipo_recursos', methods=["GET", "POST"])
+def reportes_tipo_recursos():
+    fecha_desde = '2021-01-01'
+    fecha_hasta = '2021-12-31'
+    reporte_tipo_recursos = None
+    if request.method == 'POST':
+        fecha_desde = request.form["fechaDesde"]
+        fecha_hasta = request.form["fechaHasta"]
+        reporte_tipo_recursos = obtener_recursos(
+            fecha_desde, fecha_hasta)
+    else:
+        reporte_tipo_recursos = obtener_recursos(
+            fecha_desde, fecha_hasta)
+    data = {
+        'titulo': 'Listado de Recursos por Tipo',
+        'reporte_tipo_recursos': reporte_tipo_recursos,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta
+    }
+    return render_template('reportes_tipo_recursos.html', data=data)
 
 
 if __name__ == '__main__':
