@@ -3,9 +3,9 @@
 <!-- ================================================ -->
 <!-- PANTALLA TURNOS -->
 <!-- ================================================ -->
-{% block reportes_ranking_obras_sociales %}
+{% block reporte_tipo_recursos %}
 
-<main class="col-md-9 ms-sm-auto col-lg-10">
+<main id="idZonaImpresion" class="col-md-9 ms-sm-auto col-lg-10">
   <div class="chartjs-size-monitor">
     <div class="chartjs-size-monitor-expand">
       <div class></div>
@@ -35,9 +35,10 @@
   <!-- ================================================ -->
   <!-- REPORTES  -->
   <!-- ================================================ -->
-  <div id="padre">
-    <section>
-    <form action="/reportes/ranking_obras_sociales" method="POST" id="fechasFormulario">
+ 
+ <div id="padre">
+  <section>
+    <form action="/reportes/reporte_tipo_recursos" method="POST" id="fechasFormulario">
       <div class="row">
         <div class="col-md-4 m-4">
           <div class="form-floating">
@@ -62,24 +63,11 @@
     </form>
   </section>
 
-
-  <section>
-    <div class="row">
-      <div class="card col-11" id="cardGrafico">
-        <div class="card-body">
-          <div class="col-lg-8 offset-md-2">
-            <canvas id="charRankingObraSociales"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
 <hr/>
 
   <section>
     <div class="row">
-      <div class="col-lg-11 col-md-6 mb-4" id="cardGrafico">
+      <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
         <h5 class="text-center">Resultados</h5>
         <div class="card">
           <div class="card-body">
@@ -87,26 +75,21 @@
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Obra Social</th>
+                  <th scope="col">Recurso</th>
+                  <th scope="col">Tipo</th>
+                  <th scope="col">Especialidad</th>
                 </tr>
               </thead>
               <tbody>
-                {% for ranking in data.ranking_obras_sociales %}
+                {% for recurso in data.reporte_tipo_recursos %}
                 <tr>
                   <td>{{loop.index}}</td>
-                  <td>{{ranking[0]}}</td>
-                  <td>{{ranking[1]}}</td>
+                  <td>{{recurso[1]}} {{recurso[2]}}</td>
+                  <td>{{recurso[3]}}</td>
+                  <td>{{recurso[4]}}</td>
                 </tr>
                 {% endfor %}
               </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td>{{ data.total }}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
             </table>
           </div>
         </div>
@@ -115,7 +98,7 @@
   </section>
 
   <div>
-    <button type="button" class="btn btn-primary mt-4">
+    <button type="button" class="btn btn-primary mt-4" id="botonImprimir">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
   <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
   <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
@@ -132,16 +115,36 @@
   </div>
 
 </main>
-<script type="module">
-  import {graficoDona} from "/static/validations/reports/grafico_dona.js"
-  const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
-  const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
-
-  graficoDona("charRankingObraSociales", "Motivos Anulacion", nombreColumnas, valoresColumnas);
+<script type="text/javascript" src="/static/print/printThis.js"></script>
+<script type="text/javascript">
 
   let fechaDesdeInput = $("#fechaDesde")
   let fechaHastaInput = $("#fechaHasta")
 
+  $("#botonImprimir").click(function(){
+    $('#padre').printThis({
+      debug: false,               // show the iframe for debugging
+      importCSS: true,            // import parent page css
+      importStyle: true,         // import style tags
+      printContainer: true,       // print outer container/$.selector
+      loadCSS: "", // path to additional css file - use an array [] for multiple
+      pageTitle: "Estado de Turnos",              // add title to print page
+      removeInline: false,        // remove inline styles from print elements
+      removeInlineSelector: "*",  // custom selectors to filter inline styles. removeInline must be true
+      printDelay: 333,            // variable print delay
+      header: null,               // prefix to html
+      footer: null,               // postfix to html
+      base: false,                // preserve the BASE tag or accept a string for the URL
+      formValues: true,           // preserve input/form values
+      canvas: true,              // copy canvas content
+      doctypeString: '...',       // enter a different doctype for older markup
+      removeScripts: false,       // remove script tags from print content
+      copyTagClasses: true,      // copy classes from the html & body tag
+      beforePrintEvent: null,     // function for printEvent in iframe
+      beforePrint: null,          // function called before iframe is filled
+      afterPrint: null            // function called before iframe is removed
+    });
+  })
 
   $("#buttonFiltrar").click(function(){
     let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))
@@ -163,8 +166,7 @@
       return false;
     }
   })
-
+  
 </script>
-
 
 {% endblock %}

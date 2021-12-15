@@ -188,7 +188,29 @@ def guardar_usuario(idRecurso, nombreUsuario, contrasena, idRol):
     return nuevo_usuario
 
 
+def validar_usuario_admin(usuario_nombre):
+    query = """
+           select 1 
+            from usuario us
+            where us.nombre = 'admin' 
+            and us.nombre = '{}'; 
+            """.format(usuario_nombre)
+    logger.info("chequear admin -> {}".format(query))
+    conexion = get_conexion()
+    es_admin = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        es_admin = cur.fetchall()
+    conexion.close()
+    if es_admin != ():
+        es_admin = True
+    else:
+        es_admin = False
+    return es_admin
+
 # query para obtener USUARIO por ID
+
+
 def obtener_usuario_por_id(idRecurso):
     query = """SELECT IdUsuario, IdRecurso, Nombre, Contraseña, IdRol 
                 FROM usuario 

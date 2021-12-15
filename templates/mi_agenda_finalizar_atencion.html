@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <form action="{{url_for('finalizar_atencion')}}" method="POST">
-                <input type="hidden" value={{data.IdTurno[16]}} name="dataTurnoId">
+                <input type="hidden" value={{data.IdTurno}} name="dataTurnoId">
             <div class="modal-header bg-warning">
                 <h5 class="modal-title" id="FinalizarAtencionLabel">{{data.titulo}}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
@@ -11,13 +11,19 @@
             </div>
             <div class="modal-body">
                         <h5>¡IMPORTANTE!</h5>
+                        {% if data.tiene_detalle %}
                         <p>Estás por finalizar la atención. El turno cambiará de estado a "Atendido".</p>
                         <p>¿Estás de acuerdo?</p>
+                        {% else %}
+                        <p>No se puede finalizar un turno sin detalle, por favor agregue un detalle antes de finalizar</p>
+                        {% endif %}
             </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         id="idCerrarModalEliminar">Cerrar</button>
-                    <button type="submit" class="btn btn-warning">Aceptar</button>
+                    {% if data.tiene_detalle %}   
+                        <button type="submit" class="btn btn-warning">Aceptar</button>
+                    {% endif %}
                 </div>
             </form>
             </div>

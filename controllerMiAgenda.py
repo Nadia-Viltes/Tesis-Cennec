@@ -6,7 +6,7 @@ from config_bd import get_conexion
 
 def obtener_lista_turno_mi_agenda(usuario):
     query = """
-             SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
+            SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
             DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica, u.Nombre	
             FROM turno as tur, paciente as pac, estadoturno as est, historiaclinica as hcd, usuario as u, recurso as rec, 
             profesional as pro, especialidad as esp
@@ -17,11 +17,12 @@ def obtener_lista_turno_mi_agenda(usuario):
             AND esp.IdEspecialidad = pro.IdEspecialidad
             AND pro.IdRecurso = rec.IdRecurso
             AND rec.IdRecurso = u.IdRecurso
-            and u.IdUsuario = {}
+            and u.IdUsuario = {0}
             AND tur.FechaBaja is null
             AND tur.IdProfesional = pro.idProfesional
             order by tur.FechaTurno asc, tur.HoraDesde asc;
             """.format(usuario)
+    logger.info("query para mi agenda {}".format(query))
     conexion = get_conexion()
     turnoProfesional = []
     with conexion.cursor() as cur:
@@ -35,19 +36,14 @@ def obtener_lista_turno_mi_agenda(usuario):
 
 def obtener_lista_turno_mi_agenda_adm():
     query = """
-             SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
-            DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica, u.Nombre	
-            FROM turno as tur, paciente as pac, estadoturno as est, historiaclinica as hcd, usuario as u, recurso as rec, 
-            profesional as pro, especialidad as esp
-            WHERE hcd.IdPaciente = pac.IdPaciente
-            AND pac.IdPaciente = tur.IdPaciente
-            AND tur.IdEstadoTurno = est.IdEstadoTurno
-            AND tur.IdEspecialidad = esp.IdEspecialidad
-            AND esp.IdEspecialidad = pro.IdEspecialidad
-            AND pro.IdRecurso = rec.IdRecurso
-            AND rec.IdRecurso = u.IdRecurso
-            AND tur.FechaBaja is null
-            order by tur.FechaTurno asc, tur.HoraDesde asc;
+            SELECT tur.idTurno, etur.nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), 
+            DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente,pac.Nombre, pac.Apellido, pac.NumeroDocumento, hcd.IdHistoriaClinica
+            FROM turno tur, estadoturno etur, paciente pac, historiaclinica hcd
+            WHERE tur.idEstadoTurno = etur.idEstadoTurno
+            AND tur.IdPaciente = pac.idPaciente
+            AND hcd.idPaciente = tur.idPaciente
+            AND tur.fechabaja is null
+            ORDER BY tur.FechaTurno asc, tur.HoraDesde asc;
             """.format()
     conexion = get_conexion()
     turnoAdm = []

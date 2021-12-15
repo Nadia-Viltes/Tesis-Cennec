@@ -4,6 +4,7 @@ import {obtenerFechaActual} from "/static/validations/utils.js"
 let tipoTurnoSelect = $("[name='tipoTurno']")
 let especialidadSelect = $("[name='nameEspecialidadDropdown']")
 let profesionalSelect = $("[name='nameProfesionalDropdown']")
+let pacienteId = $("[name='inputPacienteId']").val()
 let fechaTurnoCampo = $("[name='fechaTurno']")
 let horaInicioCampo = $("[name='nameHoraInicio']")
 let horaFinCampo = $("#idhoraFin")
@@ -92,15 +93,22 @@ $("#formularioDeTurno").on("submit", function(event) {
         method: "POST",
         async: false,
         data: {
+            "pacienteId": pacienteId,
             "profesionalId": profesionalSelect.val(),
             "fechaTurno": fechaTurnoCampo.val(),
             "horaInicio": horaInicioCampo.val()
         },
         success: function(response) {
-            if(response.chequea){
-                const componenteDeAlerta = "<div class='alert alert-danger' role='alert'>La fecha y hora del turno ya se encuentran ocupados.</div>";
+            if(response.values.horario_profesional_ocupado){
+                const componenteDeAlerta = "<div class='alert alert-danger' role='alert'>La fecha y hora del turno estan ocupados por el profesional</div>";
+                $("#mensajeAlerta").empty();
                 $("#mensajeAlerta").append(componenteDeAlerta);
                 flag = false;
+            }else if(response.values.horario_paciente_ocupado){
+                const componenteDeAlerta = "<div class='alert alert-danger' role='alert'>El paciente tiene otro turno en el mismo horario</div>";
+                $("#mensajeAlerta").empty();
+                $("#mensajeAlerta").append(componenteDeAlerta);
+                flag= false;
             }else{
                 flag = true;
             }
