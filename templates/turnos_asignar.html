@@ -67,7 +67,7 @@
                 </table>
             </div>
         </div>
-        {% if data.turnosadm|length == 0 %}
+        {% if data.turnos_admision_disponibles != True %}
         <div class="container">
             <div class="alert alert-primary d-flex align-items-center" role="alert">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -159,7 +159,7 @@
                     <a class="btn btn-primary" href="/turnos/seleccionar_paciente" role="button">Atrás</a>
                 </div>
                 <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                    <button type="submit"  class="btn btn-success">Guardar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
             </div>
         </div>
@@ -214,7 +214,7 @@
 </main>
 <script type="module" src="/static/validations/validacion_turnos_formulario.js"></script>
 <script type="module">
-    import {obtenerFechaActual} from "/static/validations/utils.js"
+    import { obtenerFechaActual } from "/static/validations/utils.js"
     //la fecha por defecto es la de hoy
     $("[name='fechaTurno']").val(obtenerFechaActual())
 

@@ -45,19 +45,19 @@
             <div class="form-floating">
               <select name="estadosSelect" class="form-select" id="filtrarEstadosId" aria-label="Seleccionar estados">
                 {% if data.estado_seleccionado != None %}
-                  {% for filtro in data.filtro %}
-                    {% if data.estado_seleccionado|int == filtro[0] %}
-                      <option value={{filtro[0]}} selected>{{filtro[1]}}</option>
-                    {% endif %}
-                  {% endfor %}
-                  <option value="todos">Todos</option>
+                {% for filtro in data.filtro %}
+                {% if data.estado_seleccionado|int == filtro[0] %}
+                <option value={{filtro[0]}} selected>{{filtro[1]}}</option>
+                {% endif %}
+                {% endfor %}
+                <option value="todos">Todos</option>
                 {% else %}
-                  <option value="todos" selected>Todos</option>
+                <option value="todos" selected>Todos</option>
                 {% endif %}
                 {% for filtro in data.filtro %}
-                  {% if data.estado_seleccionado|int != filtro[0] %}
-                    <option value={{filtro[0]}}>{{filtro[1]}}</option>
-                  {% endif %}  
+                {% if data.estado_seleccionado|int != filtro[0] %}
+                <option value={{filtro[0]}}>{{filtro[1]}}</option>
+                {% endif %}
                 {% endfor %}
               </select>
               <label for="filtrarEstadosId">Selecciona un estado</label>
@@ -149,6 +149,19 @@
 
 </main>
 <script>
+
+  $(document).ready(function () {
+    if ("{{ data.turno_estado }}" == "asignado") {
+      toastr["success"]("Turno Asignado", "Turnos");
+    }
+    if ("{{ data.turno_estado }}" == "receptado") {
+      toastr["success"]("Turno Receptado", "Turnos");
+    }
+    if ("{{ data.turno_estado }}" == "anulado") {
+      toastr["success"]("Turno Anulado", "Turnos");
+    }
+  })
+
   $("[name='estadosSelect']").change(function () {
     $("#formularioEstadoId").submit()
   });

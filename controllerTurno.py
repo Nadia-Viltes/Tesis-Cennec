@@ -116,7 +116,30 @@ def validar_tiene_detalle_evolucion_turno(id_turno):
     return tiene_detalle
 
 
+def chequear_turno_atendido(id_turno):
+    query = """
+            select * from turno
+            where idTurno = {}
+            and idEstadoTurno in (Select IdEstadoTurno 
+                                FROM estadoturno
+                                WHERE nombre = "Atendido");
+            """.format(id_turno)
+    logger.info("chequar_turno_atendido -> {}".format(query))
+    conexion = get_conexion()
+    turno_atendido = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        turno_atendido = cur.fetchall()
+    conexion.close()
+    if turno_atendido != ():
+        turno_atendido = True
+    else:
+        turno_atendido = False
+    return turno_atendido
+
 # Lista de valores de MOTIVOS de anulación de turnos
+
+
 def obtener_motivoTurno():
     query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null;"
     conexion = get_conexion()
