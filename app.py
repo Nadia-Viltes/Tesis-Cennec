@@ -9,9 +9,7 @@ from controllerTurno import *
 from controllerHCD import *
 from controllerMiAgenda import *
 import json
-import webbrowser
-from flask_weasyprint import HTML, render_pdf
-from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify, session, abort, make_response
+from flask import Flask, render_template, render_template_string, redirect, url_for, request, jsonify, session, abort
 
 app = Flask(__name__)
 app.secret_key = "cennec_tesis"
@@ -1357,30 +1355,6 @@ def imprimir_reporte():
         'usuario': usuario
     }
     return render_template('reportes_imprimir.html', data=data)
-
-
-@app.route('/reportes/imprimir_pdf', methods=["GET", "POST"])
-def imprimir_reporte_pdf():
-    fecha_desde = request.form["fechaDesde"]
-    fecha_hasta = request.form["fechaHasta"]
-    informacionGrafico = request.form["grafico"]
-    listResultado = request.form["resultados"]
-    data = {
-        'titulo': 'Imprimir reporte pdf',
-        'fecha_desde': fecha_desde,
-        'fecha_hasta': fecha_hasta,
-        'informacion_grafico': informacionGrafico,
-        'listado_resultados': listResultado
-    }
-    mi_html = render_template('reportes_imprimir.html', data=data)
-    #pdf = HTML(string=mi_html)
-    response = render_pdf(HTML(string=mi_html))
-    #pdf = pdfkit.from_string(mi_html, False)
-    #response = make_response(pdf)
-    #response.headers["Content-Type"] = "application/pdf"
-    #response.headers["Content-Disposition"] = "inline; filename=output.pdf"
-    return response
-    # return jsonify({'respuesta': response})
 
 
 @app.route('/reportes/reportes_motivos_anulacion_especialidad', methods=["GET", "POST"])
