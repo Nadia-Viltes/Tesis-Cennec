@@ -342,8 +342,9 @@ def obtener_patologias_admision(fecha_desde, fecha_hasta):
             WHERE config.IdEspecialidad = esp.IdEspecialidad
             AND config.IdTipoPatologia = tp.IdTipoPatologia
             AND config.FechaAlta >= '{}'
-			AND config.FechaAlta <= '{}' 
-            group by IdTipoPatologia;
+			AND config.FechaAlta <= '{}'
+            group by IdTipoPatologia
+            ORDER BY esp.nombre;
             """.format(fecha_desde, fecha_hasta)
     conexion = get_conexion()
     patologias_admision = []
