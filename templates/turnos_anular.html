@@ -95,11 +95,15 @@
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <ul class="list-group">
+                                <input type="hidden" name="historiaClinica" value={{data.paciente[20]}} />
+                                <input type="hidden" name="idProfesional" value={{data.id_profesional}} />
                                 {% for turnosAnular in data.turnos_para_anular %}
                                 <li class="list-group-item">
                                     <input type="hidden" value={{turnosAnular[0]}} name="lista_turnos_para_anular">
                                     <input class="form-check-input me-1" type="checkbox" checked disabled>
-                                    El turno se encuentra en estado {{turnosAnular[1]}} para el día {{turnosAnular[2]}} desde las {{turnosAnular[3]}} hs. hasta las {{turnosAnular[4]}} hs. para {{turnosAnular[9]}}
+                                    El turno se encuentra en estado {{turnosAnular[1]}} para el día {{turnosAnular[2]}}
+                                    desde las {{turnosAnular[3]}} hs. hasta las {{turnosAnular[4]}} hs. para
+                                    {{turnosAnular[9]}}
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -109,7 +113,8 @@
                                 <a class="btn btn-primary" href="/turnos" role="button">Atrás</a>
                             </div>
                             <div class="col-6 d-grid gap-3 d-md-flex justify-content-md-end">
-                                <button type="submit" id="guardarButtonReprogramar" class="btn btn-success">Guardar</button>
+                                <button type="submit" id="guardarButtonReprogramar"
+                                    class="btn btn-success">Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -133,6 +138,6 @@
     $("[name='motivoTurno']").attr("oninvalid", "this.setCustomValidity('Este campo es obligatorio')");
     $("[name='motivoTurno']").attr("oninput", "setCustomValidity('')")
     $("[name='motivoTurno']").attr("title", "")
-</script>    
+</script>
 
 {% endblock %}

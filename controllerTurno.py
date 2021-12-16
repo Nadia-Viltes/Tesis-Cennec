@@ -127,6 +127,18 @@ def obtener_motivoTurno():
     conexion.close()
     return motivoTurno
 
+
+def obtener_motivo_turno_by_id(id_motivo):
+    query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null AND IdMotivo = {};".format(
+        id_motivo)
+    conexion = get_conexion()
+    motivoTurno = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    motivoTurno = cur.fetchone()
+    conexion.close()
+    return motivoTurno
+
 # Acá obtengo el ID del turno que está macheado en el app.py
 
 
@@ -303,7 +315,7 @@ def update_turno_reasignado(IdTurno):
     # Listo los turnos que el paciente tiene en asignados para poder anularlos.
 
 
-def obtener_lista_de_turnos_para_anular(id_paciente):
+def obtener_lista_de_turnos_para_anular(id_paciente, id_especialidad):
     query = """
            	  SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
                 FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp
@@ -312,8 +324,9 @@ def obtener_lista_de_turnos_para_anular(id_paciente):
                 AND tur.IdEspecialidad = esp.IdEspecialidad
                 AND est.Nombre like "Asignado"
                 AND tur.FechaBaja is null
-                AND pac.IdPaciente = {};           
-            """.format(id_paciente)
+                AND pac.IdPaciente = {}
+                AND esp.IdEspecialidad = {};               
+            """.format(id_paciente, id_especialidad)
     conexion = get_conexion()
     with conexion.cursor() as cur:
         cur.execute(query)

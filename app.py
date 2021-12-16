@@ -766,15 +766,19 @@ def grabar_turno_reprogramado():
 def anular_turno(id_turno):
     turno = obtener_turno_por_id(id_turno)
     id_paciente = turno[5]
+    id_especialidad = turno[11]
+    id_profesional = turno[13]
     paciente = obtener_paciente_por_id(id_paciente)
-    turnos_para_anular = obtener_lista_de_turnos_para_anular(id_paciente)
+    turnos_para_anular = obtener_lista_de_turnos_para_anular(
+        id_paciente, id_especialidad)
     motivo_turno = obtener_motivoTurno()
     data = {
         'titulo': 'Reprogramar turno',
         'turno': turno,
         'paciente': paciente,
         'turnos_para_anular': turnos_para_anular,
-        'motivoTurno': motivo_turno
+        'motivoTurno': motivo_turno,
+        'id_profesional': id_profesional
     }
     return render_template('turnos_anular.html', data=data)
 
@@ -783,15 +787,25 @@ def anular_turno(id_turno):
 def guardar_anular_turnos():
     usuario = session["usuario_id"]
     motivoTurnosAnulados = request.form["motivoTurno"]
+    id_profesional = request.form["idProfesional"]
     listaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
+    # obtengo la historia clinica
+    historia_clinica_id = int(request.form["historiaClinica"])
+    informacion_motivos = "Anulado - {}".format(
+        obtener_motivo_turno_by_id(motivoTurnosAnulados)[1])
+    evolucion_id = consulta_existe_evolucion(historia_clinica_id)
+    if evolucion_id == None:
+        evolucion_id = insertar_evolucion(historia_clinica_id, usuario)
     # busco el id del estado del turno en asignado
     id_estado = obtener_id_estado_turno_por_estado("Anulado")
     for idTurnosAnulados in listaTurnosAnulados:
         datos_turnos_para_anular = obtener_turno_por_id_asignado_anulado(
             idTurnosAnulados)
-        insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4],
-                              datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
+        turno_anulado_creado = insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4],
+                                                     datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
         update_turno_asignado(idTurnosAnulados)
+        insertar_detalle(evolucion_id, turno_anulado_creado,
+                         id_profesional, informacion_motivos, usuario)
     print("estos son los turnos para anular checkeados {}".format(
         request.form.getlist('lista_turnos_para_anular')))
     # SI DA OK redireccionar
