@@ -52,7 +52,8 @@
       <tr>
         <td>{{rol[1]}}</td>
         <td>{{rol[2]}}</td>
-        <td style="text-align:center;"><a type="button" class="btn btn-primary openBtn" href="/configuracion/rol/editar_rol/{{rol[0]}}" id="{{rol[0]}}" name="button_editar_rol">
+        <td style="text-align:center;"><a type="button" class="btn btn-primary openBtn"
+            href="/configuracion/rol/editar_rol/{{rol[0]}}" id="{{rol[0]}}" name="button_editar_rol">
             Editar</a>
           <button type="button" class="btn btn-danger" name="botonEliminarRol" id="{{rol[0]}}">
             Eliminar</button>
@@ -63,6 +64,7 @@
   </table>
 
   <!-- Paginado -->
+  <!--
   <nav aria-label="Page navigation example">
     <ul class="pagination pagination-sm justify-content-center m-5">
       <li class="page-item disabled">
@@ -76,7 +78,7 @@
       </li>
     </ul>
   </nav>
-
+  -->
 
 
   <div class="form-row text-center">
@@ -100,29 +102,38 @@
 </main>
 <script>
 
-//boton Eliminar
-$(document).on('click', "[name='botonEliminarRol']", function(){
-            let IdRol = $(this).attr("id");
-            $.ajax({
-            url:`/configuracion/rol/modal_eliminar_rol/${IdRol}`,
-            method:"GET",
-            data:{},
-            success:function(data){
-                $('#idSeccionModalEliminar').append(data.htmlresponse)
-                $('#EliminarRol').modal('show');
-            }
-            });
-        });
-        $(document).on('click', '#idCerrarModalEliminar', function(){
-            $.ajax({
-            success:function(data){
-            $('#EliminarRol').modal('hide');
-            {
-                $('#idSeccionModalEliminar').empty()
-            }
-            }
-            });
-        });
+  $(document).ready(function () {
+    if ("{{ data.estado_rol }}" == "creado") {
+      toastr["success"]("Rol creado exitosamente", "Roles");
+    }
+    if ("{{ data.estado_rol }}" == "editado") {
+      toastr["success"]("Rol editado exitosamente", "Roles");
+    }
+  })
+
+  //boton Eliminar
+  $(document).on('click', "[name='botonEliminarRol']", function () {
+    let IdRol = $(this).attr("id");
+    $.ajax({
+      url: `/configuracion/rol/modal_eliminar_rol/${IdRol}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#idSeccionModalEliminar').append(data.htmlresponse)
+        $('#EliminarRol').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalEliminar', function () {
+    $.ajax({
+      success: function (data) {
+        $('#EliminarRol').modal('hide');
+        {
+          $('#idSeccionModalEliminar').empty()
+        }
+      }
+    });
+  });
 
 
 </script>

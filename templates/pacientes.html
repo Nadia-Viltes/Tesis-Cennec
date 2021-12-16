@@ -31,7 +31,8 @@
 
     <!-- Search - Barra de busqueda -->
     <form action="{{url_for('pacientes')}}" method="POST" class="d-flex p-2 m-3" style="width: 515px;">
-        <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar paciente" aria-label="Search">
+        <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar paciente"
+            aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Buscar</button>
     </form>
 
@@ -55,16 +56,18 @@
                 <td>{{pacientes[5]}}</td>
                 <td>{{pacientes[20]}}</td>
                 <td>{{pacientes[15]}} {{pacientes[16]}}</td>
-                <td><a type="button" class="btn btn-primary" name="button_editar_paciente" href="/pacientes/editar_paciente/{{pacientes[0]}}">
-                    Editar
-                </a>
+                <td><a type="button" class="btn btn-primary" name="button_editar_paciente"
+                        href="/pacientes/editar_paciente/{{pacientes[0]}}">
+                        Editar
+                    </a>
                 </td>
             </tr>
             {% endfor %}
-        </tbody>    
+        </tbody>
     </table>
 
     <!-- Paginado -->
+    <!--
     <nav aria-label="Page navigation example ">
         <ul class="pagination pagination-sm justify-content-center m-5 ">
             <li class="page-item disabled ">
@@ -78,7 +81,7 @@
             </li>
         </ul>
     </nav>
-
+    -->
     <!-- Button trigger modal -->
     <div class="form-row text-center">
         <div class="col-12">
@@ -97,27 +100,35 @@
 
 <script>
 
-// Validación de datos
-$(document).ready(function() {
-  $('.invalid-feedback').hide();
-  $('#AgregarPaciente_form').submit(function(validar){
+    // Validación de datos
+    $(document).ready(function () {
+        $('.invalid-feedback').hide();
+        $('#AgregarPaciente_form').submit(function (validar) {
             let nombrePaciente = "[name='nombrePaciente']".val().trim();
             if (nombrePaciente.length < 0) {
                 $('.invalid-feedback').show();
                 return;
             }
             $('.invalid-feedback').hide();
+        });
     });
-});
-//validar fecha
-$("[name='fechaNacimiento']").focusout(function(){
-  s= $(this).val();
-  var bits = s.split('/');
-  var d = new Date(bits[2] + '/' + bits[0] + '/' + bits[1]);
-  alert(d);
-}); 
+
+    $(document).ready(function () {
+        if ("{{ data.pacientes_estado }}" == "creado") {
+            toastr["success"]("Paciente creado exitosamente", "Pacientes");
+        }
+        if ("{{ data.pacientes_estado }}" == "editado") {
+            toastr["success"]("Paciente editado exitosamente", "Pacientes");
+        }
+    })
+    //validar fecha
+    $("[name='fechaNacimiento']").focusout(function () {
+        s = $(this).val();
+        var bits = s.split('/');
+        var d = new Date(bits[2] + '/' + bits[0] + '/' + bits[1]);
+        alert(d);
+    }); 
 </script>
 
 
 {% endblock %}
-

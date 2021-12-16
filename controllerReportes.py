@@ -32,7 +32,8 @@ def obtener_genero_especialidades():
                     and esp.IdEspecialidad = tur.idEspecialidad
                     and tur.idPaciente = pac.idPaciente
                     group by esp.Nombre, pac.IdPaciente, pac.genero) a
-            group by nombre, genero;  
+            group by nombre, genero
+            order by nombre, genero desc;  
             """
     conexion = get_conexion()
     genero_especialidades = []

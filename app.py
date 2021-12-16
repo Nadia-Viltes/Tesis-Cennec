@@ -13,6 +13,12 @@ from flask import Flask, render_template, render_template_string, redirect, url_
 
 app = Flask(__name__)
 app.secret_key = "cennec_tesis"
+toast_states = {}
+toast_states["turno_estado"] = ""
+toast_states["pacientes_estado"] = ""
+toast_states["hcd_estado_agenda"] = ""
+toast_states["estado_rol"] = ""
+toast_states["estado_usuario"] = ""
 
 
 def get_modulo_by_privilegio(privilegio):
@@ -117,8 +123,10 @@ def pacientes():
         pacientes = obtener_pacientes()
     data = {
         'titulo': 'Pacientes',
-        'pacientes': pacientes
+        'pacientes': pacientes,
+        'pacientes_estado': toast_states["pacientes_estado"]
     }
+    toast_states["pacientes_estado"] = ""
     return render_template('pacientes.html', data=data)
 
 # Pantalla de AGREGAR PACIENTE
@@ -227,6 +235,7 @@ def guardar_paciente():
     insertar_HCD(idPaciente)
     insertar_afiliacion(idPaciente, financiador, nroAfiliado)
     # SI DA OK redireccionar
+    toast_states["pacientes_estado"] = "creado"
     return redirect("/pacientes")
 
 # pantalla de EDITAR PACIENTE
@@ -290,6 +299,7 @@ def actualizar_pacientes():
     actualizar_afiliacion(financiador, nroAfiliado, idPaciente)
     actualizar_paciente(nombrePaciente, apellidoPaciente, genero,
                         tipoDocumento, nroDocumento, fechaNacimiento, idPaciente)
+    toast_states["pacientes_estado"] = "editado"
     return redirect("/pacientes")
 
 
@@ -428,8 +438,10 @@ def agenda():
         mi_agenda = obtener_lista_turno_mi_agenda(usuario)
     data = {
         'titulo': 'Mi Agenda',
-        'turnoprof': mi_agenda
+        'turnoprof': mi_agenda,
+        'hcd_estado_agenda': toast_states["hcd_estado_agenda"]
     }
+    toast_states["hcd_estado_agenda"] = ""
     return render_template('mi_agenda.html', data=data)
 
 # Acá se abre el modal de iniciar atención
@@ -493,6 +505,7 @@ def ver_hcd(idpaciente, idturno):
     turnoId = obtener_turno_atendiendo(idturno)
     detalleTurno = obtener_detalle_con_turno(idturno)
     tiene_detalle = validar_tiene_detalle_evolucion_turno(idturno)
+    turno_atendido = chequear_turno_atendido(idturno)
     usuario = session["usuario_id"]
     usuario_profesional = obtener_datos_usuario_profesional(usuario)
     values = {
@@ -502,7 +515,8 @@ def ver_hcd(idpaciente, idturno):
         'usuarioProfesional': usuario_profesional,
         'turno_id': turnoId,
         'detalleTurno': detalleTurno,
-        'tiene_detalle': tiene_detalle
+        'tiene_detalle': tiene_detalle,
+        'turno_atendido': turno_atendido
     }
     return render_template('mi_agenda_ver_hcd.html', data=values)
 
@@ -523,6 +537,7 @@ def guardar_detalle():
         insertar_detalle(evolucion, inputIdTurno,
                          inputProfesional, InputTextareaEvoluciones, usuario)
     # SI DA OK redireccionar
+    toast_states["hcd_estado_agenda"] = "detalle_agregado"
     return redirect("/agenda")
 
 
@@ -552,6 +567,7 @@ def editar_detalle():
     actualizar_detalle(inputIdEvolucion, inputIdTurnoHis, inputProfesionalHis,
                        InputTextareaEvolucionesHis, usuario, inputIdDetEvo)
     # SI DA OK redireccionar
+    toast_states["hcd_estado_agenda"] = "detalle_editado"
     return redirect("/agenda")
 
 # Operación para mostrar la lista de turnos
@@ -572,8 +588,10 @@ def turnos():
         'titulo': 'Turnos',
         'turnos': turnos,
         'filtro': filtro,
-        'estado_seleccionado': estado
+        'estado_seleccionado': estado,
+        'turno_estado': toast_states["turno_estado"]
     }
+    toast_states["turno_estado"] = ""
     return render_template('turnos.html', data=data)
 
 # Acción para ver la pantalla de asignar turno
@@ -586,13 +604,15 @@ def asignar_turno(id):
     tipoTurno = obtener_tipoTurno()
     especialidad = obtener_especialidad_turnos(id)
     turnosadm = obtener_lista_turnos_admision(id)
+    turnos_admision_disponibles = chequear_turnos_adminision_disponibles(id)
     values = {
         'titulo': 'Asignar turno',
         'subtitulo': 'Seleccionar turno',
         'paciente': paciente,
         'tipoTurno': tipoTurno,
         'especialidad': especialidad,
-        'turnosadm': turnosadm
+        'turnosadm': turnosadm,
+        'turnos_admision_disponibles': turnos_admision_disponibles
     }
     return render_template('turnos_asignar.html', data=values)
 
@@ -638,6 +658,7 @@ def grabar_turno():
     id_configturno = obtener_id_configuracion_turno(
         id_paciente, id_especialidad)
     actualizar_turnos_computados(id_configturno)
+    toast_states["turno_estado"] = "asignado"
     return redirect("/turnos")
 
 # Acción para cargar de Profesionales en dropdown una vez seleccionada la especialidad
@@ -713,6 +734,7 @@ def grabar_turno_receptado():
     update_turno_asignado(id_turno_asignado)
     insertar_turno_receptado(id_tipo_turno, id_especialidad, id_paciente, fecha_turno,
                              hora_inicio, hora_fin, id_estado, usuario, id_profesional, id_turno_asignado)
+    toast_states["turno_estado"] = "receptado"
     return redirect("/turnos")
 
 # Acción para ver la pantalla de REPROGRAMAR turno
@@ -766,15 +788,19 @@ def grabar_turno_reprogramado():
 def anular_turno(id_turno):
     turno = obtener_turno_por_id(id_turno)
     id_paciente = turno[5]
+    id_especialidad = turno[11]
+    id_profesional = turno[13]
     paciente = obtener_paciente_por_id(id_paciente)
-    turnos_para_anular = obtener_lista_de_turnos_para_anular(id_paciente)
+    turnos_para_anular = obtener_lista_de_turnos_para_anular(
+        id_paciente, id_especialidad)
     motivo_turno = obtener_motivoTurno()
     data = {
         'titulo': 'Reprogramar turno',
         'turno': turno,
         'paciente': paciente,
         'turnos_para_anular': turnos_para_anular,
-        'motivoTurno': motivo_turno
+        'motivoTurno': motivo_turno,
+        'id_profesional': id_profesional
     }
     return render_template('turnos_anular.html', data=data)
 
@@ -783,18 +809,29 @@ def anular_turno(id_turno):
 def guardar_anular_turnos():
     usuario = session["usuario_id"]
     motivoTurnosAnulados = request.form["motivoTurno"]
+    id_profesional = request.form["idProfesional"]
     listaTurnosAnulados = request.form.getlist('lista_turnos_para_anular')
+    # obtengo la historia clinica
+    historia_clinica_id = int(request.form["historiaClinica"])
+    informacion_motivos = "Anulado - {}".format(
+        obtener_motivo_turno_by_id(motivoTurnosAnulados)[1])
+    evolucion_id = consulta_existe_evolucion(historia_clinica_id)
+    if evolucion_id == None:
+        evolucion_id = insertar_evolucion(historia_clinica_id, usuario)
     # busco el id del estado del turno en asignado
     id_estado = obtener_id_estado_turno_por_estado("Anulado")
     for idTurnosAnulados in listaTurnosAnulados:
         datos_turnos_para_anular = obtener_turno_por_id_asignado_anulado(
             idTurnosAnulados)
-        insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4],
-                              datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
+        turno_anulado_creado = insertar_anular_turno(datos_turnos_para_anular[1], datos_turnos_para_anular[2], datos_turnos_para_anular[3], datos_turnos_para_anular[4],
+                                                     datos_turnos_para_anular[5], datos_turnos_para_anular[6], datos_turnos_para_anular[7], id_estado, motivoTurnosAnulados, usuario, idTurnosAnulados)
         update_turno_asignado(idTurnosAnulados)
+        insertar_detalle(evolucion_id, turno_anulado_creado,
+                         id_profesional, informacion_motivos, usuario)
     print("estos son los turnos para anular checkeados {}".format(
         request.form.getlist('lista_turnos_para_anular')))
     # SI DA OK redireccionar
+    toast_states["turno_estado"] = "anulado"
     return redirect("/turnos")
 
 
@@ -825,8 +862,10 @@ def configuracion_roles():
         rol = obtener_lista_roles()
     data = {
         'titulo': 'Configuración de roles',
-        'rol': rol
+        'rol': rol,
+        'estado_rol': toast_states["estado_rol"]
     }
+    toast_states["estado_rol"] = ""
     return render_template('rol.html', data=data)
 
 
@@ -851,6 +890,7 @@ def guardar_rol():
     logger.info("estos son los privilegios checkeados {}".format(
         request.form.getlist('privilegio_nombre')))
     # SI DA OK redireccionar
+    toast_states["estado_rol"] = "creado"
     return redirect("/configuracion/rol")
 
 
@@ -865,6 +905,7 @@ def editar_rol(id):
         update_eliminar_rolprivilegio(id)
         for id_privilegio in id_privilegios:
             insertar_rol_privilegio(id, id_privilegio)
+        toast_states["estado_rol"] = "editado"
         return redirect("/configuracion/rol")
     IdRol = obtener_id_rol(id)
     privilegios = obtener_lista_privilegios()
@@ -911,8 +952,10 @@ def configuracion_usuarios():
         usuarios = obtener_lista_usuarios()
     data = {
         'titulo': 'Configuración de usuarios',
-        'usuario': usuarios
+        'usuario': usuarios,
+        'estado_usuario': toast_states["estado_usuario"]
     }
+    toast_states["estado_usuario"] = ""
     return render_template('usuarios.html', data=data)
 
 
@@ -960,6 +1003,7 @@ def grabar_usuario():
     rolSeleccionado = request.form["checkRol"]
     guardar_usuario(idRecurso, nombreUsuario, contrasena, rolSeleccionado)
     # SI DA OK redireccionar
+    toast_states["estado_usuario"] = "creado"
     return redirect("/configuracion/usuarios")
 
 
@@ -969,6 +1013,7 @@ def editar_usuario(id):
         password = request.form["inputPasswordUsuario"]
         rol_seleccionado = request.form["checkRol"]
         update_rol_pass_by_id_usuario(rol_seleccionado, password, id)
+        toast_states["estado_usuario"] = "editado"
         return redirect("/configuracion/usuarios")
     usuario = obtener_usuario_por_id(id)
     recurso = obtener_recurso_por_id_usuario(id)

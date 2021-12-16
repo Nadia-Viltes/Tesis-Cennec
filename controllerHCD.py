@@ -103,6 +103,26 @@ def obtener_lista_turnos_admision(idPaciente):
     conexion.close()
     return turnosadm
 
+
+def chequear_turnos_adminision_disponibles(id_paciente):
+    query = """
+            SELECT IFNULL(SUM(cantidadDisponibles) - SUM(CantidadComputados), 0) 
+            FROM configuracionturno
+            WHERE idpaciente = {}
+            AND fechabaja is null;
+            """.format(id_paciente)
+    conexion = get_conexion()
+    chequea_turno_admision = False
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        chequea_turno_admision = cur.fetchone()
+    conexion.close()
+    if chequea_turno_admision[0] != 0:
+        chequea_turno_admision = True
+    else:
+        chequea_turno_admision = False
+    return chequea_turno_admision
+
  # SELECT PARA VER LA CANTIDAD DE TURNOS DE ADMINISIÓN ASIGNADOS
 
 

@@ -35,72 +35,77 @@
   <!-- ================================================ -->
   <!-- REPORTES  -->
   <!-- ================================================ -->
- 
- <div id="padre">
 
-  <section>
-    <div class="row">
-      <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
-        <div class="card">
-          <div class="card-body">
-            <canvas id="charGeneroEspecialidades"></canvas>
+  <div id="padre">
+
+    <section>
+      <div class="row">
+        <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
+          <div class="card">
+            <div class="card-body">
+              <canvas id="charGeneroEspecialidades"></canvas>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-<hr/>
+    <hr />
 
-  <section name='resultadosSection'>
-    <div class="row">
-      <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
-        <h5 class="text-center">Resultados</h5>
-        <div class="card">
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Estado</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for genero in data.genero_especialidades %}
-                <tr>
-                  <td>{{loop.index}}</td>
-                  <td>{{genero[0]}}</td>
-                  <td>{{genero[1]}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td>{{ data.total }}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
+    <section name='resultadosSection'>
+      <div class="row">
+        <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
+          <h5 class="text-center">Resultados</h5>
+          <div class="card">
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Género</th>
+                    <th scope="col">Especialidad</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for genero in data.genero_especialidades %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{genero[0]}}</td>
+                    <td>{{genero[2]}}</td>
+                    <td>{{genero[1]}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td>{{ data.total }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
-    <div>
-      <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
-    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
-    </svg>
-        Imprimir
-      </button>
-    </div>
+    <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
+      <div>
+        <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
+            viewBox="0 0 16 16">
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+            <path
+              d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+            </path>
+          </svg>
+          Imprimir
+        </button>
+      </div>
     </form>
-</div>
+  </div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -110,14 +115,14 @@
 
 </main>
 <script type="module">
-  import {graficoBarrasStacked} from "/static/validations/reports/grafico_barras_stacked.js"
+  import { graficoBarrasStacked } from "/static/validations/reports/grafico_barras_stacked.js"
 
   const nombreColumnas = JSON.parse('{{ data.nombres_columnas|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_columnas|safe }}')
 
   graficoBarrasStacked("charGeneroEspecialidades", "Genero por Especialidades", nombreColumnas, valoresColumnas);
 
-  $("#formImprimir").submit(function(e){
+  $("#formImprimir").submit(function (e) {
     let graficoCanvas = document.getElementById("charGeneroEspecialidades");
     let informacionGrafico = graficoCanvas.toDataURL();
     let seccionResultados = $("[name='resultadosSection']")

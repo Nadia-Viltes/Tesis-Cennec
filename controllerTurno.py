@@ -116,7 +116,30 @@ def validar_tiene_detalle_evolucion_turno(id_turno):
     return tiene_detalle
 
 
+def chequear_turno_atendido(id_turno):
+    query = """
+            select * from turno
+            where idTurno = {}
+            and idEstadoTurno in (Select IdEstadoTurno 
+                                FROM estadoturno
+                                WHERE nombre = "Atendido");
+            """.format(id_turno)
+    logger.info("chequar_turno_atendido -> {}".format(query))
+    conexion = get_conexion()
+    turno_atendido = None
+    with conexion.cursor() as cur:
+        cur.execute(query)
+        turno_atendido = cur.fetchall()
+    conexion.close()
+    if turno_atendido != ():
+        turno_atendido = True
+    else:
+        turno_atendido = False
+    return turno_atendido
+
 # Lista de valores de MOTIVOS de anulación de turnos
+
+
 def obtener_motivoTurno():
     query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null;"
     conexion = get_conexion()
@@ -124,6 +147,18 @@ def obtener_motivoTurno():
     with conexion.cursor() as cur:
         cur.execute(query)
     motivoTurno = cur.fetchall()
+    conexion.close()
+    return motivoTurno
+
+
+def obtener_motivo_turno_by_id(id_motivo):
+    query = "SELECT IdMotivo, NombreMotivo FROM motivo WHERE FechaBaja is null AND IdMotivo = {};".format(
+        id_motivo)
+    conexion = get_conexion()
+    motivoTurno = []
+    with conexion.cursor() as cur:
+        cur.execute(query)
+    motivoTurno = cur.fetchone()
     conexion.close()
     return motivoTurno
 
@@ -303,7 +338,7 @@ def update_turno_reasignado(IdTurno):
     # Listo los turnos que el paciente tiene en asignados para poder anularlos.
 
 
-def obtener_lista_de_turnos_para_anular(id_paciente):
+def obtener_lista_de_turnos_para_anular(id_paciente, id_especialidad):
     query = """
            	  SELECT tur.IdTurno, est.Nombre, DATE_FORMAT(tur.FechaTurno, '%d/%m/%Y'), DATE_FORMAT(tur.HoraDesde, '%H:%i'), DATE_FORMAT(tur.HoraHasta, '%H:%i'), pac.IdPaciente, pac.Nombre, pac.Apellido, pac.NumeroDocumento, esp.Nombre
                 FROM estadoturno AS est, turno AS tur, paciente AS pac, especialidad AS esp
@@ -312,8 +347,9 @@ def obtener_lista_de_turnos_para_anular(id_paciente):
                 AND tur.IdEspecialidad = esp.IdEspecialidad
                 AND est.Nombre like "Asignado"
                 AND tur.FechaBaja is null
-                AND pac.IdPaciente = {};           
-            """.format(id_paciente)
+                AND pac.IdPaciente = {}
+                AND esp.IdEspecialidad = {};               
+            """.format(id_paciente, id_especialidad)
     conexion = get_conexion()
     with conexion.cursor() as cur:
         cur.execute(query)

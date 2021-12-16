@@ -57,57 +57,79 @@
         <td>{{turnoprof[1]}}</td>
         <td>{{turnoprof[6]}} {{turnoprof[7]}}</td>
         <td>{{turnoprof[8]}}</td>
-        {% if turnoprof[1].lower() == "receptado"  %}
+        {% if turnoprof[1].lower() == "receptado" %}
         <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
             id="{{turnoprof[0]}}">
             Iniciar atención
           </button>
-          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" disabled>
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}"
+            disabled>
             Finalizar atención
           </button>
-          <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button">
+          <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}"
+            role="button">
             Ver HCD
           </a>
           {% endif %}
-          {% if turnoprof[1].lower() == "asignado"  %}
-          <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
-            id="{{turnoprof[0]}}" disabled>
-            Iniciar atención
-          </button>
-          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" disabled>
-            Finalizar atención
-          </button>
-          <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button" id={{turnoprof[5]}}>
-            Ver HCD
-          </a>
-        </td>
-        {% endif %}
-          {% if turnoprof[1].lower() == "atendiendo"  %}
-          <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
-            id="{{turnoprof[0]}}" disabled>
-            Iniciar atención
-          </button>
-          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" >
-            Finalizar atención
-          </button>
-          <a class="btn btn-success" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button" id={{turnoprof[5]}}>
-            Ver HCD
-          </a>
-        </td>
-        {% endif %}
-        {% if turnoprof[1].lower() == "atendido"  %}
+          {% if turnoprof[1].lower() == "asignado" %}
         <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
-          id="{{turnoprof[0]}}" disabled>
-          Iniciar atención
-        </button>
-        <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}" disabled>
-          Finalizar atención
-        </button>
-        <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}" role="button" id={{turnoprof[5]}}>
-          Ver HCD
-        </a>
-      </td>
-      {% endif %}
+            id="{{turnoprof[0]}}" disabled>
+            Iniciar atención
+          </button>
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}"
+            disabled>
+            Finalizar atención
+          </button>
+          <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}"
+            role="button" id={{turnoprof[5]}}>
+            Ver HCD
+          </a>
+        </td>
+        {% endif %}
+        {% if turnoprof[1].lower() == "atendiendo" %}
+        <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
+            id="{{turnoprof[0]}}" disabled>
+            Iniciar atención
+          </button>
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}">
+            Finalizar atención
+          </button>
+          <a class="btn btn-success" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}"
+            role="button" id={{turnoprof[5]}}>
+            Ver HCD
+          </a>
+        </td>
+        {% endif %}
+        {% if turnoprof[1].lower() == "atendido" %}
+        <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
+            id="{{turnoprof[0]}}" disabled>
+            Iniciar atención
+          </button>
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}"
+            disabled>
+            Finalizar atención
+          </button>
+          <a class="btn btn-success" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}"
+            role="button" id={{turnoprof[5]}}>
+            Ver HCD
+          </a>
+        </td>
+        {% endif %}
+        {% if turnoprof[1].lower() == "ausente" %}
+        <td style="text-align: right;"><button type="button" class="btn btn-info openBtn" name="button_iniciar_atencion"
+            id="{{turnoprof[0]}}" disabled>
+            Iniciar atención
+          </button>
+          <button type="button" class="btn btn-warning openBtn" name="button_finalizar_atencion" id="{{turnoprof[0]}}"
+            disabled>
+            Finalizar atención
+          </button>
+          <a class="btn btn-success disabled" href="/agenda/ver_hcd/paciente/{{turnoprof[5]}}/turno/{{turnoprof[0]}}"
+            role="button" id={{turnoprof[5]}}>
+            Ver HCD
+          </a>
+        </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
@@ -131,6 +153,16 @@
 </main>
 
 <script>
+  $(document).ready(function () {
+    if ("{{ data.hcd_estado_agenda }}" == "detalle_agregado") {
+      toastr["success"]("Detalle Agregado Exitosamente", "Agenda");
+    }
+    if ("{{ data.hcd_estado_agenda }}" == "detalle_editado") {
+      toastr["success"]("Detalle Editado Exitosamente", "Agenda");
+    }
+  })
+
+
   //boton Iniciar atención
 
   $(document).on('click', "[name='button_iniciar_atencion']", function () {
@@ -156,8 +188,8 @@
   });
 
 
-//boton Finalizar atención
-$(document).on('click', "[name='button_finalizar_atencion']", function () {
+  //boton Finalizar atención
+  $(document).on('click', "[name='button_finalizar_atencion']", function () {
     let IdTurno = $(this).attr("id");
     $.ajax({
       url: `/agenda/modal_finalizar_turno/${IdTurno}`,

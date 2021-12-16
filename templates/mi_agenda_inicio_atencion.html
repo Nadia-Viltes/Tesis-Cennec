@@ -4,22 +4,22 @@
         <div class="modal-content">
             <form action="{{url_for('iniciar_atencion')}}" method="POST">
                 <input type="hidden" value={{data.IdTurno[16]}} name="dataTurnoId">
-            <div class="modal-header bg-info">
-                <h5 class="modal-title" id="InicioAtencionLabel">{{data.titulo}}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    id="idCerrarModalEliminar"></button>
-            </div>
-            <div class="modal-body">
-                        <h5>¡IMPORTANTE!</h5>
-                        <p>Estás por inciar atención. El turno cambiará de estado a "Atendiendo".</p>
-                        <p>¿Estás de acuerdo?</p>
-            </div>
+                <div class="modal-header bg-info">
+                    <h5 class="modal-title" id="InicioAtencionLabel">{{data.titulo}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="idCerrarModalEliminar"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>¡IMPORTANTE!</h5>
+                    <p>Estás por iniciar atención. El turno cambiará de estado a "Atendiendo".</p>
+                    <p>¿Estás de acuerdo?</p>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                         id="idCerrarModalEliminar">Cerrar</button>
                     <button type="submit" class="btn btn-info">Aceptar</button>
                 </div>
             </form>
-            </div>
         </div>
+    </div>
 </div>

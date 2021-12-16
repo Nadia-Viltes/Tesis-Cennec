@@ -33,7 +33,8 @@
 
   <!-- Search - Barra de busqueda -->
   <form action="{{url_for('configuracion_usuarios')}}" method="POST" class="d-flex p-2 m-3" style="width: 515px;">
-    <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar usuario" aria-label="Buscar">
+    <input class="form-control me-2 flex-end" name="buscar" type="search" placeholder="Buscar usuario"
+      aria-label="Buscar">
     <button class="btn btn-outline-success" type="submit">Buscar</button>
   </form>
 
@@ -48,31 +49,33 @@
       </tr>
     </thead>
     <tbody>
-        {% for usuario in data.usuario %}
-        <tr>
-          <td>{{usuario[4]}}</td>
-          <td>{{usuario[3]}}</td>
-          <td>{{usuario[1]}} {{usuario[2]}}</td>
-          <td><a type="button" class="btn btn-info" href="/configuracion/usuarios/editar_usuario/{{usuario[0]}}" name="EditarUsuario" id={{usuario[0]}}>
-              Editar</a>
-              <a type="button" class="btn btn-danger" name="botonEliminarUsuario" id={{usuario[0]}}>
-                Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
+      {% for usuario in data.usuario %}
+      <tr>
+        <td>{{usuario[4]}}</td>
+        <td>{{usuario[3]}}</td>
+        <td>{{usuario[1]}} {{usuario[2]}}</td>
+        <td><a type="button" class="btn btn-info" href="/configuracion/usuarios/editar_usuario/{{usuario[0]}}"
+            name="EditarUsuario" id={{usuario[0]}}>
+            Editar</a>
+          <a type="button" class="btn btn-danger" name="botonEliminarUsuario" id={{usuario[0]}}>
+            Eliminar</a>
+        </td>
+      </tr>
+      {% endfor %}
     </tbody>
   </table>
 
 
-    <div class="form-row text-center">
-      <div class="col-12">
-        <a class="btn btn-success" href="/configuracion/usuarios/seleccionar_recurso" role="button">Agregar nuevo usuario</a>
-      </div>
+  <div class="form-row text-center">
+    <div class="col-12">
+      <a class="btn btn-success" href="/configuracion/usuarios/seleccionar_recurso" role="button">Agregar nuevo
+        usuario</a>
     </div>
+  </div>
 
 
-    <div id="idSeccionModalEliminar">
-    </div>
+  <div id="idSeccionModalEliminar">
+  </div>
 
 
   <!-- ================================================ -->
@@ -86,29 +89,38 @@
 </main>
 
 <script>
-//boton Eliminar
-$(document).on('click', "[name='botonEliminarUsuario']", function(){
-            let IdUsuario = $(this).attr("id");
-            $.ajax({
-            url:`/configuracion/usuarios/modal_eliminar_usuario/${IdUsuario}`,
-            method:"GET",
-            data:{},
-            success:function(data){
-                $('#idSeccionModalEliminar').append(data.htmlresponse)
-                $('#EliminarUsuario').modal('show');
-            }
-            });
-        });
-        $(document).on('click', '#idCerrarModalEliminar', function(){
-            $.ajax({
-            success:function(data){
-            $('#EliminarUsuario').modal('hide');
-            {
-                $('#idSeccionModalEliminar').empty()
-            }
-            }
-            });
-        });
+  $(document).ready(function () {
+    if ("{{ data.estado_usuario }}" == "creado") {
+      toastr["success"]("Usuario creado exitosamente", "Usuarios");
+    }
+    if ("{{ data.estado_usuario }}" == "editado") {
+      toastr["success"]("Usuario editado exitosamente", "Usuarios");
+    }
+  })
+
+  //boton Eliminar
+  $(document).on('click', "[name='botonEliminarUsuario']", function () {
+    let IdUsuario = $(this).attr("id");
+    $.ajax({
+      url: `/configuracion/usuarios/modal_eliminar_usuario/${IdUsuario}`,
+      method: "GET",
+      data: {},
+      success: function (data) {
+        $('#idSeccionModalEliminar').append(data.htmlresponse)
+        $('#EliminarUsuario').modal('show');
+      }
+    });
+  });
+  $(document).on('click', '#idCerrarModalEliminar', function () {
+    $.ajax({
+      success: function (data) {
+        $('#EliminarUsuario').modal('hide');
+        {
+          $('#idSeccionModalEliminar').empty()
+        }
+      }
+    });
+  });
 </script>
 
 
