@@ -26,7 +26,10 @@ export const graficoPolar = (idGrafico, titulo, categorias, datos) => {
           display: true,
           text: titulo
         }
-      }
+      },
+      scale: {
+        stepSize: 1
+      },
     },
   };
   const myChart = new Chart(document.getElementById(idGrafico), config);

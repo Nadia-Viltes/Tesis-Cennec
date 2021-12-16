@@ -37,95 +37,98 @@
   <!-- ================================================ -->
   <div id="padre">
     <section>
-    <form action="/reportes/ranking_obras_sociales" method="POST" id="fechasFormulario">
+      <form action="/reportes/ranking_obras_sociales" method="POST" id="fechasFormulario">
+        <div class="row">
+          <div class="col-md-4 m-4">
+            <div class="form-floating">
+              <input type="date" class="form-control" name="fechaDesde" id="fechaDesde" value={{data.fecha_desde}}>
+              <div class="invalid-feedback">Fecha no válida</div>
+              <label for="fechaDesde">Fecha desde</label>
+            </div>
+          </div>
+          <div class="col-md-4 m-4">
+            <div class="form-floating">
+              <input type="date" class="form-control" name="fechaHasta" id="fechaHasta" value={{data.fecha_hasta}}>
+              <div class="invalid-feedback">Fecha no válida</div>
+              <label for="fechaHasta">Fecha hasta</label>
+            </div>
+          </div>
+          <div class="col-md-1 mt-4">
+            <div>
+              <button type="submit" class="btn btn-primary" id="buttonFiltrar">Filtrar</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+
+    <section>
       <div class="row">
-        <div class="col-md-4 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaDesde" id="fechaDesde" value={{data.fecha_desde}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaDesde">Fecha desde</label>
-          </div>
-        </div>
-        <div class="col-md-4 m-4">
-          <div class="form-floating">
-            <input type="date" class="form-control" name="fechaHasta" id="fechaHasta" value={{data.fecha_hasta}}>
-            <div class="invalid-feedback">Fecha no válida</div>
-            <label for="fechaHasta">Fecha hasta</label>
-          </div>
-        </div>
-        <div class="col-md-1 mt-4">
-          <div>
-            <button type="submit" class="btn btn-primary" id="buttonFiltrar">Filtrar</button>
-          </div>
-        </div>
-      </div>
-    </form>
-  </section>
-
-
-  <section>
-    <div class="row">
-      <div class="card col-11" id="cardGrafico">
-        <div class="card-body">
-          <div class="col-lg-8 offset-md-2">
-            <canvas id="charRankingObraSociales"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-<hr/>
-
-  <section name='resultadosSection'> 
-    <div class="row">
-      <div class="col-lg-11 col-md-6 mb-4" id="cardGrafico">
-        <h5 class="text-center">Resultados</h5>
-        <div class="card">
+        <div class="card col-11" id="cardGrafico">
           <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Obra Social</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for ranking in data.ranking_obras_sociales %}
-                <tr>
-                  <td>{{loop.index}}</td>
-                  <td>{{ranking[0]}}</td>
-                  <td>{{ranking[1]}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td>{{ data.total }}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
+            <div class="col-lg-8 offset-md-2">
+              <canvas id="charRankingObraSociales"></canvas>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
-    <div>
-      <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-    <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
-    <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
-    </svg>
-        Imprimir
-      </button>
-    </div>
+    <hr />
+
+    <section name='resultadosSection'>
+      <div class="row">
+        <div class="col-lg-11 col-md-6 mb-4" id="cardGrafico">
+          <h5 class="text-center">Resultados</h5>
+          <div class="card">
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Obra Social</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for ranking in data.ranking_obras_sociales %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{ranking[0]}}</td>
+                    <td>{{ranking[1]}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td>{{ data.total }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
+      <div>
+        <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
+            viewBox="0 0 16 16">
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+            <path
+              d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+            </path>
+          </svg>
+          Imprimir
+        </button>
+      </div>
     </form>
-</div>
+  </div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -135,16 +138,16 @@
 
 </main>
 <script type="module">
-  import {graficoDona} from "/static/validations/reports/grafico_dona.js"
+  import { graficoDona } from "/static/validations/reports/grafico_dona.js"
   const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
 
-  graficoDona("charRankingObraSociales", "Motivos Anulacion", nombreColumnas, valoresColumnas);
+  graficoDona("charRankingObraSociales", "Ranking de Obras Sociales", nombreColumnas, valoresColumnas);
 
   let fechaDesdeInput = $("#fechaDesde")
   let fechaHastaInput = $("#fechaHasta")
 
-  $("#formImprimir").submit(function(e){
+  $("#formImprimir").submit(function (e) {
     let graficoCanvas = document.getElementById("charRankingObraSociales");
     let informacionGrafico = graficoCanvas.toDataURL();
     let seccionResultados = $("[name='resultadosSection']")
@@ -154,10 +157,10 @@
     $(formImprimir).append(`<input type="hidden" name="titulo_reporte" value="${tituloSeccion}" /> `);
     $(formImprimir).append(`<input type="hidden" name="grafico" value=${informacionGrafico} /> `);
     $(formImprimir).append(`<textarea name="resultados" style="display: none !important; visibility: hidden !important;">${seccionResultados.html()}</textarea>`);
-    
+
   })
 
-  $("#buttonFiltrar").click(function(){
+  $("#buttonFiltrar").click(function () {
     let fechaDesde = new Date(fechaDesdeInput.val().replace('-', '/'))
     let fechaHasta = new Date(fechaHastaInput.val().replace('-', '/'))
 
@@ -170,7 +173,7 @@
       fechaHastaInput.addClass("is-invalid")
       return false;
     }
-    
+
     if (fechaDesde > fechaHasta) {
       fechaDesdeInput.addClass("is-invalid")
       fechaHastaInput.addClass("is-invalid")
