@@ -35,57 +35,73 @@
   <!-- ================================================ -->
   <!-- REPORTES  -->
   <!-- ================================================ -->
-  <section>
-    <div class="row">
-      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
-        <div class="card">
-          <div class="card-body">
-            <canvas id="charAltasPacientesZonas"></canvas>
+  <div id="padre">
+    <section>
+      <div class="row">
+        <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+          <div class="card mt-3">
+            <div class="card-body">
+              <canvas id="charAltasPacientesZonas"></canvas>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-<hr/>
+    <hr />
 
-  <section>
-    <div class="row">
-      <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
-        <h5 class="text-center">Resultados</h5>
-        <div class="card">
-          <div class="card-body">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Zona</th>
-                </tr>
-              </thead>
-              <tbody>
-                {% for altas in data.alta_pacientes_por_zona %}
-                <tr>
-                  <td>{{loop.index}}</td>
-                  <td>{{altas[0]}}</td>
-                  <td>{{altas[1]}}</td>
-                </tr>
-                {% endfor %}
-              </tbody>
-              <tfoot>
-                <tr>
-                  <th scope="row">Total</th>
-                  <td>{{ data.total }}</td>
-                  <td></td>
-                </tr>
-              </tfoot>
-            </table>
+    <section name='resultadosSection'>
+      <div class="row">
+        <div class="col-lg-8 col-md-6 mb-4" id="cardGrafico">
+          <h5 class="text-center">Resultados</h5>
+          <div class="card">
+            <div class="card-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Zona</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for altas in data.alta_pacientes_por_zona %}
+                  <tr>
+                    <td>{{loop.index}}</td>
+                    <td>{{altas[0]}}</td>
+                    <td>{{altas[1]}}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="row">Total</th>
+                    <td>{{ data.total }}</td>
+                    <td></td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
+      <div>
+        <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
+            viewBox="0 0 16 16">
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+            <path
+              d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+            </path>
+          </svg>
+          Imprimir
+        </button>
+      </div>
+    </form>
+  </div>
   <!-- ================================================ -->
   <!-- Config Pantalla -->
   <!-- ================================================ -->
@@ -95,12 +111,23 @@
 
 </main>
 <script type="module">
-  import {graficoRadar} from "/static/validations/reports/grafico_radar.js"
+  import { graficoRadar } from "/static/validations/reports/grafico_radar.js"
   const nombreColumnas = JSON.parse('{{ data.nombre_categorias|safe }}')
   const valoresColumnas = JSON.parse('{{ data.valores_categorias|safe }}')
 
   graficoRadar("charAltasPacientesZonas", "Altas Mensuales de Pacientes", nombreColumnas, valoresColumnas);
 
+  $("#formImprimir").submit(function (e) {
+    let graficoCanvas = document.getElementById("charAltasPacientesZonas");
+    let informacionGrafico = graficoCanvas.toDataURL();
+    let seccionResultados = $("[name='resultadosSection']")
+    let tituloSeccion = "{{ data.titulo }}"
+    $(formImprimir).append(`<input type="hidden" name="fechaDesde" value="" /> `);
+    $(formImprimir).append(`<input type="hidden" name="fechaHasta" value="" /> `);
+    $(formImprimir).append(`<input type="hidden" name="titulo_reporte" value="${tituloSeccion}" /> `);
+    $(formImprimir).append(`<input type="hidden" name="grafico" value=${informacionGrafico} /> `);
+    $(formImprimir).append(`<textarea name="resultados" style="display: none !important; visibility: hidden !important;">${seccionResultados.html()}</textarea>`);
+  })
 </script>
 
 {% endblock %}

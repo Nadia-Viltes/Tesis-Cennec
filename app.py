@@ -1337,12 +1337,25 @@ def reportes_estado_parametro_edades():
     }
     return render_template('reportes_estado_parametros_edades.html', data=data)
 
-@app.route('/reportes/imprimir')
+
+@app.route('/reportes/imprimir', methods=["GET", "POST"])
 def imprimir_reporte():
+    fecha_desde = request.form["fechaDesde"]
+    fecha_hasta = request.form["fechaHasta"]
+    informacionGrafico = request.form["grafico"]
+    listResultado = request.form["resultados"]
+    titulo = request.form["titulo_reporte"]
+    usuario = "{} {}".format(session["nombre"], session["apellido"])
     data = {
-        'titulo': 'Imprimir reporte',
+        'titulo': titulo,
+        'fecha_desde': fecha_desde,
+        'fecha_hasta': fecha_hasta,
+        'informacion_grafico': informacionGrafico,
+        'listado_resultados': listResultado,
+        'usuario': usuario
     }
     return render_template('reportes_imprimir.html', data=data)
+
 
 @app.route('/reportes/reportes_motivos_anulacion_especialidad', methods=["GET", "POST"])
 def reportes_motivos_anulacion_especialidad():

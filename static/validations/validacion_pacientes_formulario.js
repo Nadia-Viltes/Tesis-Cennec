@@ -68,6 +68,10 @@ const campoNroAfiliado = $("[name='nroAfiliado']")
 //esto lo hago para poder hacer las validaciones en el editar
 const campoNroAfiliadoValorInicial = campoNroAfiliado.val()
 
+//seteo al campo
+$(campoFechaNacimiento).attr("min", "1960-01-01")
+$(campoFechaNacimiento).attr("max", "2090-01-01")
+
 //si valor contiene numeros los quito
 function removeNumber(element){
     const REGEXP = /[0-9]/g;
@@ -230,11 +234,11 @@ campoNroFijo.keyup(function(){
 
 //limitacion en financiador tab
 campoNroAfiliado.keydown(function(){
-    cortaValor(campoNroFijo, 20)
+    cortaValor(campoNroAfiliado, 20)
 });
 
 campoNroAfiliado.keyup(function(){
-    cortaValor(campoNroFijo, 20)
+    cortaValor(campoNroAfiliado, 20)
 });
 
 //Cambia tab on submit
@@ -295,6 +299,7 @@ $("#buttonGuardarFormulario").click(function () {
     let fechaCampo = new Date(valorDeFecha.replace('-', '/'))
     let fechaActual = new Date(obtenerFechaActual().replace('-', '/'))
     if (fechaCampo > fechaActual) {
+        $(datosPersonalesTab).click()
         campoFechaNacimiento.addClass("is-invalid")
         return false;
     }

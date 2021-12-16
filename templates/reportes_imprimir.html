@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous"> -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href={{ url_for('static', filename='home.css' )}}>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="/static/graphs/chart.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> 
+    <!-- <script src="/static/graphs/chart.js"></script> -->
     <title>CENNEC</title>
     <style>
+        @page {
+            margin:0.1em;
+            size: A4 Landscape;
+        }
+            
         .bd-placeholder-img {
             font-size: 1.125rem;
             text-anchor: middle;
@@ -54,24 +59,45 @@
                 <p class="text-decoration-underline fs-4 text-center">Reportes</p>
             </div>
         </div>
+        {% if data.informacion_grafico != "" %}
+        <section>
+            <div class="row">
+                <div class="col-lg-11 col-md-8 mb-4" id="cardGrafico">
+                <div class="card">
+                    <div class="card-body" style="text-align: center;">
+                        
+                            <img src={{data.informacion_grafico}} />
+                        
+                    </div>
+                </div>
+                </div>
+            </div>
+            </section>
+            {% endif %}   
+
+        <section id="seccionResultado">
+            {{data.listado_resultados|safe}}
+        </section>    
         <div class="row">
-            <div class="col-12">Nombre del tipo de reporte</div>
+            <div class="col-12">Nombre del tipo de reporte: {{ data.titulo }}</div>
         </div>
         <div class="row">
-            <div class="col-12">Periodo consultado del reporte: Desde - Hasta</div>
+            <div class="col-12">Periodo consultado del reporte: Desde: {{data.fecha_desde}}  - Hasta {{ data.fecha_hasta }}</div>
         </div>
+
         <div class="row">
-            <div class="col-12">Grafico</div>
-        </div>
-        <div class="row">
-            <div class="col-12">Detalle del reporte</div>
-        </div>
-        <div class="row">
-            <div class="col-4" id="imprimir">Fecha y hora de la descarga</div>
-            <div class="col-4" id="imprimir">Nombre del usuario</div>
-            <div class="col-4" id="imprimir">Nro. De pagina</div>
+            <div class="col-4" name=fechaHora id="imprimir"></div>
+            <div class="col-4" id="imprimir">Nombre y apellido: {{data.usuario}}</div>
+            <div class="col-4" id="imprimir">Nro. de pagina: 001</div>
         </div>
     </div>
 
 </body>
+<script>
+    let fecha = new Date()
+    let minutes = fecha.getMinutes() < 10 ? `0${fecha.getMinutes()}` : fecha.getMinutes();
+    $("[name='fechaHora']").text(`Datos de Impresión - Fecha ${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}, hora: ${fecha.getHours()}:${minutes}`)
+    window.print();
+</script>    
+  
 </html>
