@@ -1,4 +1,4 @@
-import {beautyRGBColorList} from "/static/validations/reports/generar_random_color.js"
+import {generateRandomRGBColorList} from "/static/validations/reports/generar_random_color.js"
 
 export const graficoPolar = (idGrafico, titulo, categorias, datos) => {
   const labels = categorias;
@@ -8,7 +8,7 @@ export const graficoPolar = (idGrafico, titulo, categorias, datos) => {
     datasets: [
       {
         label: titulo,
-        backgroundColor: beautyRGBColorList(datos),
+        backgroundColor: generateRandomRGBColorList(datos),
         data: datos,
       },
     ],
