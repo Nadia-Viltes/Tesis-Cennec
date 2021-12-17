@@ -25,7 +25,8 @@ def obtener_lista_hcd_query(parametros):
             FROM paciente as pa, historiaclinica as hcd
             WHERE hcd.IdPaciente = pa.IdPaciente
             AND pa.fechabaja is null
-            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')))) LIKE LOWER('{}');              
+            AND (LOWER(CONCAT(pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')))) LIKE LOWER('{}')
+            ORDER BY pa.Nombre, pa.Apellido;              
             """.format(parametros)
     conexion = get_conexion()
     hcd = []

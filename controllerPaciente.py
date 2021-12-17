@@ -120,7 +120,13 @@ def obtener_localidades_by_id_provincia(id_provincia):
 
 
 def obtener_barrios_by_id_localidad(id_localidad):
-    query = "select IdBarrio, Nombre from barrio where IdLocalidad = {} and FechaBaja is null;".format(
+    query = """
+            select IdBarrio, Nombre 
+            from barrio 
+            where IdLocalidad = {} 
+            and FechaBaja is null
+            order by nombre;
+            """.format(
         id_localidad)
     conexion = get_conexion()
     barrios = []
