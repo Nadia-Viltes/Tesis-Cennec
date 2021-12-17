@@ -8,7 +8,8 @@ def obtener_lista_hcd():
            SELECT pa.IdPaciente, pa.Nombre, pa.Apellido, pa.NumeroDocumento, LPAD(hcd.IdHistoriaClinica, 5, '0')
             FROM paciente as pa, historiaclinica as hcd
             WHERE hcd.IdPaciente = pa.IdPaciente
-            AND pa.fechabaja is null;               
+            AND pa.fechabaja is null
+            ORDER BY pa.Nombre, pa.Apellido;               
             """
     conexion = get_conexion()
     hcd = []
