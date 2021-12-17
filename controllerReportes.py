@@ -148,6 +148,7 @@ def obtener_ranking_de_pacientes_cantidad_turnos():
             paciente pac
             where ctur.IdPaciente = pac.IdPaciente
             group by ctur.idPaciente
+            order by sum(ctur.cantidadDisponibles)
             limit 10;
             """
     conexion = get_conexion()
