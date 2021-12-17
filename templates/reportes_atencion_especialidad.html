@@ -88,7 +88,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Cantidad</th>
-                    <th scope="col">Estado</th>
+                    <th scope="col">Especialidad</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -117,21 +117,24 @@
     <form action="/reportes/imprimir" method="POST" id="formImprimir" target="_blank">
       <div>
         <button type="submit" class="btn btn-primary mt-4" id="botonImprimir">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer" viewBox="0 0 16 16">
-      <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
-      <path d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z"></path>
-      </svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-printer"
+            viewBox="0 0 16 16">
+            <path d="M2.5 8a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"></path>
+            <path
+              d="M5 1a2 2 0 0 0-2 2v2H2a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h1v1a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1V3a2 2 0 0 0-2-2H5zM4 3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2H4V3zm1 5a2 2 0 0 0-2 2v1H2a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v-1a2 2 0 0 0-2-2H5zm7 2v3a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1z">
+            </path>
+          </svg>
           Imprimir
         </button>
       </div>
-      </form>
+    </form>
 
-  <!-- ================================================ -->
-  <!-- Config Pantalla -->
-  <!-- ================================================ -->
+    <!-- ================================================ -->
+    <!-- Config Pantalla -->
+    <!-- ================================================ -->
 
-  <div class="my-4 w-100 chartjs-render-monitor" style="display: block; height: 100px; width: 1218px;">
-  </div>
+    <div class="my-4 w-100 chartjs-render-monitor" style="display: block; height: 100px; width: 1218px;">
+    </div>
 
 </main>
 <script type="module">
@@ -144,7 +147,7 @@
   let fechaDesdeInput = $("#fechaDesde")
   let fechaHastaInput = $("#fechaHasta")
 
-  $("#formImprimir").submit(function(e){
+  $("#formImprimir").submit(function (e) {
     let graficoCanvas = document.getElementById("charTurnosEspecialidad");
     let informacionGrafico = graficoCanvas.toDataURL();
     let seccionResultados = $("[name='resultadosSection']")
@@ -154,7 +157,7 @@
     $(formImprimir).append(`<input type="hidden" name="titulo_reporte" value="${tituloSeccion}" /> `);
     $(formImprimir).append(`<input type="hidden" name="grafico" value=${informacionGrafico} /> `);
     $(formImprimir).append(`<textarea name="resultados" style="display: none !important; visibility: hidden !important;">${seccionResultados.html()}</textarea>`);
-    
+
   })
 
   $("#buttonFiltrar").click(function () {
